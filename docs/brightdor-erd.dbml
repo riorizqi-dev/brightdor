@@ -1,0 +1,688 @@
+// ============================================================
+// BrightDor — Entity Relationship Diagram
+// Marketplace jasa pernikahan + undangan digital
+// Laravel 11 · Filament v5 · 33 tabel
+//
+// Cara pakai: buka https://dbdiagram.io/d  →  paste semua isi file ini
+// ============================================================
+
+Project BrightDor {
+  database_type: 'MySQL'
+  Note: '''
+    BrightDor — marketplace jasa pernikahan & undangan digital.
+    Dibangun dengan Laravel 11 + Filament v5 (panel admin).
+
+    Catatan relasi polymorphic (tidak bisa digambar sebagai FK):
+    - transactions.payable_type / payable_id  -> bookings atau invitation_orders
+    - activity_logs.subject_type / subject_id -> model apa pun
+    - media.model_type / model_id             -> model apa pun (Spatie Media Library)
+  '''
+}
+
+// ------------------------------------------------------------
+// ENUM
+// ------------------------------------------------------------
+
+Enum user_type {
+  admin
+  vendor
+  couple
+}
+
+Enum user_status {
+  active
+  suspended
+  inactive
+}
+
+Enum vendor_status {
+  pending
+  approved
+  rejected
+  suspended
+}
+
+Enum service_status {
+  draft
+  published
+  moderated
+  rejected
+}
+
+Enum booking_status {
+  pending
+  confirmed
+  on_progress
+  completed
+  cancelled
+  refund
+}
+
+Enum invitation_order_status {
+  pending
+  paid
+  active
+  expired
+  cancelled
+}
+
+Enum rsvp_attendance {
+  yes
+  no
+  maybe
+}
+
+Enum transaction_type {
+  payment
+  refund
+  commission
+  payout
+}
+
+Enum payment_gateway {
+  midtrans
+  xendit
+  manual
+  other
+}
+
+Enum transaction_status {
+  pending
+  success
+  failed
+  expired
+  refunded
+}
+
+Enum payout_status {
+  pending
+  processing
+  paid
+  rejected
+}
+
+Enum blog_status {
+  draft
+  published
+}
+
+// ============================================================
+// 1. AUTENTIKASI & PENGGUNA
+// ============================================================
+
+Table users [headercolor: #141414, note: 'Semua akun: admin, vendor, dan couple'] {
+  id                bigint      [pk, increment]
+  name              varchar
+  email             varchar     [unique, not null]
+  phone             varchar     [null]
+  avatar            varchar     [null]
+  user_type         user_type   [default: 'couple']
+  status            user_status [default: 'active']
+  email_verified_at timestamp   [null]
+  password          varchar
+  remember_token    varchar     [null]
+  last_login_at     timestamp   [null]
+  created_at        timestamp   [null]
+  updated_at        timestamp   [null]
+}
+
+Table password_reset_tokens [headercolor: #141414] {
+  email      varchar   [pk]
+  token      varchar
+  created_at timestamp [null]
+}
+
+Table sessions [headercolor: #141414] {
+  id            varchar [pk]
+  user_id       bigint  [null, ref: > users.id]
+  ip_address    varchar [null]
+  user_agent    text    [null]
+  payload       text
+  last_activity int
+}
+
+Table roles [headercolor: #141414, note: 'Spatie Laravel Permission'] {
+  id         bigint    [pk, increment]
+  name       varchar
+  guard_name varchar
+  created_at timestamp [null]
+  updated_at timestamp [null]
+
+  indexes {
+    (name, guard_name) [unique]
+  }
+}
+
+Table permissions [headercolor: #141414, note: 'Spatie Laravel Permission'] {
+  id         bigint    [pk, increment]
+  name       varchar
+  guard_name varchar
+  created_at timestamp [null]
+  updated_at timestamp [null]
+
+  indexes {
+    (name, guard_name) [unique]
+  }
+}
+
+Table model_has_roles [headercolor: #141414, note: 'Pivot: model (users) <-> roles'] {
+  role_id    bigint  [ref: > roles.id]
+  model_type varchar
+  model_id   bigint
+
+  indexes {
+    (role_id, model_id, model_type) [pk]
+  }
+}
+
+Table model_has_permissions [headercolor: #141414, note: 'Pivot: model (users) <-> permissions'] {
+  permission_id bigint  [ref: > permissions.id]
+  model_type    varchar
+  model_id      bigint
+
+  indexes {
+    (permission_id, model_id, model_type) [pk]
+  }
+}
+
+Table role_has_permissions [headercolor: #141414, note: 'Pivot: roles <-> permissions'] {
+  permission_id bigint [ref: > permissions.id]
+  role_id       bigint [ref: > roles.id]
+
+  indexes {
+    (permission_id, role_id) [pk]
+  }
+}
+
+// ============================================================
+// 2. SISTEM VENDOR
+// ============================================================
+
+Table vendor_categories [headercolor: #C4A574, note: 'Venue, Catering, Dekorasi, MUA, Fotografer, dll'] {
+  id              bigint        [pk, increment]
+  name            varchar
+  slug            varchar       [unique]
+  description     text          [null]
+  icon            varchar       [null]
+  commission_rate decimal(5,2)  [default: 10.00, note: 'Komisi default dalam %']
+  is_active       boolean       [default: true]
+  sort_order      int           [default: 0]
+  created_at      timestamp     [null]
+  updated_at      timestamp     [null]
+}
+
+Table vendors [headercolor: #C4A574, note: 'Profil mitra penyedia jasa pernikahan'] {
+  id                  bigint         [pk, increment]
+  user_id             bigint         [not null, ref: - users.id, note: 'Akun pemilik vendor']
+  vendor_category_id  bigint         [null, ref: > vendor_categories.id]
+  business_name       varchar
+  slug                varchar        [unique]
+  description         text           [null]
+  address             varchar        [null]
+  city                varchar        [null]
+  province            varchar        [null]
+  postal_code         varchar        [null]
+  latitude            decimal(10,7)  [null]
+  longitude           decimal(10,7)  [null]
+  phone               varchar        [null]
+  whatsapp            varchar        [null]
+  website             varchar        [null]
+  instagram           varchar        [null]
+  rating_avg          decimal(3,2)   [default: 0]
+  rating_count        int            [default: 0]
+  status              vendor_status  [default: 'pending']
+  is_verified         boolean        [default: false]
+  verified_at         timestamp      [null]
+  rejection_reason    text           [null]
+  is_featured         boolean        [default: false]
+  portfolio_url       varchar        [null]
+  bank_name           varchar        [null]
+  bank_account_number varchar        [null]
+  bank_account_name   varchar        [null]
+  created_at          timestamp      [null]
+  updated_at          timestamp      [null]
+  deleted_at          timestamp      [null, note: 'Soft delete']
+
+  indexes {
+    (status, city)
+    is_featured
+  }
+}
+
+Table services [headercolor: #C4A574, note: 'Paket jasa yang dijual vendor'] {
+  id                 bigint          [pk, increment]
+  vendor_id          bigint          [not null, ref: > vendors.id]
+  vendor_category_id bigint          [null, ref: > vendor_categories.id]
+  name               varchar
+  slug               varchar
+  description        text            [null]
+  price              decimal(15,2)   [default: 0]
+  discount_price     decimal(15,2)   [null]
+  price_unit         varchar         [null, note: 'per pax, per event, per day']
+  capacity           int             [null]
+  duration           varchar         [null]
+  location           varchar         [null]
+  features           json            [null]
+  is_featured        boolean         [default: false]
+  is_active          boolean         [default: true]
+  status             service_status  [default: 'draft']
+  views_count        int             [default: 0]
+  bookings_count     int             [default: 0]
+  created_at         timestamp       [null]
+  updated_at         timestamp       [null]
+  deleted_at         timestamp       [null, note: 'Soft delete']
+
+  indexes {
+    (vendor_id, slug) [unique]
+    (status, is_featured)
+  }
+}
+
+// ============================================================
+// 3. PEMESANAN
+// ============================================================
+
+Table bookings [headercolor: #3B82F6, note: 'Pemesanan jasa vendor oleh couple'] {
+  id                  bigint          [pk, increment]
+  booking_code        varchar         [unique]
+  user_id             bigint          [not null, ref: > users.id, note: 'Couple / customer']
+  vendor_id           bigint          [not null, ref: > vendors.id]
+  service_id          bigint          [null, ref: > services.id]
+  event_date          date            [null]
+  event_time          time            [null]
+  event_location      varchar         [null]
+  guest_count         int             [null]
+  subtotal            decimal(15,2)   [default: 0]
+  discount            decimal(15,2)   [default: 0]
+  admin_fee           decimal(15,2)   [default: 0]
+  commission_amount   decimal(15,2)   [default: 0]
+  total_amount        decimal(15,2)   [default: 0]
+  status              booking_status  [default: 'pending']
+  customer_notes      text            [null]
+  admin_notes         text            [null]
+  confirmed_at        timestamp       [null]
+  completed_at        timestamp       [null]
+  cancelled_at        timestamp       [null]
+  cancellation_reason text            [null]
+  created_at          timestamp       [null]
+  updated_at          timestamp       [null]
+  deleted_at          timestamp       [null, note: 'Soft delete']
+
+  indexes {
+    (status, event_date)
+  }
+}
+
+// ============================================================
+// 4. UNDANGAN DIGITAL
+// ============================================================
+
+Table invitation_template_categories [headercolor: #8B5CF6] {
+  id          bigint    [pk, increment]
+  name        varchar
+  slug        varchar   [unique]
+  description text      [null]
+  sort_order  int       [default: 0]
+  is_active   boolean   [default: true]
+  created_at  timestamp [null]
+  updated_at  timestamp [null]
+}
+
+Table invitation_templates [headercolor: #8B5CF6, note: 'Katalog desain undangan digital'] {
+  id                               bigint         [pk, increment]
+  invitation_template_category_id  bigint         [null, ref: > invitation_template_categories.id]
+  name                             varchar
+  slug                             varchar        [unique]
+  description                      text           [null]
+  price                            decimal(15,2)  [default: 0]
+  preview_image                    varchar        [null]
+  thumbnail                        varchar        [null]
+  demo_url                         varchar        [null]
+  features                         json           [null]
+  is_premium                       boolean        [default: false]
+  is_featured                      boolean        [default: false]
+  is_active                        boolean        [default: true]
+  sales_count                      int            [default: 0]
+  created_at                       timestamp      [null]
+  updated_at                       timestamp      [null]
+  deleted_at                       timestamp      [null, note: 'Soft delete']
+}
+
+Table invitation_orders [headercolor: #8B5CF6, note: 'Pesanan undangan digital'] {
+  id                     bigint                   [pk, increment]
+  order_code             varchar                  [unique]
+  user_id                bigint                   [not null, ref: > users.id]
+  invitation_template_id bigint                   [not null, ref: > invitation_templates.id]
+  bride_name             varchar                  [null]
+  groom_name             varchar                  [null]
+  wedding_date           date                     [null]
+  wedding_venue          varchar                  [null]
+  subdomain              varchar                  [null, unique]
+  custom_domain          varchar                  [null, unique]
+  price                  decimal(15,2)            [default: 0]
+  status                 invitation_order_status  [default: 'pending']
+  paid_at                timestamp                [null]
+  expires_at             timestamp                [null]
+  created_at             timestamp                [null]
+  updated_at             timestamp                [null]
+  deleted_at             timestamp                [null, note: 'Soft delete']
+}
+
+Table invitations [headercolor: #8B5CF6, note: 'Undangan yang sudah terbit / live'] {
+  id                     bigint    [pk, increment]
+  invitation_order_id    bigint    [not null, ref: > invitation_orders.id]
+  user_id                bigint    [not null, ref: > users.id]
+  invitation_template_id bigint    [not null, ref: > invitation_templates.id]
+  slug                   varchar   [unique]
+  subdomain              varchar   [null, unique]
+  custom_domain          varchar   [null, unique]
+  content                json      [null, note: 'Isi undangan']
+  theme_settings         json      [null]
+  views_count            int       [default: 0]
+  rsvp_yes               int       [default: 0]
+  rsvp_no                int       [default: 0]
+  rsvp_maybe             int       [default: 0]
+  is_published           boolean   [default: false]
+  published_at           timestamp [null]
+  created_at             timestamp [null]
+  updated_at             timestamp [null]
+  deleted_at             timestamp [null, note: 'Soft delete']
+}
+
+Table invitation_rsvps [headercolor: #8B5CF6, note: 'Konfirmasi kehadiran tamu'] {
+  id            bigint           [pk, increment]
+  invitation_id bigint           [not null, ref: > invitations.id]
+  guest_name    varchar
+  guest_email   varchar          [null]
+  guest_phone   varchar          [null]
+  attendance    rsvp_attendance  [default: 'yes']
+  guest_count   int              [default: 1]
+  message       text             [null]
+  created_at    timestamp        [null]
+  updated_at    timestamp        [null]
+}
+
+// ============================================================
+// 5. KEUANGAN
+// ============================================================
+
+Table transactions [headercolor: #16A34A, note: 'payable = polymorphic -> bookings / invitation_orders'] {
+  id                bigint              [pk, increment]
+  transaction_code  varchar             [unique]
+  user_id           bigint              [null, ref: > users.id]
+  payable_type      varchar             [null, note: 'Polymorphic: Booking atau InvitationOrder']
+  payable_id        bigint              [null, note: 'Polymorphic ID']
+  type              transaction_type    [default: 'payment']
+  amount            decimal(15,2)       [default: 0]
+  fee               decimal(15,2)       [default: 0]
+  net_amount        decimal(15,2)       [default: 0]
+  payment_method    varchar             [null]
+  payment_gateway   payment_gateway     [null]
+  gateway_reference varchar             [null]
+  status            transaction_status  [default: 'pending']
+  paid_at           timestamp           [null]
+  meta              json                [null]
+  created_at        timestamp           [null]
+  updated_at        timestamp           [null]
+
+  indexes {
+    (status, type)
+  }
+}
+
+Table commission_settings [headercolor: #16A34A, note: 'Global (vendor_category_id NULL) atau per kategori'] {
+  id                 bigint         [pk, increment]
+  vendor_category_id bigint         [null, ref: > vendor_categories.id]
+  rate_percent       decimal(5,2)   [default: 10.00]
+  rate_fixed         decimal(15,2)  [default: 0]
+  is_active          boolean        [default: true]
+  label              varchar        [null]
+  created_at         timestamp      [null]
+  updated_at         timestamp      [null]
+}
+
+Table payouts [headercolor: #16A34A, note: 'Pencairan dana ke rekening vendor'] {
+  id                  bigint         [pk, increment]
+  payout_code         varchar        [unique]
+  vendor_id           bigint         [not null, ref: > vendors.id]
+  amount              decimal(15,2)
+  fee                 decimal(15,2)  [default: 0]
+  net_amount          decimal(15,2)
+  bank_name           varchar        [null]
+  bank_account_number varchar        [null]
+  bank_account_name   varchar        [null]
+  status              payout_status  [default: 'pending']
+  admin_notes         text           [null]
+  processed_by        bigint         [null, ref: > users.id, note: 'Admin yang memproses']
+  processed_at        timestamp      [null]
+  created_at          timestamp      [null]
+  updated_at          timestamp      [null]
+
+  indexes {
+    status
+  }
+}
+
+// ============================================================
+// 6. KONTEN (CMS)
+// ============================================================
+
+Table blogs [headercolor: #EA580C] {
+  id           bigint       [pk, increment]
+  user_id      bigint       [null, ref: > users.id, note: 'Penulis']
+  title        varchar
+  slug         varchar      [unique]
+  excerpt      text         [null]
+  content      text         [null]
+  cover_image  varchar      [null]
+  status       blog_status  [default: 'draft']
+  is_featured  boolean      [default: false]
+  views_count  int          [default: 0]
+  published_at timestamp    [null]
+  created_at   timestamp    [null]
+  updated_at   timestamp    [null]
+  deleted_at   timestamp    [null, note: 'Soft delete']
+}
+
+Table testimonials [headercolor: #EA580C] {
+  id           bigint    [pk, increment]
+  name         varchar
+  role         varchar   [null, note: 'Nama pasangan / kota']
+  content      text
+  rating       int       [default: 5]
+  avatar       varchar   [null]
+  wedding_date date      [null]
+  is_active    boolean   [default: true]
+  sort_order   int       [default: 0]
+  created_at   timestamp [null]
+  updated_at   timestamp [null]
+}
+
+Table banners [headercolor: #EA580C] {
+  id         bigint    [pk, increment]
+  title      varchar
+  subtitle   varchar   [null]
+  image      varchar   [null]
+  link_url   varchar   [null]
+  position   varchar   [default: 'home_hero']
+  is_active  boolean   [default: true]
+  sort_order int       [default: 0]
+  starts_at  timestamp [null]
+  ends_at    timestamp [null]
+  created_at timestamp [null]
+  updated_at timestamp [null]
+}
+
+Table faqs [headercolor: #EA580C] {
+  id         bigint    [pk, increment]
+  question   varchar
+  answer     text
+  category   varchar   [null]
+  is_active  boolean   [default: true]
+  sort_order int       [default: 0]
+  created_at timestamp [null]
+  updated_at timestamp [null]
+}
+
+Table galleries [headercolor: #EA580C] {
+  id          bigint    [pk, increment]
+  title       varchar
+  description text      [null]
+  image       varchar   [null]
+  category    varchar   [null]
+  vendor_id   bigint    [null, ref: > vendors.id]
+  is_active   boolean   [default: true]
+  sort_order  int       [default: 0]
+  created_at  timestamp [null]
+  updated_at  timestamp [null]
+}
+
+// ============================================================
+// 7. SISTEM & MEDIA
+// ============================================================
+
+Table settings [headercolor: #64748B, note: 'Key-value, group: general / payment / social / email'] {
+  id         bigint    [pk, increment]
+  group      varchar   [default: 'general']
+  key        varchar   [unique]
+  value      text      [null]
+  type       varchar   [default: 'string', note: 'string, json, boolean, number, file']
+  created_at timestamp [null]
+  updated_at timestamp [null]
+}
+
+Table activity_logs [headercolor: #64748B, note: 'Audit trail; subject = polymorphic'] {
+  id           bigint    [pk, increment]
+  user_id      bigint    [null, ref: > users.id]
+  action       varchar
+  subject_type varchar   [null, note: 'Polymorphic']
+  subject_id   bigint    [null, note: 'Polymorphic']
+  description  text      [null]
+  properties   json      [null]
+  created_at   timestamp [null]
+  updated_at   timestamp [null]
+}
+
+Table media [headercolor: #64748B, note: 'Spatie Media Library; model = polymorphic'] {
+  id                     bigint    [pk, increment]
+  model_type             varchar   [note: 'Polymorphic']
+  model_id               bigint    [note: 'Polymorphic']
+  uuid                   varchar   [null, unique]
+  collection_name        varchar
+  name                   varchar
+  file_name              varchar
+  mime_type              varchar   [null]
+  disk                   varchar
+  conversions_disk       varchar   [null]
+  size                   bigint
+  manipulations          json
+  custom_properties      json
+  generated_conversions  json
+  responsive_images      json
+  order_column           int       [null]
+  created_at             timestamp [null]
+  updated_at             timestamp [null]
+}
+
+Table cache [headercolor: #64748B] {
+  key        varchar [pk]
+  value      text
+  expiration int
+}
+
+Table cache_locks [headercolor: #64748B] {
+  key        varchar [pk]
+  owner      varchar
+  expiration int
+}
+
+Table jobs [headercolor: #64748B] {
+  id           bigint  [pk, increment]
+  queue        varchar
+  payload      text
+  attempts     int
+  reserved_at  int     [null]
+  available_at int
+  created_at   int
+}
+
+Table job_batches [headercolor: #64748B] {
+  id             varchar [pk]
+  name           varchar
+  total_jobs     int
+  pending_jobs   int
+  failed_jobs    int
+  failed_job_ids text
+  options        text    [null]
+  cancelled_at   int     [null]
+  created_at     int
+  finished_at    int     [null]
+}
+
+Table failed_jobs [headercolor: #64748B] {
+  id         bigint    [pk, increment]
+  uuid       varchar   [unique]
+  connection text
+  queue      text
+  payload    text
+  exception  text
+  failed_at  timestamp
+}
+
+// ============================================================
+// TABLE GROUPS
+// ============================================================
+
+TableGroup "1. Autentikasi & Pengguna" {
+  users
+  password_reset_tokens
+  sessions
+  roles
+  permissions
+  model_has_roles
+  model_has_permissions
+  role_has_permissions
+}
+
+TableGroup "2. Sistem Vendor" {
+  vendor_categories
+  vendors
+  services
+}
+
+TableGroup "3. Pemesanan" {
+  bookings
+}
+
+TableGroup "4. Undangan Digital" {
+  invitation_template_categories
+  invitation_templates
+  invitation_orders
+  invitations
+  invitation_rsvps
+}
+
+TableGroup "5. Keuangan" {
+  transactions
+  commission_settings
+  payouts
+}
+
+TableGroup "6. Konten (CMS)" {
+  blogs
+  testimonials
+  banners
+  faqs
+  galleries
+}
+
+TableGroup "7. Sistem & Media" {
+  settings
+  activity_logs
+  media
+  cache
+  cache_locks
+  jobs
+  job_batches
+  failed_jobs
+}

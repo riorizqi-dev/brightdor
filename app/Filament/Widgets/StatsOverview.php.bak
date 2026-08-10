@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Filament\Widgets;
+
+use App\Models\Booking;
+use App\Models\InvitationOrder;
+use App\Models\Transaction;
+use App\Models\User;
+use App\Models\Vendor;
+use Filament\Widgets\StatsOverviewWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+
+class StatsOverview extends StatsOverviewWidget
+{
+    protected static ?int $sort = 1;
+
+    /** Load after page shell — avoids blocking first paint */
+    protected static bool $isLazy = true;
+
+    protected int | string | array $columnSpan = 'full';
+
+    protected function getStats(): array
+    {
+        $pendingVendors = Vendor::query()->where('status', 'pending')->count();
+        $pendingBookings = Booking::query()->where('status', 'pending')->count();
+        $revenue = (float) Transaction::query()
+            ->where('status', 'success')
+            ->where('type', 'payment')
+            ->sum('amount');
+
+        return [
+            Stat::make('Total Vendor', number_format(Vendor::query()->count()))
+                ->description($pendingVendors . ' pending approval')
+                ->descriptionIcon('heroicon-m-building-storefront')
+                ->color('primary'),
+            Stat::make('Total Booking', number_format(Booking::query()->count()))
+                ->description($pendingBookings . ' menunggu konfirmasi')
+                ->descriptionIcon('heroicon-m-calendar-days')
+                ->color('warning'),
+            Stat::make('Total Revenue', 'Rp ' . number_format($revenue, 0, ',', '.'))
+                ->description('Transaksi sukses')
+                ->descriptionIcon('heroicon-m-banknotes')
+                ->color('success'),
+            Stat::make('Total Couple', number_format(User::query()->where('user_type', 'couple')->count()))
+                ->description('Customer terdaftar')
+                ->descriptionIcon('heroicon-m-users')
+                ->color('info'),
+            Stat::make('Undangan Digital', number_format(
+                InvitationOrder::query()->whereIn('status', ['paid', 'active'])->count()
+            ))
+                ->description('Order paid / active')
+                ->descriptionIcon('heroicon-m-envelope')
+                ->color('secondary'),
+        ];
+    }
+}
