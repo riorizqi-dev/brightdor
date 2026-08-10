@@ -94,3 +94,6 @@ Konfigurasi panel di `app/Providers/Filament/AdminPanelProvider.php`:
 3. Notifikasi real-time (Laravel Echo / Reverb)
 4. Policy & permission detail per resource
 5. Panel terpisah untuk Vendor & Couple
+
+ngewr
+e yuk
