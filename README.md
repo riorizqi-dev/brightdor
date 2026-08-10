@@ -93,4 +93,3 @@ Konfigurasi panel di `app/Providers/Filament/AdminPanelProvider.php`:
 2. Export Excel/PDF laporan keuangan
 3. Notifikasi real-time (Laravel Echo / Reverb)
 4. Policy & permission detail per resource
-5. Panel terpisah untuk Vendor & Couple
