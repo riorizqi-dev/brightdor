@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class BookingController extends Controller
@@ -34,33 +35,44 @@ class BookingController extends Controller
             ->where('is_active', true)
             ->findOrFail($validated['service_id']);
 
-        $user = User::firstOrCreate(
-            ['email' => $validated['email']],
-            [
+        $booking = DB::transaction(function () use ($validated, $vendor, $service) {
+            $user = User::query()->where('email', $validated['email'])->lockForUpdate()->first();
+
+            if ($user && (! $user->isCouple() || $user->status !== 'active')) {
+                abort(422, 'Email tersebut tidak dapat digunakan untuk booking.');
+            }
+
+            $user ??= User::create([
                 'name' => $validated['name'],
+                'email' => $validated['email'],
                 'phone' => $validated['phone'],
                 'user_type' => 'couple',
                 'status' => 'active',
                 'password' => Hash::make(Str::random(32)),
-            ],
-        );
+            ]);
 
-        $subtotal = (float) $service->final_price;
+            $user->forceFill([
+                'name' => $validated['name'],
+                'phone' => $validated['phone'],
+            ])->save();
 
-        $booking = Booking::create([
-            'user_id' => $user->id,
-            'vendor_id' => $vendor->id,
-            'service_id' => $service->id,
-            'event_date' => $validated['event_date'] ?? null,
-            'guest_count' => $validated['guest_count'] ?? null,
-            'customer_notes' => $validated['customer_notes'] ?? null,
-            'subtotal' => $subtotal,
-            'discount' => 0,
-            'admin_fee' => 0,
-            'commission_amount' => 0,
-            'total_amount' => $subtotal,
-            'status' => 'pending',
-        ]);
+            $subtotal = $service->final_price;
+
+            return Booking::create([
+                'user_id' => $user->id,
+                'vendor_id' => $vendor->id,
+                'service_id' => $service->id,
+                'event_date' => $validated['event_date'] ?? null,
+                'guest_count' => $validated['guest_count'] ?? null,
+                'customer_notes' => $validated['customer_notes'] ?? null,
+                'subtotal' => $subtotal,
+                'discount' => 0,
+                'admin_fee' => 0,
+                'commission_amount' => 0,
+                'total_amount' => $subtotal,
+                'status' => 'pending',
+            ]);
+        });
 
         return back()->with(
             'success',

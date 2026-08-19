@@ -19,6 +19,8 @@ class VendorRegisterController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if (Auth::check()) {
+            abort_unless(Auth::user()->isCouple(), 403, 'Hanya akun couple yang dapat didaftarkan sebagai vendor.');
+
             return $this->upgrade($request);
         }
 

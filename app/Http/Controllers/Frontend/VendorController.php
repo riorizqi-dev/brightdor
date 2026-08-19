@@ -31,7 +31,10 @@ class VendorController extends Controller
 
         $category = null;
         if ($categorySlug) {
-            $category = VendorCategory::where('slug', $categorySlug)->firstOrFail();
+            $category = VendorCategory::query()
+                ->where('slug', $categorySlug)
+                ->where('is_active', true)
+                ->firstOrFail();
         }
 
         $query = Vendor::query()
@@ -41,7 +44,9 @@ class VendorController extends Controller
         if ($category) {
             $query->where('vendor_category_id', $category->id);
         } elseif ($request->filled('category')) {
-            $query->where('vendor_category_id', $request->integer('category'));
+            $query->whereHas('category', fn ($category) => $category
+                ->whereKey($request->integer('category'))
+                ->where('is_active', true));
         }
 
         if ($request->filled('city')) {
@@ -66,11 +71,12 @@ class VendorController extends Controller
         $this->applyCapacityRange($query, $request);
 
         $sort = $request->string('sort', 'popular')->toString();
-        $priceSortSql = '(SELECT MIN(COALESCE(discount_price, price)) FROM services WHERE services.vendor_id = vendors.id AND services.status = "published" AND services.is_active = 1)';
+        $priceSortSql = '(SELECT MIN(COALESCE(discount_price, price)) FROM services WHERE services.vendor_id = vendors.id AND services.status = \'published\' AND services.is_active = 1)';
 
         match ($sort) {
-            'price_asc' => $query->orderByRaw($priceSortSql . ' asc nulls last'),
-            'price_desc' => $query->orderByRaw($priceSortSql . ' desc nulls last'),
+            // Keep vendors without published services at the end on MySQL and SQLite.
+            'price_asc' => $query->orderByRaw('(' . $priceSortSql . ') IS NULL')->orderByRaw($priceSortSql . ' asc'),
+            'price_desc' => $query->orderByRaw('(' . $priceSortSql . ') IS NULL')->orderByRaw($priceSortSql . ' desc'),
             'rating' => $query->orderByDesc('rating_avg')->orderByDesc('rating_count'),
             'featured' => $query->orderByDesc('is_featured')->orderByDesc('rating_count'),
             default => $query->orderByDesc('is_featured')->orderByDesc('rating_count')->orderByDesc('rating_avg'),
