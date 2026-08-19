@@ -38,12 +38,7 @@ class LoginController extends Controller
         $user->forceFill(['last_login_at' => now()])->save();
 
         if ($user->user_type === 'admin' || $user->hasRole(['super_admin', 'admin'])) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect()->route('filament.admin.auth.login')
-                ->with('status', 'Login admin terpisah. Silakan gunakan halaman login admin.');
+            return redirect()->route('filament.admin.pages.dashboard');
         }
 
         if ($user->isVendor() || $user->hasRole('vendor')) {

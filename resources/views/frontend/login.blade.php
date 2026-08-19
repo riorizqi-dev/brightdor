@@ -8,8 +8,12 @@
             <div class="text-center">
                 <p class="bd-section-kicker">Selamat datang kembali</p>
                 <h1 class="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">Masuk ke BrightDor</h1>
-                <p class="mt-3 text-sm text-ink-500">Masuk sebagai vendor atau admin. Sistem akan mengarahkan Anda ke panel yang sesuai.</p>
+                <p class="mt-3 text-sm text-ink-500">Masuk ke akun BrightDor Anda untuk melanjutkan.</p>
             </div>
+
+            @if (session('success'))
+                <div class="mt-6 rounded-[5px] border border-emerald-500/40 bg-emerald-50 p-4 text-sm font-medium text-emerald-800">{{ session('success') }}</div>
+            @endif
 
             <section class="bd-card mt-8 p-6 sm:p-8">
                 <form method="POST" action="{{ route('frontend.login.store') }}" class="space-y-5">
@@ -41,8 +45,8 @@
             </section>
 
             <p class="mt-6 text-center text-sm text-ink-500">
-                Belum punya akun vendor?
-                <a href="{{ route('vendors.register.create') }}" class="font-bold text-rose-600 hover:text-rose-700 transition-colors">Mendaftar sebagai Vendor</a>
+                Belum punya akun?
+                <a href="{{ route('frontend.register.create') }}" class="font-bold text-rose-600 hover:text-rose-700 transition-colors">Daftar sebagai User</a>
             </p>
         </div>
     </div>

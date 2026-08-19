@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -19,65 +20,44 @@ class VendorRegistrationTest extends TestCase
         Role::findOrCreate('vendor');
     }
 
-    public function test_guest_can_view_vendor_registration_page(): void
+    public function test_guest_is_redirected_to_login_from_vendor_registration_page(): void
     {
         $this->get(route('vendors.register.create'))
-            ->assertOk()
-            ->assertSee('Daftar sebagai Vendor')
-            ->assertSee('/daftar-vendor', false);
+            ->assertRedirect(route('frontend.login.create'));
     }
 
-    public function test_guest_can_register_as_vendor(): void
+    public function test_logged_in_couple_can_register_as_vendor(): void
     {
+        $user = User::query()->create([
+            'name' => 'User BrightDor',
+            'email' => 'user@example.test',
+            'phone' => '0812333444555',
+            'password' => Hash::make('rahasia123'),
+            'user_type' => 'couple',
+            'status' => 'active',
+        ]);
+
         $this->withoutMiddleware(VerifyCsrfToken::class)
+            ->actingAs($user)
             ->post(route('vendors.register.store'), [
                 'name' => 'Studio Bunga Alya',
-                'email' => 'alya@example.test',
                 'phone' => '0812333444555',
-                'password' => 'rahasia123',
-                'password_confirmation' => 'rahasia123',
             ])
-            ->assertRedirect(route('vendors.register.create'))
-            ->assertSessionHas('success');
+            ->assertRedirect('/vendor');
 
-        $user = User::query()->where('email', 'alya@example.test')->first();
+        $user->refresh();
 
-        $this->assertNotNull($user);
         $this->assertSame('vendor', $user->user_type);
         $this->assertTrue($user->hasRole('vendor'));
     }
 
-    public function test_registration_rejects_duplicate_email(): void
-    {
-        User::query()->create([
-            'name' => 'Vendor Lama',
-            'email' => 'lama@example.test',
-            'phone' => '0812000000000',
-            'password' => 'rahasia123',
-            'user_type' => 'vendor',
-        ]);
-
-        $this->withoutMiddleware(VerifyCsrfToken::class)
-            ->post(route('vendors.register.store'), [
-                'name' => 'Vendor Baru',
-                'email' => 'lama@example.test',
-                'phone' => '0812111222333',
-                'password' => 'rahasia123',
-                'password_confirmation' => 'rahasia123',
-            ])
-            ->assertSessionHasErrors(['email']);
-    }
-
-    public function test_registration_rejects_unconfirmed_password(): void
+    public function test_vendor_registration_requires_a_logged_in_user(): void
     {
         $this->withoutMiddleware(VerifyCsrfToken::class)
             ->post(route('vendors.register.store'), [
                 'name' => 'Vendor Baru',
-                'email' => 'baru@example.test',
                 'phone' => '0812111222333',
-                'password' => 'rahasia123',
-                'password_confirmation' => 'rahasia124',
             ])
-            ->assertSessionHasErrors(['password']);
+            ->assertRedirect(route('frontend.login.create'));
     }
 }

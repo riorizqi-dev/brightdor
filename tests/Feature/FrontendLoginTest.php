@@ -39,19 +39,19 @@ class FrontendLoginTest extends TestCase
         $this->get('/login')
             ->assertOk()
             ->assertSee('Masuk ke BrightDor')
-            ->assertSee('Mendaftar sebagai Vendor');
+            ->assertSee('Daftar sebagai User');
     }
 
-    public function test_admin_is_rejected_on_public_login(): void
+    public function test_admin_can_open_admin_panel_after_one_login(): void
     {
         $this->makeUser('admin@brightdor.test', 'admin');
 
         $this->post('/login', [
             'email' => 'admin@brightdor.test',
             'password' => 'password',
-        ])->assertRedirect(route('filament.admin.auth.login'));
+        ])->assertRedirect(route('filament.admin.pages.dashboard'));
 
-        $this->assertGuest();
+        $this->assertAuthenticated();
     }
 
     public function test_vendor_is_redirected_to_vendor_panel(): void
@@ -104,5 +104,11 @@ class FrontendLoginTest extends TestCase
 
         $this->assertSame('vendor', $couple->user_type);
         $this->assertTrue($couple->hasRole('vendor'));
+        $this->assertDatabaseHas('vendors', [
+            'user_id' => $couple->id,
+            'business_name' => 'Studio Upgrade',
+            'status' => 'pending',
+            'is_verified' => false,
+        ]);
     }
 }

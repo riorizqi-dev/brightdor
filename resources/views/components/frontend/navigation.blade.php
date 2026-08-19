@@ -13,20 +13,20 @@
                 <svg class="h-3.5 w-3.5 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75 12 3 2.25 6.75 12 10.5l9.75-3.75ZM2.25 6.75V17l9.75 3.75v-10l-9.75-3.75Zm19.5 0V17L12 20.75"/></svg>
                 <span>3000+ vendor pernikahan terpercaya di Indonesia</span>
             </div>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3 uppercase tracking-[0.08em]">
                 @auth
-                    <span class="text-ink-700 font-semibold">{{ auth()->user()->name }}</span>
+                    <span class="normal-case tracking-normal text-ink-700 font-semibold">{{ auth()->user()->name }}</span>
                     <form method="POST" action="{{ route('frontend.login.logout') }}">@csrf<button class="hover:text-rose-600 transition-colors">Keluar</button></form>
                 @else
-                    <a href="{{ route('frontend.login.create') }}" class="inline-flex items-center gap-1 hover:text-rose-600 transition-colors">
-                        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.5 20.25a7.5 7.5 0 0 1 15 0"/></svg>
-                        Masuk
-                    </a>
+                    <span class="hidden text-ink-500 sm:inline">Daftar Member?</span>
+                    <a href="{{ route('frontend.register.create') }}" class="font-semibold text-rose-600 hover:text-rose-700 transition-colors">Daftar</a>
+                    <span class="text-ink-300">|</span>
+                    <a href="{{ route('frontend.login.create') }}" class="hover:text-rose-600 transition-colors">Masuk</a>
                 @endif
-                <a href="{{ route('vendors.register.create') }}" class="inline-flex items-center gap-1 font-semibold text-rose-600 hover:text-rose-700 transition-colors">
-                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21V7.5L12 3l8.25 4.5V21m-13.5 0h18M8.25 21V11.25h7.5V21"/></svg>
-                    Mendaftar sebagai Vendor
-                </a>
+                @if (! auth()->check() || auth()->user()->isCouple())
+                    <span class="text-ink-300">|</span>
+                    <a href="{{ route('vendors.register.create') }}" class="font-semibold text-rose-600 hover:text-rose-700 transition-colors">Are You a Vendor?</a>
+                @endif
             </div>
         </div>
     </div>
