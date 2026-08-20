@@ -53,6 +53,16 @@ class ServiceResource extends Resource
         return ServiceInfolist::configure($schema);
     }
 
+    public static function canAccess(): bool
+    {
+        return false;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public static function table(Table $table): Table
     {
         return ServicesTable::configure($table);

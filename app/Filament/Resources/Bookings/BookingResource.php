@@ -65,6 +65,16 @@ class BookingResource extends Resource
         return BookingInfolist::configure($schema);
     }
 
+    public static function canAccess(): bool
+    {
+        return false;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public static function table(Table $table): Table
     {
         return BookingsTable::configure($table);

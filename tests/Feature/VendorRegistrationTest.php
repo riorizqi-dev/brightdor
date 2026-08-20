@@ -26,7 +26,7 @@ class VendorRegistrationTest extends TestCase
             ->assertRedirect(route('frontend.login.create'));
     }
 
-    public function test_logged_in_couple_can_register_as_vendor(): void
+    public function test_logged_in_couple_without_paid_vendor_subscription_cannot_register_as_vendor(): void
     {
         $user = User::query()->create([
             'name' => 'User BrightDor',
@@ -35,6 +35,7 @@ class VendorRegistrationTest extends TestCase
             'password' => Hash::make('rahasia123'),
             'user_type' => 'couple',
             'status' => 'active',
+            'vendor_subscription_status' => 'inactive',
         ]);
 
         $this->withoutMiddleware(VerifyCsrfToken::class)
@@ -42,6 +43,35 @@ class VendorRegistrationTest extends TestCase
             ->post(route('vendors.register.store'), [
                 'name' => 'Studio Bunga Alya',
                 'phone' => '0812333444555',
+                'subscription_plan' => 'premium_monthly',
+            ])
+            ->assertForbidden();
+
+        $user->refresh();
+
+        $this->assertSame('couple', $user->user_type);
+        $this->assertFalse($user->hasRole('vendor'));
+    }
+
+    public function test_logged_in_couple_can_register_as_vendor_after_paid_subscription(): void
+    {
+        $user = User::query()->create([
+            'name' => 'User BrightDor',
+            'email' => 'user@example.test',
+            'phone' => '0812333444555',
+            'password' => Hash::make('rahasia123'),
+            'user_type' => 'couple',
+            'status' => 'active',
+            'vendor_subscription_status' => 'active',
+            'vendor_subscription_plan' => 'premium_monthly',
+        ]);
+
+        $this->withoutMiddleware(VerifyCsrfToken::class)
+            ->actingAs($user)
+            ->post(route('vendors.register.store'), [
+                'name' => 'Studio Bunga Alya',
+                'phone' => '0812333444555',
+                'subscription_plan' => 'premium_monthly',
             ])
             ->assertRedirect('/vendor');
 
@@ -49,6 +79,7 @@ class VendorRegistrationTest extends TestCase
 
         $this->assertSame('vendor', $user->user_type);
         $this->assertTrue($user->hasRole('vendor'));
+        $this->assertSame('active', $user->vendor_subscription_status);
     }
 
     public function test_vendor_registration_requires_a_logged_in_user(): void

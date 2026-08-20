@@ -21,13 +21,34 @@
                 </h1>
                 <p class="mt-3 text-sm text-ink-500">
                     Halo, <strong class="text-ink-700">{{ $user->name }}</strong>! Lengkapi data di bawah ini.
-                    Tim BrightDor akan menghubungi Anda untuk verifikasi sebelum profil tampil di marketplace.
+                    Menjadi vendor hanya tersedia untuk akun dengan langganan berbayar aktif.
                 </p>
             </div>
 
             <section class="bd-card mt-8 p-6 sm:p-8">
                 <form method="POST" action="{{ route('vendors.register.store') }}" class="space-y-5">
                     @csrf
+
+                    <div>
+                        <label class="text-xs font-bold uppercase tracking-wider text-ink-400">Paket Vendor</label>
+                        <div class="mt-2 space-y-2">
+                            <label class="flex cursor-pointer items-start gap-3 rounded-[5px] border border-ink-200 bg-white p-3 text-sm text-ink-700 transition hover:border-rose-300">
+                                <input type="radio" name="subscription_plan" value="premium_monthly" checked class="mt-0.5 h-4 w-4 border-ink-300 text-rose-600 focus:ring-rose-500/50">
+                                <span>
+                                    <span class="block font-semibold text-ink-900">Premium Monthly</span>
+                                    <span class="text-ink-500">Rp 299.000 / bulan • akses vendor penuh</span>
+                                </span>
+                            </label>
+                            <label class="flex cursor-pointer items-start gap-3 rounded-[5px] border border-ink-200 bg-white p-3 text-sm text-ink-700 transition hover:border-rose-300">
+                                <input type="radio" name="subscription_plan" value="premium_yearly" class="mt-0.5 h-4 w-4 border-ink-300 text-rose-600 focus:ring-rose-500/50">
+                                <span>
+                                    <span class="block font-semibold text-ink-900">Premium Yearly</span>
+                                    <span class="text-ink-500">Rp 2.990.000 / tahun • hemat 17%</span>
+                                </span>
+                            </label>
+                        </div>
+                        @error('subscription_plan')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
+                    </div>
 
                     <div>
                         <label for="reg-name" class="text-xs font-bold uppercase tracking-wider text-ink-400">Nama Lengkap</label>

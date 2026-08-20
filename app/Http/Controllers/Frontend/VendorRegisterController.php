@@ -30,13 +30,20 @@ class VendorRegisterController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
+            'subscription_plan' => ['nullable', 'string'],
         ]);
+
+        $hasPaidSubscription = $user->hasPaidVendorSubscription();
+
+        abort_if(! $hasPaidSubscription, 403, 'Untuk menjadi vendor, Anda harus aktif berlangganan paket vendor berbayar.');
 
         Role::findOrCreate('vendor', 'web');
 
         $user->forceFill([
             'name' => $validated['name'],
             'phone' => $validated['phone'],
+            'vendor_subscription_status' => 'active',
+            'vendor_subscription_plan' => $validated['subscription_plan'] ?? $user->vendor_subscription_plan ?? 'premium_monthly',
             'user_type' => 'vendor',
         ])->save();
 

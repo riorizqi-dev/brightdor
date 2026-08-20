@@ -77,6 +77,10 @@
     {{-- Category nav --}}
     <nav class="hidden border-t border-ink-200/60 bg-ink-50 lg:block">
         <div class="bd-container flex flex-wrap items-center justify-center gap-0.5">
+            <a href="{{ route('home') }}"
+               class="whitespace-nowrap px-4 py-3 text-sm transition-all duration-300 {{ request()->routeIs('home') ? 'text-white bg-rose-600 rounded-full mx-1 shadow-md font-bold' : 'text-ink-600 hover:text-rose-600 hover:bg-rose-50 rounded-full font-semibold' }}">
+                Home
+            </a>
             <a href="{{ route('vendors.index') }}"
                class="whitespace-nowrap px-4 py-3 text-sm transition-all duration-300 {{ request()->routeIs('vendors.index') && ! $activeCategory ? 'text-white bg-rose-600 rounded-full mx-1 shadow-md font-bold' : 'text-ink-600 hover:text-rose-600 hover:bg-rose-50 rounded-full font-semibold' }}">
                 Semua Vendor
@@ -93,6 +97,7 @@
     {{-- Mobile menu --}}
     <div data-mobile-menu class="hidden border-t border-ink-200/60 bg-white">
         <div class="bd-container space-y-0.5 px-4 py-4">
+            <a href="{{ route('home') }}" class="block rounded-md px-4 py-2.5 text-sm font-bold text-ink-900 hover:bg-rose-50 transition-colors">Home</a>
             <a href="{{ route('vendors.index') }}" class="block rounded-md px-4 py-2.5 text-sm font-bold text-ink-900 hover:bg-rose-50 transition-colors">Semua Vendor</a>
             @foreach ($navCategories as $cat)
                 <a href="{{ route('vendors.category', $cat->slug) }}" class="block rounded-md px-4 py-2.5 text-sm text-ink-600 hover:bg-rose-50 hover:text-rose-600 transition-colors">{{ $cat->name }}</a>
