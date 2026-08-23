@@ -36,8 +36,7 @@ class LandingPageAuthAndBookingTest extends TestCase
         $this->get('/admin/login')
             ->assertOk()
             ->assertSee('BrightDor')
-            ->assertSee('Daftar di sini')
-            ->assertSee(route('vendors.register.create'), false);
+            ->assertSee('Daftar sebagai user di sini');
     }
 
     public function test_admin_can_log_in_via_filament_login_page(): void

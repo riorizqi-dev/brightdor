@@ -92,6 +92,13 @@ class FrontendLoginTest extends TestCase
     {
         $couple = $this->makeUser('upgrade@brightdor.test', 'couple');
 
+        // Set up paid subscription for upgrade
+        $couple->forceFill([
+            'vendor_subscription_status' => 'active',
+            'vendor_subscription_plan' => 'premium_monthly',
+            'vendor_subscription_expires_at' => now()->addMonth(),
+        ])->save();
+
         $this->actingAs($couple)
             ->withoutMiddleware(VerifyCsrfToken::class)
             ->post(route('vendors.register.store'), [

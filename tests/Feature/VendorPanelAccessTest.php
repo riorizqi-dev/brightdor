@@ -38,7 +38,7 @@ class VendorPanelAccessTest extends TestCase
         $this->get('/vendor/login')
             ->assertOk()
             ->assertSee('BrightDor')
-            ->assertSee('Daftar di sini');
+            ->assertSee('Daftar sebagai user di sini');
     }
 
     public function test_vendor_with_profile_can_view_dashboard(): void
