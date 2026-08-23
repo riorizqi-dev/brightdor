@@ -47,7 +47,8 @@ class ServiceForm
                         TextInput::make('discount_price')
                             ->label('Harga Diskon')
                             ->numeric()
-                            ->prefix('Rp'),
+                            ->prefix('Rp')
+                            ->minValue(0),
                         TextInput::make('price_unit')
                             ->label('Satuan Harga')
                             ->placeholder('per pax / per event'),

@@ -1,11 +1,8 @@
 @extends('frontend.layouts.app')
 
-@php
-    $upgrade = auth()->check();
-    $user = auth()->user();
-@endphp
+@php($user = auth()->user())
 
-@section('title', $upgrade ? 'Jadikan Akun sebagai Vendor — BrightDor' : 'Daftar sebagai Vendor — BrightDor')
+@section('title', 'Daftar sebagai Vendor — BrightDor')
 
 @section('content')
     <div class="bd-container py-12">
@@ -20,15 +17,11 @@
             <div class="text-center">
                 <p class="bd-section-kicker">Bergabung dengan 3000+ vendor terpercaya</p>
                 <h1 class="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">
-                    {{ $upgrade ? 'Jadikan Akun sebagai Vendor' : 'Daftar sebagai Vendor' }}
+                    Daftar sebagai Vendor
                 </h1>
                 <p class="mt-3 text-sm text-ink-500">
-                    @if ($upgrade)
-                        Halo, <strong class="text-ink-700">{{ $user->name }}</strong>! Akun Anda sudah terdaftar.
-                        Cukup konfirmasi di bawah ini untuk membuka panel vendor.
-                    @else
-                        Lengkapi data di bawah ini. Tim BrightDor akan menghubungi Anda untuk verifikasi sebelum profil tampil di marketplace.
-                    @endif
+                    Halo, <strong class="text-ink-700">{{ $user->name }}</strong>! Lengkapi data di bawah ini.
+                    Menjadi vendor hanya tersedia untuk akun dengan langganan berbayar aktif.
                 </p>
             </div>
 
@@ -37,50 +30,43 @@
                     @csrf
 
                     <div>
+                        <label class="text-xs font-bold uppercase tracking-wider text-ink-400">Paket Vendor</label>
+                        <div class="mt-2 space-y-2">
+                            <label class="flex cursor-pointer items-start gap-3 rounded-[5px] border border-ink-200 bg-white p-3 text-sm text-ink-700 transition hover:border-rose-300">
+                                <input type="radio" name="subscription_plan" value="premium_monthly" checked class="mt-0.5 h-4 w-4 border-ink-300 text-rose-600 focus:ring-rose-500/50">
+                                <span>
+                                    <span class="block font-semibold text-ink-900">Premium Monthly</span>
+                                    <span class="text-ink-500">Rp 299.000 / bulan • akses vendor penuh</span>
+                                </span>
+                            </label>
+                            <label class="flex cursor-pointer items-start gap-3 rounded-[5px] border border-ink-200 bg-white p-3 text-sm text-ink-700 transition hover:border-rose-300">
+                                <input type="radio" name="subscription_plan" value="premium_yearly" class="mt-0.5 h-4 w-4 border-ink-300 text-rose-600 focus:ring-rose-500/50">
+                                <span>
+                                    <span class="block font-semibold text-ink-900">Premium Yearly</span>
+                                    <span class="text-ink-500">Rp 2.990.000 / tahun • hemat 17%</span>
+                                </span>
+                            </label>
+                        </div>
+                        @error('subscription_plan')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div>
                         <label for="reg-name" class="text-xs font-bold uppercase tracking-wider text-ink-400">Nama Lengkap</label>
-                        <input id="reg-name" type="text" name="name" value="{{ old('name', $user->name ?? '') }}" required autocomplete="name" class="bd-input mt-1.5" @if($upgrade) readonly @endif>
+                        <input id="reg-name" type="text" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" class="bd-input mt-1.5">
                         @error('name')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
-                    @if (! $upgrade)
-                        <div>
-                            <label for="reg-email" class="text-xs font-bold uppercase tracking-wider text-ink-400">Email</label>
-                            <input id="reg-email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" class="bd-input mt-1.5">
-                            @error('email')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
-                        </div>
-                    @endif
-
                     <div>
                         <label for="reg-phone" class="text-xs font-bold uppercase tracking-wider text-ink-400">No. WhatsApp / Telepon</label>
-                        <input id="reg-phone" type="tel" name="phone" value="{{ old('phone', $user->phone ?? '') }}" required autocomplete="tel" placeholder="cth. 0812xxxxxxx" class="bd-input mt-1.5">
+                        <input id="reg-phone" type="tel" name="phone" value="{{ old('phone', $user->phone) }}" required autocomplete="tel" placeholder="cth. 0812xxxxxxx" class="bd-input mt-1.5">
                         @error('phone')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
-                    @if (! $upgrade)
-                        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                            <div>
-                                <label for="reg-password" class="text-xs font-bold uppercase tracking-wider text-ink-400">Password</label>
-                                <input id="reg-password" type="password" name="password" required autocomplete="new-password" class="bd-input mt-1.5">
-                                @error('password')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
-                            </div>
-                            <div>
-                                <label for="reg-password-confirm" class="text-xs font-bold uppercase tracking-wider text-ink-400">Konfirmasi Password</label>
-                                <input id="reg-password-confirm" type="password" name="password_confirmation" required autocomplete="new-password" class="bd-input mt-1.5">
-                            </div>
-                        </div>
-                    @endif
-
-                    <button type="submit" class="bd-btn-primary w-full justify-center py-3">
-                        {{ $upgrade ? 'Jadikan Saya Vendor' : 'Daftar Sekarang' }}
-                    </button>
+                    <button type="submit" class="bd-btn-primary w-full justify-center py-3">Daftar sebagai Vendor</button>
                 </form>
             </section>
 
-            @if ($upgrade)
-                <p class="mt-6 text-center text-xs text-ink-400">Ingin keluar dari akun ini? <a href="{{ route('frontend.login.create') }}" class="font-bold text-rose-600 hover:text-rose-700 transition-colors">Keluar</a></p>
-            @else
-                <p class="mt-6 text-center text-xs text-ink-400">Sudah memiliki akun? <a href="{{ route('frontend.login.create') }}" class="font-bold text-rose-600 hover:text-rose-700 transition-colors">Masuk di sini</a></p>
-            @endif
+            <p class="mt-6 text-center text-xs text-ink-400">Ingin keluar dari akun ini? <a href="{{ route('frontend.login.create') }}" class="font-bold text-rose-600 hover:text-rose-700 transition-colors">Keluar</a></p>
         </div>
     </div>
 @endsection

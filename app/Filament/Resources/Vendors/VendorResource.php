@@ -76,6 +76,16 @@ class VendorResource extends Resource
         return VendorsTable::configure($table);
     }
 
+    public static function canAccess(): bool
+    {
+        return false;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public static function getRelations(): array
     {
         return [];

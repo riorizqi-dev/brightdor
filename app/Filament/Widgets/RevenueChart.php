@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Transaction;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class RevenueChart extends ChartWidget
 {
@@ -32,9 +33,14 @@ class RevenueChart extends ChartWidget
     protected function getData(): array
     {
         $start = Carbon::now()->subMonths(5)->startOfMonth();
+        $monthExpression = match (DB::getDriverName()) {
+            'mysql', 'mariadb' => "DATE_FORMAT(COALESCE(paid_at, created_at), '%Y-%m')",
+            'pgsql' => "TO_CHAR(COALESCE(paid_at, created_at), 'YYYY-MM')",
+            default => "strftime('%Y-%m', COALESCE(paid_at, created_at))",
+        };
 
         $rows = Transaction::query()
-            ->selectRaw("strftime('%Y-%m', COALESCE(paid_at, created_at)) as ym, SUM(amount) as total")
+            ->selectRaw("{$monthExpression} as ym, SUM(amount) as total")
             ->where('status', 'success')
             ->where('type', 'payment')
             ->where(function ($q) use ($start) {

@@ -35,17 +35,15 @@ class LoginController extends Controller
 
         $user = Auth::user();
 
-        if ($user->user_type === 'admin' || $user->hasRole(['super_admin', 'admin'])) {
-            $user->forceFill(['last_login_at' => now()])->save();
+        $user->forceFill(['last_login_at' => now()])->save();
 
+        if ($user->user_type === 'admin' || $user->hasRole(['super_admin', 'admin'])) {
             return redirect('/admin');
         }
 
         if ($user->isVendor() || $user->hasRole('vendor')) {
             return redirect('/vendor');
         }
-
-        $user->forceFill(['last_login_at' => now()])->save();
 
         return redirect()->route('home');
     }

@@ -80,6 +80,11 @@ class Service extends Model implements HasMedia
 
     public function getFinalPriceAttribute(): float
     {
-        return (float) ($this->discount_price ?? $this->price);
+        $price = (float) $this->price;
+        $discountPrice = $this->discount_price === null ? null : (float) $this->discount_price;
+
+        return $discountPrice !== null && $discountPrice >= 0 && $discountPrice < $price
+            ? $discountPrice
+            : $price;
     }
 }

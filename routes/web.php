@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\InvitationController;
 use App\Http\Controllers\Frontend\LoginController;
 use App\Http\Controllers\Frontend\MyBookingController;
 use App\Http\Controllers\Frontend\PasswordResetController;
+use App\Http\Controllers\Frontend\RegisterController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\VendorController;
 use App\Http\Controllers\Frontend\VendorRegisterController;
@@ -17,6 +18,11 @@ Route::prefix('login')->name('frontend.login.')->group(function () {
     Route::get('/', [LoginController::class, 'create'])->name('create');
     Route::post('/', [LoginController::class, 'store'])->middleware('throttle:5,1')->name('store');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
+
+Route::middleware('guest')->prefix('register')->name('frontend.register.')->group(function () {
+    Route::get('/', [RegisterController::class, 'create'])->name('create');
+    Route::post('/', [RegisterController::class, 'store'])->name('store');
 });
 
 Route::prefix('lupa-password')->name('frontend.password.')->group(function () {
@@ -36,7 +42,7 @@ Route::post('/vendor/{slug}/booking', [BookingController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('vendors.booking');
 
-Route::prefix('daftar-vendor')->name('vendors.register.')->group(function () {
+Route::middleware('auth')->prefix('daftar-vendor')->name('vendors.register.')->group(function () {
     Route::get('/', [VendorRegisterController::class, 'create'])->name('create');
     Route::post('/', [VendorRegisterController::class, 'store'])->middleware('throttle:5,1')->name('store');
 });

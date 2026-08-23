@@ -39,7 +39,7 @@ class FrontendLoginTest extends TestCase
         $this->get('/login')
             ->assertOk()
             ->assertSee('Masuk ke BrightDor')
-            ->assertSee('Mendaftar sebagai Vendor');
+            ->assertSee('Daftar sebagai User');
     }
 
     public function test_admin_can_use_public_login_without_logging_in_twice(): void
@@ -104,5 +104,11 @@ class FrontendLoginTest extends TestCase
 
         $this->assertSame('vendor', $couple->user_type);
         $this->assertTrue($couple->hasRole('vendor'));
+        $this->assertDatabaseHas('vendors', [
+            'user_id' => $couple->id,
+            'business_name' => 'Studio Upgrade',
+            'status' => 'pending',
+            'is_verified' => false,
+        ]);
     }
 }

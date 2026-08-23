@@ -24,6 +24,9 @@ class User extends Authenticatable implements FilamentUser
         'avatar',
         'user_type',
         'status',
+        'vendor_subscription_status',
+        'vendor_subscription_plan',
+        'vendor_subscription_expires_at',
         'last_login_at',
     ];
 
@@ -98,6 +101,13 @@ class User extends Authenticatable implements FilamentUser
     public function isVendor(): bool
     {
         return $this->user_type === 'vendor';
+    }
+
+    public function hasPaidVendorSubscription(): bool
+    {
+        return $this->user_type === 'vendor'
+            || ($this->vendor_subscription_status === 'active'
+                && ($this->vendor_subscription_expires_at === null || $this->vendor_subscription_expires_at->isFuture()));
     }
 
     public function isAdmin(): bool

@@ -25,7 +25,7 @@ class Login extends BaseLogin
     public function getSubheading(): string | Htmlable | null
     {
         return new HtmlString('Belum punya akun? ' . Blade::render(
-            '<x-filament::link :href="route(\'vendors.register.create\')" tabindex="-1">Daftar di sini</x-filament::link>'
+            '<x-filament::link :href="route(\'frontend.register.create\')" tabindex="-1">Daftar sebagai user di sini</x-filament::link>'
         ));
     }
 }
