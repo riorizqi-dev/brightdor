@@ -45,7 +45,11 @@ class PasswordResetTest extends TestCase
             ->post(route('frontend.password.email'), ['email' => $user->email])
             ->assertSessionHas('status');
 
-        Notification::assertSentTo($user, ResetPassword::class);
+        Notification::assertSentTo($user, ResetPassword::class, function (ResetPassword $notification) use ($user): bool {
+            $url = $notification->toMail($user)->actionUrl;
+
+            return str_contains($url ?? '', '/reset-password/');
+        });
     }
 
     public function test_reset_link_rejects_unknown_email(): void

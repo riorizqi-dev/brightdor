@@ -32,6 +32,9 @@ Route::prefix('lupa-password')->name('frontend.password.')->group(function () {
     Route::post('/reset', [PasswordResetController::class, 'update'])->middleware('throttle:5,1')->name('update');
 });
 
+Route::get('/reset-password/{token}', [PasswordResetController::class, 'edit'])
+    ->name('password.reset');
+
 Route::prefix('vendors')->name('vendors.')->group(function () {
     Route::get('/', [VendorController::class, 'index'])->name('index');
     Route::get('/{categorySlug}', [VendorController::class, 'index'])->name('category');
