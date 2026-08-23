@@ -16,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
+use Illuminate\Support\Facades\Auth;
 
 class VendorResource extends Resource
 {
@@ -42,6 +43,11 @@ class VendorResource extends Resource
     protected static ?string $recordTitleAttribute = 'business_name';
 
     protected static ?int $navigationSort = 1;
+
+    public static function canAccess(): bool
+    {
+        return (bool) (Auth::user()?->isAdmin() || Auth::user()?->hasRole(['admin', 'super_admin']));
+    }
 
     public static function getNavigationBadge(): ?string
     {

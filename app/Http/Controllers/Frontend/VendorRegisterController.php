@@ -19,6 +19,10 @@ class VendorRegisterController extends Controller
     public function store(Request $request): RedirectResponse
     {
         if (Auth::check()) {
+            if (Auth::user()->isAdmin() || Auth::user()->hasAnyRole(['admin', 'super_admin'])) {
+                abort(403, 'Admin tidak dapat mendaftarkan akun sebagai vendor.');
+            }
+
             return $this->upgrade($request);
         }
 

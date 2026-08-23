@@ -16,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
+use Illuminate\Support\Facades\Auth;
 
 class BookingResource extends Resource
 {
@@ -42,6 +43,11 @@ class BookingResource extends Resource
     protected static ?string $recordTitleAttribute = 'booking_code';
 
     protected static ?int $navigationSort = 2;
+
+    public static function canAccess(): bool
+    {
+        return (bool) (Auth::user()?->isAdmin() || Auth::user()?->hasRole(['admin', 'super_admin']));
+    }
 
     public static function getNavigationBadge(): ?string
     {

@@ -16,6 +16,9 @@
             <div class="flex items-center gap-4">
                 @auth
                     <span class="text-ink-700 font-semibold">{{ auth()->user()->name }}</span>
+                    @if (auth()->user()->isCouple())
+                        <a href="{{ route('my-bookings.index') }}" class="hover:text-rose-600 transition-colors">Booking Saya</a>
+                    @endif
                     <form method="POST" action="{{ route('frontend.login.logout') }}">@csrf<button class="hover:text-rose-600 transition-colors">Keluar</button></form>
                 @else
                     <a href="{{ route('frontend.login.create') }}" class="inline-flex items-center gap-1 hover:text-rose-600 transition-colors">

@@ -12,6 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(\App\Http\Middleware\RaiseExecutionTime::class);
+        $middleware->redirectGuestsTo(fn () => route('frontend.login.create'));
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);

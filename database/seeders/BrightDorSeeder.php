@@ -216,7 +216,7 @@ class BrightDorSeeder extends Seeder
         }
 
         $vendors = Vendor::where('status', 'approved')->get();
-        $services = Service::where('status', 'published')->get();
+        $services = Service::where('status', 'published')->get()->groupBy('vendor_id');
 
         $statuses = ['pending', 'confirmed', 'confirmed', 'on_progress', 'on_progress', 'completed', 'completed', 'completed'];
         $bookingData = [
@@ -238,7 +238,8 @@ class BrightDorSeeder extends Seeder
         foreach ($statuses as $i => $status) {
             $couple = $couples[$i % $couples->count()];
             $vendor = $vendors[$i % $vendors->count()];
-            $service = $services[$i % $services->count()] ?? null;
+            $vendorServices = $services->get($vendor->id);
+            $service = $vendorServices?->isNotEmpty() ? $vendorServices[$i % $vendorServices->count()] : null;
 
             $subtotal = $service ? $service->price : 5000000;
             $discount = $service && $service->discount_price ? ($service->price - $service->discount_price) : 0;

@@ -9,6 +9,7 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -23,8 +24,10 @@ class BookingController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
-            'service_id' => ['required', 'integer', 'exists:services,id'],
+            'service_id' => ['required', 'integer'],
             'event_date' => ['nullable', 'date', 'after_or_equal:today'],
+            'event_time' => ['nullable', 'date_format:H:i'],
+            'event_location' => ['nullable', 'string', 'max:255'],
             'guest_count' => ['nullable', 'integer', 'min:1', 'max:10000'],
             'customer_notes' => ['nullable', 'string', 'max:2000'],
         ]);
@@ -34,16 +37,36 @@ class BookingController extends Controller
             ->where('is_active', true)
             ->findOrFail($validated['service_id']);
 
-        $user = User::firstOrCreate(
-            ['email' => $validated['email']],
-            [
+        $user = Auth::user();
+
+        if ($user && ! $user->isCouple()) {
+            abort(403);
+        }
+
+        if ($user) {
+            $validated['name'] = $user->name;
+            $validated['email'] = $user->email;
+            $validated['phone'] = $user->phone ?? $validated['phone'];
+        }
+
+        if (! $user) {
+            $user = User::query()->where('email', $validated['email'])->first();
+
+            if ($user) {
+                return back()->withErrors([
+                    'email' => 'Email ini sudah terdaftar. Silakan login terlebih dahulu untuk membuat booking.',
+                ])->withInput();
+            }
+
+            $user = User::create([
                 'name' => $validated['name'],
+                'email' => $validated['email'],
                 'phone' => $validated['phone'],
                 'user_type' => 'couple',
                 'status' => 'active',
                 'password' => Hash::make(Str::random(32)),
-            ],
-        );
+            ]);
+        }
 
         $subtotal = (float) $service->final_price;
 
@@ -52,6 +75,8 @@ class BookingController extends Controller
             'vendor_id' => $vendor->id,
             'service_id' => $service->id,
             'event_date' => $validated['event_date'] ?? null,
+            'event_time' => $validated['event_time'] ?? null,
+            'event_location' => $validated['event_location'] ?? null,
             'guest_count' => $validated['guest_count'] ?? null,
             'customer_notes' => $validated['customer_notes'] ?? null,
             'subtotal' => $subtotal,

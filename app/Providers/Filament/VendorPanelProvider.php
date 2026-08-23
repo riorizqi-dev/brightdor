@@ -3,6 +3,10 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Vendor\Pages\VendorDashboard;
+use App\Filament\Vendor\Resources\VendorBooking\VendorBookingResource;
+use App\Filament\Vendor\Resources\VendorPayout\VendorPayoutResource;
+use App\Filament\Vendor\Resources\VendorProfile\VendorProfileResource;
+use App\Filament\Vendor\Resources\VendorService\VendorServiceResource;
 use App\Http\Middleware\SetLocale;
 use Filament\Enums\ThemeMode;
 use Filament\FontProviders\GoogleFontProvider;
@@ -55,6 +59,10 @@ class VendorPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->pages([
                 VendorDashboard::class,
+                VendorServiceResource::class,
+                VendorBookingResource::class,
+                VendorProfileResource::class,
+                VendorPayoutResource::class,
             ])
             ->middleware([
                 EncryptCookies::class,

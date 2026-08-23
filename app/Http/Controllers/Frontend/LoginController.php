@@ -23,7 +23,7 @@ class LoginController extends Controller
         ]);
 
         if (! Auth::attempt(
-            ['email' => $credentials['email'], 'password' => $credentials['password']],
+            ['email' => $credentials['email'], 'password' => $credentials['password'], 'status' => 'active'],
             $request->boolean('remember'),
         )) {
             return back()
@@ -36,12 +36,9 @@ class LoginController extends Controller
         $user = Auth::user();
 
         if ($user->user_type === 'admin' || $user->hasRole(['super_admin', 'admin'])) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+            $user->forceFill(['last_login_at' => now()])->save();
 
-            return redirect()->route('filament.admin.auth.login')
-                ->with('status', 'Login admin terpisah. Silakan gunakan halaman login admin.');
+            return redirect('/admin');
         }
 
         if ($user->isVendor() || $user->hasRole('vendor')) {

@@ -32,6 +32,11 @@ class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
+    protected $attributes = [
+        'user_type' => 'couple',
+        'status' => 'active',
+    ];
+
     protected function casts(): array
     {
         return [
@@ -43,6 +48,10 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
+        if ($this->status !== 'active') {
+            return false;
+        }
+
         return match ($panel->getId()) {
             'admin' => in_array($this->user_type, ['admin'], true)
                 || $this->hasRole(['super_admin', 'admin']),

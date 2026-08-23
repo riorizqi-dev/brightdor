@@ -97,6 +97,21 @@ class Vendor extends Model implements HasMedia
         return $this->hasMany(Payout::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function updateRating(): void
+    {
+        $reviews = $this->reviews()->where('is_verified', true);
+        $this->rating_count = $reviews->count();
+        $this->rating_avg = $reviews->count() > 0
+            ? round($reviews->avg('rating'), 2)
+            : null;
+        $this->save();
+    }
+
     public function isPending(): bool
     {
         return $this->status === 'pending';

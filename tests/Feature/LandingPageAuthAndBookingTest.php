@@ -132,6 +132,6 @@ class LandingPageAuthAndBookingTest extends TestCase
                 'phone' => '0812111222333',
                 'service_id' => 999999,
             ])
-            ->assertSessionHasErrors(['service_id']);
+            ->assertNotFound();
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class Booking extends Model
 {
@@ -57,7 +58,43 @@ class Booking extends Model
             if (blank($booking->booking_code)) {
                 $booking->booking_code = 'BD-' . strtoupper(Str::random(8));
             }
+
+            self::validateServiceVendor($booking);
         });
+
+        static::updating(function (Booking $booking): void {
+            if ($booking->isDirty('status') && ! self::isValidStatusTransition($booking->getOriginal('status'), $booking->status)) {
+                throw ValidationException::withMessages([
+                    'status' => 'Perubahan status booking tidak valid.',
+                ]);
+            }
+
+            self::validateServiceVendor($booking);
+        });
+    }
+
+    private static function validateServiceVendor(Booking $booking): void
+    {
+        if ($booking->service_id && $booking->service && (int) $booking->service->vendor_id !== (int) $booking->vendor_id) {
+            throw ValidationException::withMessages([
+                'service_id' => 'Paket yang dipilih bukan milik vendor tersebut.',
+            ]);
+        }
+    }
+
+    public static function isValidStatusTransition(?string $from, ?string $to): bool
+    {
+        if ($from === $to) {
+            return true;
+        }
+
+        return in_array($to, match ($from) {
+            'pending' => ['confirmed', 'cancelled'],
+            'confirmed' => ['on_progress', 'cancelled'],
+            'on_progress' => ['completed', 'cancelled'],
+            'cancelled' => ['refund'],
+            default => [],
+        }, true);
     }
 
     public function user(): BelongsTo
@@ -78,5 +115,10 @@ class Booking extends Model
     public function transactions(): MorphMany
     {
         return $this->morphMany(Transaction::class, 'payable');
+    }
+
+    public function review(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Review::class);
     }
 }

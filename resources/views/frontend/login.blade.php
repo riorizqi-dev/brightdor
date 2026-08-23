@@ -12,6 +12,12 @@
             </div>
 
             <section class="bd-card mt-8 p-6 sm:p-8">
+                @if (session('status'))
+                    <div class="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ route('frontend.login.store') }}" class="space-y-5">
                     @csrf
 
@@ -32,6 +38,9 @@
                             <input type="checkbox" name="remember" value="1" class="h-4 w-4 rounded border-ink-300 text-rose-600 focus:ring-rose-500">
                             Ingat saya
                         </label>
+                        <a href="{{ route('frontend.password.request') }}" class="text-sm font-semibold text-rose-600 hover:text-rose-700 transition-colors">
+                            Lupa password?
+                        </a>
                     </div>
 
                     <button type="submit" class="bd-btn-primary w-full justify-center py-3">

@@ -42,16 +42,16 @@ class FrontendLoginTest extends TestCase
             ->assertSee('Mendaftar sebagai Vendor');
     }
 
-    public function test_admin_is_rejected_on_public_login(): void
+    public function test_admin_can_use_public_login_without_logging_in_twice(): void
     {
         $this->makeUser('admin@brightdor.test', 'admin');
 
         $this->post('/login', [
             'email' => 'admin@brightdor.test',
             'password' => 'password',
-        ])->assertRedirect(route('filament.admin.auth.login'));
+        ])->assertRedirect('/admin');
 
-        $this->assertGuest();
+        $this->assertAuthenticatedAs(User::query()->where('email', 'admin@brightdor.test')->first());
     }
 
     public function test_vendor_is_redirected_to_vendor_panel(): void
