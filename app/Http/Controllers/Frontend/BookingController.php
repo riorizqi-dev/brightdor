@@ -7,9 +7,11 @@ use App\Models\Booking;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {
@@ -49,54 +51,56 @@ class BookingController extends Controller
             $validated['phone'] = $user->phone ?? $validated['phone'];
         }
 
-        $existingUser = User::query()->where('email', $validated['email'])->first();
+        $booking = DB::transaction(function () use ($vendor, $service, $validated, $user) {
+            $existingUser = User::query()->where('email', $validated['email'])->lockForUpdate()->first();
 
-        if ($existingUser && ($existingUser->status !== 'active' || ! $existingUser->isCouple())) {
-            abort(422, 'Email tersebut tidak dapat digunakan untuk booking.');
-        }
+            if ($existingUser && ($existingUser->status !== 'active' || ! $existingUser->isCouple())) {
+                abort(422, 'Email tersebut tidak dapat digunakan untuk booking.');
+            }
 
-        if ($user && $user->id !== $existingUser?->id) {
-            abort(403);
-        }
+            if ($user && $user->id !== $existingUser?->id) {
+                abort(403);
+            }
 
-        if ($existingUser && !$user) {
-            return back()->withErrors([
-                'email' => 'Email ini sudah terdaftar. Silakan login terlebih dahulu untuk membuat booking.',
-            ])->withInput();
-        }
+            if ($existingUser && ! $user) {
+                throw ValidationException::withMessages([
+                    'email' => 'Email ini sudah terdaftar. Silakan login terlebih dahulu untuk membuat booking.',
+                ]);
+            }
 
-        $user = $existingUser ?? User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'user_type' => 'couple',
-            'status' => 'active',
-            'password' => Hash::make(Str::random(32)),
-        ]);
+            $resolvedUser = $existingUser ?? User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'user_type' => 'couple',
+                'status' => 'active',
+                'password' => Hash::make(Str::random(32)),
+            ]);
 
-        $user->forceFill([
-            'name' => $validated['name'],
-            'phone' => $validated['phone'],
-        ])->save();
+            $resolvedUser->forceFill([
+                'name' => $validated['name'],
+                'phone' => $validated['phone'],
+            ])->save();
 
-        $subtotal = $service->final_price;
+            $subtotal = $service->final_price;
 
-        $booking = Booking::create([
-            'user_id' => $user->id,
-            'vendor_id' => $vendor->id,
-            'service_id' => $service->id,
-            'event_date' => $validated['event_date'] ?? null,
-            'event_time' => $validated['event_time'] ?? null,
-            'event_location' => $validated['event_location'] ?? null,
-            'guest_count' => $validated['guest_count'] ?? null,
-            'customer_notes' => $validated['customer_notes'] ?? null,
-            'subtotal' => $subtotal,
-            'discount' => 0,
-            'admin_fee' => 0,
-            'commission_amount' => 0,
-            'total_amount' => $subtotal,
-            'status' => 'pending',
-        ]);
+            return Booking::create([
+                'user_id' => $resolvedUser->id,
+                'vendor_id' => $vendor->id,
+                'service_id' => $service->id,
+                'event_date' => $validated['event_date'] ?? null,
+                'event_time' => $validated['event_time'] ?? null,
+                'event_location' => $validated['event_location'] ?? null,
+                'guest_count' => $validated['guest_count'] ?? null,
+                'customer_notes' => $validated['customer_notes'] ?? null,
+                'subtotal' => $subtotal,
+                'discount' => 0,
+                'admin_fee' => 0,
+                'commission_amount' => 0,
+                'total_amount' => $subtotal,
+                'status' => 'pending',
+            ]);
+        });
 
         return back()->with(
             'success',

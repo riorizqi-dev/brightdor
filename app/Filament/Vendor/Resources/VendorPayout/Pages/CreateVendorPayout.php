@@ -12,8 +12,12 @@ class CreateVendorPayout extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['vendor_id'] = auth()->user()->vendor->id;
+        $vendor = auth()->user()?->vendor;
+        abort_unless($vendor, 403, 'Profil vendor belum tersedia.');
+
+        $data['vendor_id'] = $vendor->id;
         $data['status'] = 'pending';
+
         return $data;
     }
 

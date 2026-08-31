@@ -7,13 +7,11 @@ use App\Models\Review;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ReviewTest extends TestCase
 {
-    use DatabaseTransactions;
 
     private function makeCouple(string $email = 'couple@brightdor.test'): User
     {

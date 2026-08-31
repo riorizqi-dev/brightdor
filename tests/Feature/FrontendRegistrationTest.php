@@ -4,12 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 class FrontendRegistrationTest extends TestCase
 {
-    use DatabaseTransactions;
 
     public function test_guest_can_register_as_a_user(): void
     {

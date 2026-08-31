@@ -208,6 +208,15 @@
                     <div class="bd-empty">
                         <strong>{{ __('brightdor.vendor_dashboard.profile_not_linked') }}</strong>
                         <span>{{ __('brightdor.vendor_dashboard.profile_not_linked_hint') }}</span>
+                        <a class="bd-action mt-4" href="{{ route('filament.vendor.resources.vendor-profile.vendor-profiles.create') }}">
+                            <span class="bd-action-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            </span>
+                            <span>
+                                <strong>Lengkapi Profil Vendor</strong>
+                                <small>Buat profil agar tampil di marketplace</small>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>

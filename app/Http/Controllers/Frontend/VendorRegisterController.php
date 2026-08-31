@@ -22,34 +22,13 @@ class VendorRegisterController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        if (Auth::check()) {
-            if (Auth::user()->isAdmin() || Auth::user()->hasAnyRole(['admin', 'super_admin'])) {
-                abort(403, 'Admin tidak dapat mendaftarkan akun sebagai vendor.');
-            }
-
-            return $this->upgrade($request);
+        // Route group uses `auth` middleware; unauthenticated requests are redirected to login before reaching here.
+        // Guard against admin misuse; normal couples are handled via upgrade().
+        if (Auth::user()->isAdmin() || Auth::user()->hasAnyRole(['admin', 'super_admin'])) {
+            abort(403, 'Admin tidak dapat mendaftarkan akun sebagai vendor.');
         }
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'phone' => ['required', 'string', 'max:20'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone' => $validated['phone'],
-            'user_type' => 'vendor',
-            'status' => 'active',
-            'password' => $validated['password'],
-        ]);
-
-        $user->assignRole('vendor');
-
-        return redirect()->route('vendors.register.create')
-            ->with('success', 'Pendaftaran berhasil! Tim BrightDor akan menghubungi Anda untuk verifikasi akun.');
+        return $this->upgrade($request);
     }
 
     protected function upgrade(Request $request): RedirectResponse

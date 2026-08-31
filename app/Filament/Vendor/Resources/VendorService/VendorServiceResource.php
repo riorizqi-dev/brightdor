@@ -56,6 +56,12 @@ class VendorServiceResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->where('vendor_id', auth()->user()->vendor->id);
+        $vendorId = auth()->user()?->vendor?->id;
+
+        if (! $vendorId) {
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
+        }
+
+        return parent::getEloquentQuery()->where('vendor_id', $vendorId);
     }
 }

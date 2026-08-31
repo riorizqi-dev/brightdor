@@ -2,6 +2,7 @@
 
 namespace App\Filament\Vendor\Resources\VendorProfile;
 
+use App\Filament\Vendor\Resources\VendorProfile\Pages\CreateVendorProfile;
 use App\Filament\Vendor\Resources\VendorProfile\Pages\EditVendorProfile;
 use App\Filament\Vendor\Resources\VendorProfile\Pages\ListVendorProfiles;
 use App\Filament\Vendor\Resources\VendorProfile\Schemas\VendorProfileForm;
@@ -57,6 +58,7 @@ class VendorProfileResource extends Resource
     {
         return [
             'index' => ListVendorProfiles::route('/'),
+            'create' => CreateVendorProfile::route('/create'),
             'edit' => EditVendorProfile::route('/{record}/edit'),
         ];
     }

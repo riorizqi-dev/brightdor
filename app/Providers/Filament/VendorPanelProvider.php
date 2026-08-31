@@ -57,12 +57,10 @@ class VendorPanelProvider extends PanelProvider
             // TOP NAV ONLY
             ->topNavigation()
             ->maxContentWidth(Width::Full)
+            ->discoverResources(in: app_path('Filament/Vendor/Resources'), for: 'App\\Filament\\Vendor\\Resources')
+            ->discoverPages(in: app_path('Filament/Vendor/Pages'), for: 'App\\Filament\\Vendor\\Pages')
             ->pages([
                 VendorDashboard::class,
-                VendorServiceResource::class,
-                VendorBookingResource::class,
-                VendorProfileResource::class,
-                VendorPayoutResource::class,
             ])
             ->middleware([
                 EncryptCookies::class,

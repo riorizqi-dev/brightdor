@@ -6,14 +6,12 @@ use App\Models\Invitation;
 use App\Models\InvitationOrder;
 use App\Models\InvitationTemplate;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class PublicInvitationTest extends TestCase
 {
-    use DatabaseTransactions;
 
     private function makeInvitation(bool $published = true): Invitation
     {

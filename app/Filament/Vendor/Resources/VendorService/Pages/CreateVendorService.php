@@ -12,7 +12,11 @@ class CreateVendorService extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['vendor_id'] = auth()->user()->vendor->id;
+        $vendor = auth()->user()?->vendor;
+        abort_unless($vendor, 403, 'Profil vendor belum tersedia. Lengkapi profil vendor terlebih dahulu.');
+
+        $data['vendor_id'] = $vendor->id;
+
         return $data;
     }
 

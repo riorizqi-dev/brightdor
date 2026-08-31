@@ -4,13 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\Vendor;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class VendorPanelAccessTest extends TestCase
 {
-    use DatabaseTransactions;
 
     protected function setUp(): void
     {

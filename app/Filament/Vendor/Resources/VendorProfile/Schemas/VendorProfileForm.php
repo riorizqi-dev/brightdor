@@ -45,8 +45,8 @@ class VendorProfileForm
                         TextInput::make('whatsapp')->label('WhatsApp'),
                         TextInput::make('website')->label('Website')->url(),
                         TextInput::make('instagram')->label('Instagram'),
-                        Toggle::make('is_featured')->label('Featured / Highlight'),
-                        Toggle::make('is_verified')->label('Terverifikasi')->disabled(),
+                        Toggle::make('is_featured')->label('Featured / Highlight')->disabled()->helperText('Hanya admin yang dapat mengatur.'),
+                        Toggle::make('is_verified')->label('Terverifikasi')->disabled()->helperText('Status verifikasi oleh admin.'),
                     ]),
                 Section::make('Akun Bank (untuk Payout)')
                     ->columns(2)

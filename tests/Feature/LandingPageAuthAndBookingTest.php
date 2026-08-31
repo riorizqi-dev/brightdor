@@ -8,14 +8,12 @@ use App\Models\User;
 use App\Models\Vendor;
 use Filament\Auth\Pages\Login;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class LandingPageAuthAndBookingTest extends TestCase
 {
-    use DatabaseTransactions;
 
     private function admin(): User
     {

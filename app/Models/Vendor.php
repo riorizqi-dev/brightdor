@@ -121,4 +121,23 @@ class Vendor extends Model implements HasMedia
     {
         return $this->status === 'approved';
     }
+
+    public function payoutsAvailable(): float
+    {
+        $completedEarnings = (float) $this->bookings()
+            ->where('status', 'completed')
+            ->sum('total_amount');
+
+        $commission = (float) $this->bookings()
+            ->where('status', 'completed')
+            ->sum('commission_amount');
+
+        $netEarned = $completedEarnings - $commission;
+
+        $alreadyRequested = (float) $this->payouts()
+            ->whereNotIn('status', ['rejected', 'cancelled', 'failed'])
+            ->sum('amount');
+
+        return max(0, round($netEarned - $alreadyRequested, 2));
+    }
 }
