@@ -1,7 +1,9 @@
 // ============================================================
 // BrightDor — Entity Relationship Diagram
 // Marketplace jasa pernikahan + undangan digital
-// Laravel 11 · Filament v5 · 33 tabel
+// Laravel 11 · Filament v5 · 37 tabel (sync 1 Sep 2026)
+//   33 awal + 4 baru (reviews, audit_logs, notifications, vendor_documents)
+//   + subscription fields di users + unique(user_id) di vendors
 //
 // Cara pakai: buka https://dbdiagram.io/d  →  paste semua isi file ini
 // ============================================================
@@ -11,11 +13,19 @@ Project BrightDor {
   Note: '''
     BrightDor — marketplace jasa pernikahan & undangan digital.
     Dibangun dengan Laravel 11 + Filament v5 (panel admin).
+    Sinkron: migration 19 (09-01 000004) + model media collections.
 
     Catatan relasi polymorphic (tidak bisa digambar sebagai FK):
     - transactions.payable_type / payable_id  -> bookings atau invitation_orders
     - activity_logs.subject_type / subject_id -> model apa pun
+    - audit_logs: model (string) + old/new json — audit terpisah
+    - notifications.notifiable_type / notifiable_id -> user (atau model lain)
     - media.model_type / model_id             -> model apa pun (Spatie Media Library)
+      Collections: vendors{logo(single), portfolio, documents},
+                   services{cover(single), gallery},
+                   invitation_templates{preview(single), gallery}
+
+    Media storage: disk `public`, conversions di `public`, `storage/app/public`
   '''
 }
 
@@ -106,24 +116,47 @@ Enum blog_status {
   published
 }
 
+Enum review_verification {
+  verified
+  unverified
+}
+
+Enum vendor_document_status {
+  pending
+  approved
+  rejected
+}
+
+Enum audit_action {
+  created
+  updated
+  deleted
+  login
+  payout
+  approval
+}
+
 // ============================================================
 // 1. AUTENTIKASI & PENGGUNA
 // ============================================================
 
-Table users [headercolor: #141414, note: 'Semua akun: admin, vendor, dan couple'] {
-  id                bigint      [pk, increment]
-  name              varchar
-  email             varchar     [unique, not null]
-  phone             varchar     [null]
-  avatar            varchar     [null]
-  user_type         user_type   [default: 'couple']
-  status            user_status [default: 'active']
-  email_verified_at timestamp   [null]
-  password          varchar
-  remember_token    varchar     [null]
-  last_login_at     timestamp   [null]
-  created_at        timestamp   [null]
-  updated_at        timestamp   [null]
+Table users [headercolor: #141414, note: 'Semua akun: admin, vendor, dan couple (+ subscription vendor)'] {
+  id                             bigint      [pk, increment]
+  name                           varchar
+  email                          varchar     [unique, not null]
+  phone                          varchar     [null]
+  avatar                         varchar     [null, note: 'Spatie Media atau path string; vendor logo via media']
+  user_type                      user_type   [default: 'couple']
+  status                         user_status [default: 'active']
+  vendor_subscription_status     varchar     [default: 'inactive', note: 'active | expired | none (inactive) — added 2026-08-20']
+  vendor_subscription_plan       varchar     [null, note: 'Paket langganan vendor']
+  vendor_subscription_expires_at timestamp   [null, note: 'Expiry check isPast() => expired state']
+  email_verified_at              timestamp   [null]
+  password                       varchar
+  remember_token                 varchar     [null]
+  last_login_at                  timestamp   [null]
+  created_at                     timestamp   [null]
+  updated_at                     timestamp   [null]
 }
 
 Table password_reset_tokens [headercolor: #141414] {
@@ -211,9 +244,9 @@ Table vendor_categories [headercolor: #C4A574, note: 'Venue, Catering, Dekorasi,
   updated_at      timestamp     [null]
 }
 
-Table vendors [headercolor: #C4A574, note: 'Profil mitra penyedia jasa pernikahan'] {
+Table vendors [headercolor: #C4A574, note: 'Profil mitra penyedia jasa pernikahan — media: logo(single), portfolio, documents via Spatie Media Library + vendor_documents table; cover vendor image via media'] {
   id                  bigint         [pk, increment]
-  user_id             bigint         [not null, ref: - users.id, note: 'Akun pemilik vendor']
+  user_id             bigint         [unique, not null, ref: - users.id, note: 'Akun pemilik vendor — UNIQUE per 2026-09-01 (1 user = 1 vendor)']
   vendor_category_id  bigint         [null, ref: > vendor_categories.id]
   business_name       varchar
   slug                varchar        [unique]
@@ -244,12 +277,13 @@ Table vendors [headercolor: #C4A574, note: 'Profil mitra penyedia jasa pernikaha
   deleted_at          timestamp      [null, note: 'Soft delete']
 
   indexes {
+    user_id [unique, name: 'vendors_user_id_unique']
     (status, city)
     is_featured
   }
 }
 
-Table services [headercolor: #C4A574, note: 'Paket jasa yang dijual vendor'] {
+Table services [headercolor: #C4A574, note: 'Paket jasa yang dijual vendor — media: cover(single), gallery via Spatie Media Library'] {
   id                 bigint          [pk, increment]
   vendor_id          bigint          [not null, ref: > vendors.id]
   vendor_category_id bigint          [null, ref: > vendor_categories.id]
@@ -313,6 +347,41 @@ Table bookings [headercolor: #3B82F6, note: 'Pemesanan jasa vendor oleh couple']
   }
 }
 
+Table reviews [headercolor: #3B82F6, note: 'Ulasan couple untuk vendor (hanya jika booking completed) — rating_avg di vendors diupdate via updateRating()'] {
+  id          bigint                [pk, increment]
+  vendor_id   bigint                [not null, ref: > vendors.id]
+  service_id  bigint                [null, ref: > services.id]
+  booking_id  bigint                [not null, ref: > bookings.id]
+  user_id     bigint                [not null, ref: > users.id, note: 'Couple pemberi ulasan']
+  rating      int                   [not null, note: '1-5']
+  content     text                  [null]
+  is_verified boolean               [default: true, note: 'Hanya verified jika booking completed']
+  created_at  timestamp             [null]
+  updated_at  timestamp             [null]
+
+  indexes {
+    (booking_id, user_id) [unique, name: 'reviews_booking_user_unique']
+  }
+}
+
+Table vendor_documents [headercolor: #C4A574, note: 'Dokumen verifikasi vendor (KTP, NIB, portofolio) — file_path di storage/app/private atau public'] {
+  id            bigint                [pk, increment]
+  vendor_id     bigint                [not null, ref: > vendors.id]
+  document_type varchar               [note: 'KTP, NIB, sertifikat, dll']
+  file_path     varchar               [note: 'storage path']
+  original_name varchar
+  mime_type     varchar               [null]
+  status        vendor_document_status [default: 'pending']
+  notes         text                  [null]
+  reviewed_at   timestamp             [null]
+  created_at    timestamp             [null]
+  updated_at    timestamp             [null]
+
+  indexes {
+    (vendor_id, status)
+  }
+}
+
 // ============================================================
 // 4. UNDANGAN DIGITAL
 // ============================================================
@@ -328,7 +397,7 @@ Table invitation_template_categories [headercolor: #8B5CF6] {
   updated_at  timestamp [null]
 }
 
-Table invitation_templates [headercolor: #8B5CF6, note: 'Katalog desain undangan digital'] {
+Table invitation_templates [headercolor: #8B5CF6, note: 'Katalog desain undangan digital — media: preview(single), gallery via Spatie'] {
   id                               bigint         [pk, increment]
   invitation_template_category_id  bigint         [null, ref: > invitation_template_categories.id]
   name                             varchar
@@ -551,7 +620,7 @@ Table settings [headercolor: #64748B, note: 'Key-value, group: general / payment
   updated_at timestamp [null]
 }
 
-Table activity_logs [headercolor: #64748B, note: 'Audit trail; subject = polymorphic'] {
+Table activity_logs [headercolor: #64748B, note: 'Audit trail lama; subject = polymorphic'] {
   id           bigint    [pk, increment]
   user_id      bigint    [null, ref: > users.id]
   action       varchar
@@ -563,7 +632,39 @@ Table activity_logs [headercolor: #64748B, note: 'Audit trail; subject = polymor
   updated_at   timestamp [null]
 }
 
-Table media [headercolor: #64748B, note: 'Spatie Media Library; model = polymorphic'] {
+Table audit_logs [headercolor: #64748B, note: 'Audit terstruktur (Sep 2026) — model string + old/new json, IP & UA'] {
+  id         bigint    [pk, increment]
+  user_id    bigint    [null, ref: > users.id]
+  action     varchar
+  model      varchar   [null, note: 'Nama model: Vendor, Booking, etc.']
+  old_values json      [null]
+  new_values json      [null]
+  ip_address varchar   [null]
+  user_agent varchar   [null]
+  created_at timestamp [null, note: 'Hanya created_at (no updated_at)']
+
+  indexes {
+    (user_id, created_at)
+    action
+  }
+}
+
+Table notifications [headercolor: #64748B, note: 'Notifikasi database bawaan Laravel — polymorphic notifiable (users)'] {
+  id              varchar   [pk, note: 'UUID']
+  type            varchar
+  notifiable_type varchar   [note: 'Polymorphic: App\\Models\\User']
+  notifiable_id   bigint    [note: 'Polymorphic ID']
+  data            text      [note: 'JSON payload']
+  read_at         timestamp [null]
+  created_at      timestamp [null]
+  updated_at      timestamp [null]
+
+  indexes {
+    (notifiable_type, notifiable_id)
+  }
+}
+
+Table media [headercolor: #64748B, note: 'Spatie Media Library; polymorphic — collections: vendors.logo(single)/portfolio/documents, services.cover(single)/gallery, invitation_templates.preview(single)/gallery'] {
   id                     bigint    [pk, increment]
   model_type             varchar   [note: 'Polymorphic']
   model_id               bigint    [note: 'Polymorphic']
@@ -648,10 +749,12 @@ TableGroup "2. Sistem Vendor" {
   vendor_categories
   vendors
   services
+  vendor_documents
 }
 
 TableGroup "3. Pemesanan" {
   bookings
+  reviews
 }
 
 TableGroup "4. Undangan Digital" {
@@ -679,6 +782,8 @@ TableGroup "6. Konten (CMS)" {
 TableGroup "7. Sistem & Media" {
   settings
   activity_logs
+  audit_logs
+  notifications
   media
   cache
   cache_locks

@@ -40,12 +40,30 @@ class User extends Authenticatable implements FilamentUser
         'status' => 'active',
     ];
 
+    /**
+     * Subscription is active and paid for.
+     */
+    public const VENDOR_SUBSCRIPTION_ACTIVE = 'active';
+
+    /**
+     * Subscription was paid for once, but the period has lapsed.
+     */
+    public const VENDOR_SUBSCRIPTION_EXPIRED = 'expired';
+
+    /**
+     * Never subscribed (or explicitly deactivated).
+     */
+    public const VENDOR_SUBSCRIPTION_NONE = 'none';
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
+            // Without this cast the column comes back as a raw string and every
+            // `->isFuture()` call on it throws, so subscription checks blew up.
+            'vendor_subscription_expires_at' => 'datetime',
         ];
     }
 
@@ -103,11 +121,49 @@ class User extends Authenticatable implements FilamentUser
         return $this->user_type === 'vendor';
     }
 
+    /**
+     * Resolve the vendor subscription into one of three explicit states.
+     *
+     * Kept as a single source of truth so the panel middleware and the vendor
+     * registration gate can never disagree about who has paid.
+     *
+     * @return self::VENDOR_SUBSCRIPTION_*
+     */
+    public function vendorSubscriptionState(): string
+    {
+        $status = is_string($this->vendor_subscription_status)
+            ? strtolower(trim($this->vendor_subscription_status))
+            : '';
+
+        $expiresAt = $this->vendor_subscription_expires_at;
+
+        // An explicit expiry in the past always wins, even if the stored status
+        // was never flipped by the payment callback / admin approval.
+        if ($expiresAt !== null && $expiresAt->isPast()) {
+            return self::VENDOR_SUBSCRIPTION_EXPIRED;
+        }
+
+        if ($status === self::VENDOR_SUBSCRIPTION_EXPIRED) {
+            return self::VENDOR_SUBSCRIPTION_EXPIRED;
+        }
+
+        // Accept the values the payment/approval paths actually write, so a
+        // wording mismatch stops locking paying vendors out.
+        if (in_array($status, ['active', 'paid', 'subscribed', 'success'], true)) {
+            return self::VENDOR_SUBSCRIPTION_ACTIVE;
+        }
+
+        return self::VENDOR_SUBSCRIPTION_NONE;
+    }
+
     public function hasPaidVendorSubscription(): bool
     {
-        return $this->user_type === 'vendor'
-            || ($this->vendor_subscription_status === 'active'
-                && ($this->vendor_subscription_expires_at === null || $this->vendor_subscription_expires_at->isFuture()));
+        return $this->vendorSubscriptionState() === self::VENDOR_SUBSCRIPTION_ACTIVE;
+    }
+
+    public function hasExpiredVendorSubscription(): bool
+    {
+        return $this->vendorSubscriptionState() === self::VENDOR_SUBSCRIPTION_EXPIRED;
     }
 
     public function isAdmin(): bool

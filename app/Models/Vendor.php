@@ -102,6 +102,11 @@ class Vendor extends Model implements HasMedia
         return $this->hasMany(Review::class);
     }
 
+    public function documents(): HasMany
+    {
+        return $this->hasMany(VendorDocument::class);
+    }
+
     public function updateRating(): void
     {
         $reviews = $this->reviews()->where('is_verified', true);

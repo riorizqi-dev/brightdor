@@ -25,13 +25,13 @@
 
                     <div>
                         <label for="reset-password" class="text-xs font-bold uppercase tracking-wider text-ink-400">Password Baru</label>
-                        <input id="reset-password" type="password" name="password" required autocomplete="new-password" class="bd-input mt-1.5" autofocus>
+                        <x-frontend.password-field id="reset-password" name="password" autocomplete="new-password" required autofocus />
                         @error('password')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
                     <div>
                         <label for="reset-password-confirmation" class="text-xs font-bold uppercase tracking-wider text-ink-400">Konfirmasi Password Baru</label>
-                        <input id="reset-password-confirmation" type="password" name="password_confirmation" required autocomplete="new-password" class="bd-input mt-1.5">
+                        <x-frontend.password-field id="reset-password-confirmation" name="password_confirmation" autocomplete="new-password" required />
                     </div>
 
                     <button type="submit" class="bd-btn-primary w-full justify-center py-3">

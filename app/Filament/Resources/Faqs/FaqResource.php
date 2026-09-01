@@ -30,7 +30,7 @@ class FaqResource extends Resource
 
     public static function getNavigationGroup(): string|\UnitEnum|null
     {
-        return __('brightdor.nav.content');
+        return __('brightdor.nav.marketplace');
     }
 
     public static function getNavigationLabel(): string

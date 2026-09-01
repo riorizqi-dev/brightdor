@@ -1,21 +1,45 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
+/*
+ * Fraunces (the customer site's display face) is loaded via a <link> in the
+ * panel providers' HEAD_START render hook. A CSS @import cannot be used here:
+ * the Filament theme above is inlined ahead of it, which makes the @import
+ * illegal and causes the bundler to drop it.
+ */
 
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/filament/**/*';
 @source '../../../../resources/views/components/**/*';
 
 @theme {
-    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-    --color-bd-cream: #f8f5f0;
-    --color-bd-ivory: #f8f5f0;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    /* Serif display face, matching the customer-facing site. */
+    --font-display: 'Fraunces', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    /* Brand palette — kept in sync with resources/css/app.css. */
+    --color-bd-rose-50: #fdf3f6;
+    --color-bd-rose-100: #fce7ed;
+    --color-bd-rose-200: #f8ccd9;
+    --color-bd-rose-400: #e8749b;
+    --color-bd-rose-500: #d9507e;
+    --color-bd-rose-600: #c6436a;
+    --color-bd-rose-700: #a62f55;
+    --color-bd-rose-800: #8a2a48;
+    --color-bd-rose-900: #6e223c;
+    --color-bd-gold-300: #dfc98a;
+    --color-bd-gold-500: #c6af59;
+    --color-bd-gold-600: #a8923f;
+
+    /* Light neutral surfaces so tables and data stay readable. */
+    --color-bd-cream: #ffffff;
+    --color-bd-ivory: #fdf3f6;
     --color-bd-white: #ffffff;
-    --color-bd-ink: #1a1a1a;
-    --color-bd-muted: #6b7280;
-    --color-bd-border: rgba(26, 26, 26, 0.08);
-    --color-bd-gold: #c4a574;
-    --color-bd-nav-hover: #ede6db;
-    --color-bd-soft-gold: rgba(196, 165, 116, 0.08);
-    --color-bd-cream-deep: #f0ebe2;
+    --color-bd-ink: #222222;
+    --color-bd-muted: #6e6e6e;
+    --color-bd-border: rgba(34, 34, 34, 0.08);
+    --color-bd-gold: #c6af59;
+    --color-bd-nav-hover: #fce7ed;
+    --color-bd-soft-gold: rgba(198, 175, 89, 0.1);
+    --color-bd-cream-deep: #fdf3f6;
 }
 
 .fi-body,
@@ -115,11 +139,11 @@
 
 .fi-topbar .fi-topbar-item.fi-active .fi-topbar-item-btn,
 .fi-topbar-item.fi-active .fi-topbar-item-btn {
-    background: #1a1a1a !important;
+    background: linear-gradient(135deg, var(--color-bd-rose-600) 0%, var(--color-bd-rose-700) 100%) !important;
     color: #ffffff !important;
     border-radius: 999px !important;
     font-weight: 600 !important;
-    box-shadow: 0 2px 8px rgba(26, 26, 26, 0.12) !important;
+    box-shadow: 0 4px 14px rgba(198, 67, 106, 0.28) !important;
 }
 
 .fi-topbar .fi-topbar-item.fi-active .fi-topbar-item-label,
@@ -140,7 +164,7 @@
 
 .fi-topbar .fi-topbar-item.fi-active .fi-topbar-item-btn:hover,
 .fi-topbar-item.fi-active .fi-topbar-item-btn:hover {
-    background: #1a1a1a !important;
+    background: var(--color-bd-rose-800) !important;
     color: #ffffff !important;
 }
 
@@ -221,16 +245,16 @@
 
 .fi-btn-color-primary,
 .fi-btn.fi-color-primary {
-    background: #141414 !important;
-    color: #fbf8f3 !important;
+    background: linear-gradient(135deg, var(--color-bd-rose-600) 0%, var(--color-bd-rose-700) 100%) !important;
+    color: #ffffff !important;
     border: none !important;
-    box-shadow: 0 8px 20px rgba(20, 20, 20, 0.12) !important;
+    box-shadow: 0 6px 16px rgba(198, 67, 106, 0.28) !important;
 }
 
 .fi-btn-color-primary:hover,
 .fi-btn.fi-color-primary:hover {
-    background: #000000 !important;
-    box-shadow: 0 10px 24px rgba(20, 20, 20, 0.16) !important;
+    background: var(--color-bd-rose-800) !important;
+    box-shadow: 0 10px 24px rgba(198, 67, 106, 0.38) !important;
 }
 
 .fi-ta-header-cell {
@@ -403,7 +427,7 @@
     width: 0.42rem;
     height: 0.42rem;
     border-radius: 999px;
-    background: #141414;
+    background: var(--color-bd-rose-600);
 }
 
 .bd-stats {
@@ -438,8 +462,8 @@
     position: absolute;
     inset: 0 auto 0 0;
     width: 3px;
-    background: linear-gradient(180deg, #e8dcc8, #c4a574 50%, #141414);
-    opacity: 0.55;
+    background: linear-gradient(180deg, var(--color-bd-gold-300), var(--color-bd-gold-500) 50%, var(--color-bd-rose-600));
+    opacity: 0.85;
 }
 
 .bd-stat:hover {
@@ -471,9 +495,9 @@
     border-radius: 0.85rem;
     display: grid;
     place-items: center;
-    background: #f7f3eb;
-    color: #141414;
-    border: 1px solid rgba(20, 20, 20, 0.05);
+    background: var(--color-bd-rose-50);
+    color: var(--color-bd-rose-600);
+    border: 1px solid var(--color-bd-rose-200);
     flex-shrink: 0;
 }
 
@@ -569,9 +593,9 @@
     border-radius: 0.75rem;
     display: grid;
     place-items: center;
-    background: #ffffff;
-    color: #141414;
-    border: 1px solid rgba(20, 20, 20, 0.06);
+    background: var(--color-bd-rose-50);
+    color: var(--color-bd-rose-600);
+    border: 1px solid var(--color-bd-rose-200);
 }
 
 .bd-action-icon svg {
@@ -706,10 +730,10 @@
 }
 
 .bd-lang-card.is-active {
-    background: #141414;
-    color: #fbf8f3;
-    border-color: #141414;
-    box-shadow: 0 12px 28px rgba(20, 20, 20, 0.14);
+    background: linear-gradient(135deg, var(--color-bd-rose-600) 0%, var(--color-bd-rose-700) 100%);
+    color: #ffffff;
+    border-color: var(--color-bd-rose-600);
+    box-shadow: 0 12px 28px rgba(198, 67, 106, 0.28);
 }
 
 .bd-lang-card .code {
@@ -747,4 +771,381 @@
 
 [dir='rtl'] .bd-action:hover {
     transform: translateX(-2px);
+}
+
+/* =====================================================================
+   BrightDor brand layer
+   ---------------------------------------------------------------------
+   Appended last so it wins over the neutral cream/black rules above
+   without needing to rewrite them. Surfaces holding data (tables, form
+   inputs, panel bodies) stay white/near-white for legibility; the brand
+   pink, maroon and gold are applied to chrome and accents only.
+   ===================================================================== */
+
+/* ---- Serif headings, matching the customer site ---- */
+.fi-header-heading,
+.fi-section-header-heading,
+.fi-modal-heading,
+.fi-wi-stats-overview-stat-value,
+.bd-greeting h1,
+.bd-panel-head h2,
+.bd-stat-value {
+    font-family: 'Fraunces', 'Inter', serif !important;
+    letter-spacing: -0.02em;
+}
+
+.fi-header-heading,
+.bd-greeting h1 {
+    color: var(--color-bd-rose-900) !important;
+}
+
+/* ---- Page + topbar chrome ---- */
+.fi-body,
+.fi-main,
+.fi-main-ctn,
+.fi-page {
+    background: var(--color-bd-rose-50) !important;
+    color: var(--color-bd-ink);
+}
+
+.fi-topbar {
+    background: linear-gradient(
+        180deg,
+        var(--color-bd-rose-700) 0%,
+        var(--color-bd-rose-800) 100%
+    ) !important;
+    border-bottom: 1px solid var(--color-bd-gold-500) !important;
+    box-shadow: 0 4px 20px rgba(110, 34, 60, 0.18) !important;
+}
+
+/* Topbar text/icons invert to read against the maroon bar. */
+.fi-topbar .fi-topbar-item-label,
+.fi-topbar-item-label,
+.fi-topbar .fi-topbar-item-btn,
+.fi-topbar-item-btn,
+.fi-topbar .fi-topbar-item-btn > .fi-icon,
+.fi-topbar .fi-topbar-item-icon,
+.fi-topbar .fi-topbar-group-toggle-icon,
+.fi-topbar .fi-dropdown-trigger,
+.fi-topbar .fi-dropdown-trigger .fi-icon,
+.fi-topbar .fi-user-menu-trigger,
+.fi-topbar .fi-global-search-field .fi-input,
+.fi-topbar .fi-global-search-field .fi-input-wrp-icon {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.fi-topbar .fi-topbar-item-btn:hover,
+.fi-topbar .fi-topbar-item-btn:focus-visible,
+.fi-topbar-item-btn:hover,
+.fi-topbar-item-btn:focus-visible {
+    background: rgba(255, 255, 255, 0.14) !important;
+}
+
+.fi-topbar .fi-topbar-item-btn:hover .fi-topbar-item-label,
+.fi-topbar-item-btn:hover .fi-topbar-item-label {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Active nav item gets the gold underline treatment. */
+.fi-topbar .fi-topbar-item.fi-active .fi-topbar-item-btn,
+.fi-topbar-item.fi-active .fi-topbar-item-btn {
+    background: rgba(255, 255, 255, 0.18) !important;
+    box-shadow: inset 0 -2px 0 var(--color-bd-gold-500) !important;
+}
+
+.fi-topbar .fi-global-search-field .fi-input {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.22) !important;
+}
+
+.fi-topbar .fi-global-search-field .fi-input::placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ---- Sidebar (when a panel uses it) ---- */
+.fi-sidebar,
+.fi-sidebar-nav {
+    background: var(--color-bd-rose-800) !important;
+    border-right: 1px solid var(--color-bd-gold-500) !important;
+}
+
+.fi-sidebar-item-label,
+.fi-sidebar-item .fi-icon,
+.fi-sidebar-group-label {
+    color: rgba(255, 255, 255, 0.88) !important;
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn,
+.fi-sidebar-item-btn:hover {
+    background: rgba(255, 255, 255, 0.14) !important;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* ---- Cards, panels and stat tiles ---- */
+.fi-section,
+.fi-wi-stats-overview-stat,
+.bd-panel,
+.bd-stat,
+.fi-ta-ctn,
+.fi-fo-component-ctn {
+    background: #ffffff !important;
+    border: 1px solid rgba(198, 67, 106, 0.14) !important;
+    box-shadow: 0 10px 30px rgba(110, 34, 60, 0.06) !important;
+}
+
+/* Gold top-edge accent on stat tiles. */
+.fi-wi-stats-overview-stat,
+.bd-stat {
+    position: relative;
+    overflow: hidden;
+}
+
+.fi-wi-stats-overview-stat::before,
+.bd-stat::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--color-bd-rose-600) 0%,
+        var(--color-bd-gold-500) 100%
+    );
+}
+
+.fi-wi-stats-overview-stat-value,
+.bd-stat-value {
+    color: var(--color-bd-rose-900) !important;
+}
+
+.fi-wi-stats-overview-stat-label,
+.bd-stat-label {
+    color: var(--color-bd-muted) !important;
+}
+
+.bd-stat-icon,
+.bd-action-icon {
+    background: var(--color-bd-rose-50) !important;
+    color: var(--color-bd-rose-600) !important;
+    border: 1px solid rgba(198, 67, 106, 0.16) !important;
+}
+
+.bd-greeting-kicker,
+.fi-section-header-description {
+    color: var(--color-bd-rose-600) !important;
+}
+
+.bd-greeting-dot {
+    background: var(--color-bd-gold-500) !important;
+}
+
+
+/* ---- Tables: keep data surfaces light ---- */
+.fi-ta-table,
+.fi-ta-row,
+.fi-ta-cell {
+    background: #ffffff !important;
+}
+
+.fi-ta-header-cell {
+    background: var(--color-bd-rose-50) !important;
+    color: var(--color-bd-rose-900) !important;
+    font-weight: 700 !important;
+}
+
+.fi-ta-row:hover {
+    background: var(--color-bd-rose-50) !important;
+}
+
+/* ---- Buttons ---- */
+.fi-btn.fi-color-primary,
+.fi-btn-primary {
+    background: var(--color-bd-rose-600) !important;
+    border-color: var(--color-bd-rose-600) !important;
+    color: #ffffff !important;
+}
+
+.fi-btn.fi-color-primary:hover,
+.fi-btn-primary:hover {
+    background: var(--color-bd-rose-700) !important;
+    border-color: var(--color-bd-rose-700) !important;
+}
+
+.bd-action:hover {
+    border-color: rgba(198, 67, 106, 0.3) !important;
+    background: var(--color-bd-rose-50) !important;
+}
+
+/* ---- Links, pills, focus rings ---- */
+.fi-link,
+a.fi-link {
+    color: var(--color-bd-rose-600) !important;
+}
+
+.bd-pill {
+    background: var(--color-bd-rose-50) !important;
+    color: var(--color-bd-rose-800) !important;
+    border-color: rgba(198, 67, 106, 0.2) !important;
+}
+
+.bd-pill-warn {
+    background: rgba(198, 175, 89, 0.14) !important;
+    color: var(--color-bd-gold-600) !important;
+    border-color: rgba(198, 175, 89, 0.35) !important;
+}
+
+.bd-pill-ok {
+    background: var(--color-bd-rose-100) !important;
+    color: var(--color-bd-rose-800) !important;
+    border-color: rgba(198, 67, 106, 0.22) !important;
+}
+
+.bd-list-item:hover {
+    background: var(--color-bd-rose-50) !important;
+}
+
+.fi-input:focus,
+.fi-select:focus,
+.fi-textarea:focus {
+    border-color: var(--color-bd-rose-500) !important;
+    box-shadow: 0 0 0 3px rgba(198, 67, 106, 0.16) !important;
+}
+
+/* Login card gets the same brand framing. */
+.fi-simple-main {
+    background: #ffffff !important;
+    border: 1px solid rgba(198, 67, 106, 0.14) !important;
+    box-shadow: 0 18px 48px rgba(110, 34, 60, 0.1) !important;
+}
+
+.fi-simple-page .fi-header-heading {
+    font-family: 'Fraunces', 'Inter', serif !important;
+    color: var(--color-bd-rose-900) !important;
+}
+
+/* Language cards on the settings page. */
+.bd-lang-card.is-active {
+    background: var(--color-bd-rose-700) !important;
+    border-color: var(--color-bd-rose-700) !important;
+    color: #ffffff !important;
+}
+
+
+/* ---------------------------------------------------------------------
+   Brand lockup (resources/views/filament/admin/logo.blade.php).
+
+   Default styling targets the maroon topbar: white wordmark, gold accent,
+   white icon disc. The .fi-simple-page overrides below re-colour it for the
+   white login card, where a white wordmark would be invisible.
+   --------------------------------------------------------------------- */
+.bd-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.bd-brand-mark {
+    position: relative;
+    display: inline-flex;
+    height: 2.3rem;
+    width: 2.3rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #ffffff;
+    color: var(--color-bd-rose-600);
+    box-shadow:
+        0 6px 16px rgba(110, 34, 60, 0.25),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.bd-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+.bd-brand-word {
+    font-family: 'Fraunces', 'Inter', serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+    opacity: 1;
+}
+
+.bd-brand-word-accent {
+    color: var(--color-bd-gold-300);
+    -webkit-text-fill-color: var(--color-bd-gold-300);
+}
+
+.bd-brand-kicker {
+    margin-top: 0.15rem;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--color-bd-gold-300);
+    -webkit-text-fill-color: var(--color-bd-gold-300);
+}
+
+/* Auth pages sit on white, so invert the lockup. */
+.fi-simple-page .bd-brand-mark {
+    background: var(--color-bd-rose-600);
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(198, 67, 106, 0.25);
+}
+
+.fi-simple-page .bd-brand-word {
+    color: var(--color-bd-ink);
+    -webkit-text-fill-color: var(--color-bd-ink);
+}
+
+.fi-simple-page .bd-brand-word-accent,
+.fi-simple-page .bd-brand-kicker {
+    color: var(--color-bd-rose-600);
+    -webkit-text-fill-color: var(--color-bd-rose-600);
+}
+
+/* === Browser autofill override (Filament Admin) ===
+   Forces a high-contrast text color on a white inset box-shadow for Filament inputs. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+select:-webkit-autofill,
+.fi-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #222222 !important;
+    caret-color: #222222 !important;
+    transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s !important;
+}
+
+input:autofill,
+textarea:autofill,
+select:autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #222222 !important;
+    caret-color: #222222 !important;
+}
+
+input:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+    background-color: #ffffff !important;
+    -moz-text-fill-color: #222222 !important;
 }

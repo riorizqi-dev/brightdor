@@ -14,7 +14,14 @@ class Dashboard extends BaseDashboard
 {
     protected static string | \BackedEnum | null $navigationIcon = Heroicon::Home;
 
+    protected static string | \UnitEnum | null $navigationGroup = null;
+
     protected static ?int $navigationSort = -2;
+
+    public static function getNavigationGroup(): string | \UnitEnum | null
+    {
+        return __('brightdor.nav.dashboard');
+    }
 
     public static function getNavigationLabel(): string
     {

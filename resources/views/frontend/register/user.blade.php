@@ -36,12 +36,12 @@
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div>
                             <label for="reg-password" class="text-xs font-bold uppercase tracking-wider text-ink-400">Password</label>
-                            <input id="reg-password" type="password" name="password" required autocomplete="new-password" class="bd-input mt-1.5">
+                            <x-frontend.password-field id="reg-password" name="password" autocomplete="new-password" required />
                             @error('password')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                         </div>
                         <div>
                             <label for="reg-password-confirm" class="text-xs font-bold uppercase tracking-wider text-ink-400">Konfirmasi Password</label>
-                            <input id="reg-password-confirm" type="password" name="password_confirmation" required autocomplete="new-password" class="bd-input mt-1.5">
+                            <x-frontend.password-field id="reg-password-confirm" name="password_confirmation" autocomplete="new-password" required />
                         </div>
                     </div>
 

@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use App\Http\Middleware\SetLocale;
+use App\Support\BrandPalette;
 use Filament\Enums\ThemeMode;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
@@ -38,17 +39,17 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => view('filament.admin.logo'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.ico'))
-            // Cream / black / soft gold accent
+            // BrightDor brand: pink / maroon / gold (mirrors the customer site)
             ->colors([
-                'primary' => Color::hex('#141414'),
-                'secondary' => Color::hex('#c4a574'),
+                'primary' => Color::hex(BrandPalette::ROSE_600),
+                'secondary' => Color::hex(BrandPalette::GOLD_500),
                 'gray' => Color::Zinc,
-                'success' => Color::hex('#3f3f46'),
-                'warning' => Color::hex('#a8844a'),
-                'danger' => Color::Rose,
-                'info' => Color::hex('#52525b'),
+                'success' => Color::hex('#3f7d5c'),
+                'warning' => Color::hex(BrandPalette::GOLD_600),
+                'danger' => Color::hex(BrandPalette::ROSE_800),
+                'info' => Color::hex(BrandPalette::ROSE_500),
             ])
-            ->font('Plus Jakarta Sans', provider: GoogleFontProvider::class)
+            ->font('Inter', provider: GoogleFontProvider::class)
             // Light elegant default
             ->darkMode(false)
             ->defaultThemeMode(ThemeMode::Light)
@@ -62,10 +63,7 @@ class AdminPanelProvider extends PanelProvider
                 NavigationGroup::make(fn () => __('brightdor.nav.dashboard')),
                 NavigationGroup::make(fn () => __('brightdor.nav.vendors')),
                 NavigationGroup::make(fn () => __('brightdor.nav.marketplace')),
-                NavigationGroup::make(fn () => __('brightdor.nav.invitations')),
                 NavigationGroup::make(fn () => __('brightdor.nav.finance')),
-                NavigationGroup::make(fn () => __('brightdor.nav.content')),
-                NavigationGroup::make(fn () => __('brightdor.nav.settings')),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -89,6 +87,16 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            // Fraunces is the display face used across the customer site; load
+            // it here rather than via a CSS @import (which the bundler drops).
+            ->renderHook(
+                PanelsRenderHook::HEAD_START,
+                fn (): string => <<<'HTML'
+                    <link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+                    HTML,
+            )
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 function (): string {

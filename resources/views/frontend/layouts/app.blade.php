@@ -18,17 +18,11 @@
 <body class="flex min-h-screen flex-col bg-white text-ink-600 font-sans antialiased selection:bg-rose-600/20 selection:text-ink-900">
     <x-frontend.navigation/>
 
-    <main class="flex-1">
+    <main class="flex-1 pt-[116px] lg:pt-[152px]">
         @yield('content')
     </main>
 
     <x-frontend.footer/>
-
-    <script>
-        document.querySelector('[data-menu-toggle]')?.addEventListener('click', () => {
-            document.querySelector('[data-mobile-menu]')?.classList.toggle('hidden');
-        });
-    </script>
 
     @stack('scripts')
 </body>

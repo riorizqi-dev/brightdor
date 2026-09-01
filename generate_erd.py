@@ -41,7 +41,7 @@ TABLE_COLORS = {
 
 draw.rectangle([(0, 0), (W, 70)], fill=BLACK)
 draw.text((40, 20), "BrightDor — Entity Relationship Diagram (ERD)", fill=CREAM, font=font_title)
-draw.text((40, 52), "33 Tables  |  Laravel 11 + Filament v5  |  SQLite", fill=LIGHT_GRAY, font=font_sm)
+draw.text((40, 52), "37 Tables (sync 1 Sep 2026)  |  Laravel 11 + Filament v5  |  SQLite  |  Spatie Media: vendors{logo,portfolio,docs} services{cover,gallery} templates{preview,gallery}", fill=LIGHT_GRAY, font=font_sm)
 
 class Table:
     def __init__(self, name, cols, x, y, color_key='auth', w=300):
@@ -73,15 +73,18 @@ tables = [
     Table('users', [
         ('id', True, False, 'bigint'),
         ('name', False, False, 'string'),
-        ('email', False, False, 'string'),
+        ('email', False, False, 'string UQ'),
         ('user_type', False, False, 'enum'),
         ('status', False, False, 'enum'),
         ('phone', False, False, 'string'),
+        ('avatar', False, False, 'string'),
+        ('vendor_sub_★', False, False, 'string'),
+        ('vendor_expires', False, False, 'datetime'),
     ], 50, 100, 'auth', 280),
 
     Table('vendors', [
         ('id', True, False, 'bigint'),
-        ('user_id', False, True, 'FK → users'),
+        ('user_id', False, True, 'FK UQ★ → users'),
         ('vendor_category_id', False, True, 'FK → categories'),
         ('business_name', False, False, 'string'),
         ('status', False, False, 'enum'),
@@ -116,6 +119,24 @@ tables = [
         ('is_active', False, False, 'bool'),
     ], 420, 480, 'vendor', 280),
 
+    Table('vendor_documents ★', [
+        ('id', True, False, 'bigint'),
+        ('vendor_id', False, True, 'FK → vendors'),
+        ('document_type', False, False, 'string'),
+        ('file_path', False, False, 'storage'),
+        ('status', False, False, 'enum'),
+        ('reviewed_at', False, False, 'datetime'),
+    ], 50, 620, 'vendor', 280),
+
+    Table('reviews ★', [
+        ('id', True, False, 'bigint'),
+        ('booking_id', False, True, 'FK → bookings UQ'),
+        ('user_id', False, True, 'FK → users'),
+        ('vendor_id', False, True, 'FK → vendors'),
+        ('rating', False, False, '1-5'),
+        ('is_verified', False, False, 'bool'),
+    ], 1180, 420, 'booking', 310),
+
     Table('transactions', [
         ('id', True, False, 'bigint'),
         ('transaction_code', False, False, 'string'),
@@ -125,7 +146,7 @@ tables = [
         ('type', False, False, 'enum'),
         ('amount', False, False, 'decimal'),
         ('status', False, False, 'enum'),
-    ], 1180, 420, 'finance', 310),
+    ], 1180, 560, 'finance', 310),
 
     Table('payouts', [
         ('id', True, False, 'bigint'),
@@ -213,15 +234,16 @@ tables = [
         ('key', False, False, 'string (unique)'),
         ('value', False, False, 'text'),
         ('type', False, False, 'string'),
-    ], 1450, 800, 'system', 280),
+    ], 1450, 750, 'system', 280),
 
-    Table('media', [
+    Table('media ★', [
         ('id', True, False, 'bigint'),
         ('model_type', False, False, 'morph'),
         ('model_id', False, False, 'morph'),
-        ('collection_name', False, False, 'string'),
+        ('collection_name', False, False, 'string ★'),
         ('file_name', False, False, 'string'),
-    ], 1800, 700, 'system', 280),
+        ('disk', False, False, 'public'),
+    ], 1800, 650, 'system', 280),
 
     Table('activity_logs', [
         ('id', True, False, 'bigint'),
@@ -229,7 +251,23 @@ tables = [
         ('action', False, False, 'string'),
         ('subject_type', False, False, 'morph'),
         ('subject_id', False, False, 'morph'),
-    ], 1800, 920, 'system', 280),
+    ], 1450, 920, 'system', 280),
+
+    Table('audit_logs ★', [
+        ('id', True, False, 'bigint'),
+        ('user_id', False, True, 'FK → users'),
+        ('action', False, False, 'string'),
+        ('model', False, False, 'string'),
+        ('ip_address', False, False, 'string'),
+    ], 1800, 830, 'system', 280),
+
+    Table('notifications ★', [
+        ('id', True, False, 'uuid PK'),
+        ('type', False, False, 'string'),
+        ('notifiable_type', False, False, 'morph'),
+        ('notifiable_id', False, False, 'morph'),
+        ('read_at', False, False, 'datetime'),
+    ], 1800, 1000, 'system', 280),
 ]
 
 for t in tables:
@@ -283,6 +321,8 @@ for i, (key, label) in enumerate(legend_items):
 
 draw.text((60, ly + 45), "PK = Primary Key  |  FK = Foreign Key  |  morph = Polymorphic Relation", fill=GRAY, font=font_sm)
 
-output = os.path.join(r"C:\laragon\www\brightdor\screenshots", "erd.png")
+OUTPUT_DIR = r"C:\Users\ADVAN\brightdor\screenshots"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+output = os.path.join(OUTPUT_DIR, "erd.png")
 img.save(output, quality=95)
 print(f"ERD saved to: {output}")

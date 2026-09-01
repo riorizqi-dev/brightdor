@@ -116,6 +116,50 @@ class LandingPageAuthAndBookingTest extends TestCase
         $this->assertTrue(str_starts_with($booking->booking_code, 'BD-'));
     }
 
+    public function test_vendor_show_renders_offer_buttons_that_open_booking_modal(): void
+    {
+        $vendor = Vendor::query()
+            ->where('status', 'approved')
+            ->firstOrFail();
+
+        $this->get(route('vendors.show', $vendor->slug))
+            ->assertOk()
+            // The "Ajukan Penawaran" buttons open the modal in quote mode.
+            ->assertSee('data-booking-open="quote"', false)
+            ->assertSee('Ajukan Penawaran')
+            // "Booking Tanggal" reuses the same form but in date mode, so the two CTAs differ.
+            ->assertSee('data-booking-open="date"', false)
+            ->assertSee('Booking Tanggal')
+            // The booking modal container is present (hidden by default, shown by the JS handler).
+            ->assertSee('data-booking-modal', false)
+            // Intent is persisted so a failed validation reopens the modal in the same mode.
+            ->assertSee('name="request_mode"', false)
+            // Submit control is wired for the loading state ("Mengirim...").
+            ->assertSee('data-booking-submit', false);
+    }
+
+    public function test_booking_validation_errors_flash_back_so_modal_reopens(): void
+    {
+        $vendor = Vendor::query()
+            ->where('status', 'approved')
+            ->firstOrFail();
+
+        $this->withoutMiddleware(VerifyCsrfToken::class)
+            ->from(route('vendors.show', $vendor->slug))
+            ->post(route('vendors.booking', $vendor->slug), [
+                'name' => '',
+                'email' => 'not-an-email',
+            ])
+            ->assertRedirect(route('vendors.show', $vendor->slug))
+            ->assertSessionHasErrors(['name', 'email', 'phone', 'service_id']);
+
+        // Re-rendering with errors must include the flag that auto-opens the modal client-side.
+        $this->assertNotNull(
+            session()->get('errors'),
+            'Validation errors should be flashed back to trigger the modal auto-open path.'
+        );
+    }
+
     public function test_booking_validation_rejects_invalid_service(): void
     {
         $vendor = Vendor::query()

@@ -37,9 +37,9 @@
             </button>
         </div>
 
-        <div class="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
+        <div class="mt-8 grid gap-8 lg:grid-cols-12">
             {{-- Sidebar filters --}}
-            <aside data-filter-panel class="hidden lg:block">
+            <aside data-filter-panel class="hidden lg:block lg:col-span-3">
                 <form method="GET" action="{{ $category ? route('vendors.category', $category->slug) : route('vendors.index') }}" class="space-y-5">
                     <input type="hidden" name="sort" value="{{ request('sort') }}">
 
@@ -155,7 +155,7 @@
             </div>
 
             {{-- Results --}}
-            <div>
+            <div class="lg:col-span-9">
                 {{-- Results header: count + sort --}}
                 <div class="flex flex-wrap items-center justify-between gap-3 pb-4">
                     <p class="text-sm text-ink-500">

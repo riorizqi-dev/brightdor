@@ -258,6 +258,133 @@
         }
     }
 
+    /* Category navbar: single row, no horizontal scroll needed
+       (overflow categories are in the "Lainnya" dropdown).
+       overflow:visible so the dropdown panel can extend below. */
+    .bd-catnav {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.125rem;
+        overflow: visible;
+    }
+
+    .bd-catnav-item {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        position: relative;
+    }
+
+    .bd-catnav-item.active {
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #c6436a 0%, #a62f55 100%);
+        box-shadow: 0 4px 14px rgba(198, 67, 106, 0.28);
+        border-radius: 999px;
+        margin: 0 2px;
+    }
+
+    /* Kill any stray dot/underline pseudo-element on active category (tiitik putih fix) */
+    .bd-catnav-item.active::after,
+    .bd-catnav-item.active::before {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* Ensure icon + text stay white on gradient (contrast) */
+    .bd-catnav-item.active,
+    .bd-catnav-item.active svg,
+    .bd-catnav-item.active [class*="text-"] {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+    }
+
+    /* Navbar buttons for Daftar / Masuk in topbar */
+    .bd-nav-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.45rem 1.1rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #c6436a 0%, #a62f55 100%);
+        color: #ffffff;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+        box-shadow: 0 2px 8px rgba(198, 67, 106, 0.22);
+    }
+
+    .bd-nav-btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(198, 67, 106, 0.32);
+    }
+
+    .bd-nav-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.45rem 1.1rem;
+        border-radius: 999px;
+        background: transparent;
+        color: #555555;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        border: 1px solid rgba(105, 105, 105, 0.35);
+        transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .bd-nav-btn-secondary:hover {
+        background: rgba(198, 67, 106, 0.06);
+        color: #c6436a;
+        border-color: rgba(198, 67, 106, 0.45);
+    }
+
+    /* Liquid glass — single-layer on the whole header when scrolled.
+       Key principles:
+       - ONE backdrop-filter on a ::before pseudo-element to isolate stacking contexts
+         and prevent children (badges with backdrop-filter) from punching through.
+       - Inner sections (topbar, main, catnav) keep their own SOLID bg when not scrolled,
+         but are transparent when scrolled so the ::before layer shines through. */
+    .navbar-scrolled {
+        background: transparent !important;
+        border-bottom: 1px solid rgba(198, 67, 106, 0.12);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+        position: fixed;
+        isolation: isolate;
+        overflow: visible;
+    }
+
+    .navbar-scrolled::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(18px) saturate(180%);
+        -webkit-backdrop-filter: blur(18px) saturate(180%);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    @supports not (backdrop-filter: blur(16px)) {
+        .navbar-scrolled::before {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 18px rgba(0, 0, 0, 0.07);
+        }
+    }
+
+    /* Hide topbar when scrolled to save space, make catnav transparent */
+    .navbar-scrolled .navbar-topbar {
+        display: none !important;
+    }
+    
+    .navbar-scrolled .navbar-catnav {
+        background: transparent !important;
+        border-top: none;
+    }
+
     .bd-link {
         color: #c6436a;
         font-weight: 600;
@@ -290,4 +417,63 @@
         color: #c6436a;
         fill: #c6436a;
     }
+
+    .bd-password-field input {
+        padding-right: 2.75rem;
+    }
+
+    /* Category dropdown ("Lainnya") — ensure not clipped by any ancestor */
+    #main-navbar,
+    .navbar-catnav,
+    .navbar-catnav .bd-container {
+        overflow: visible !important;
+    }
+
+    .bd-catnav-dropdown {
+        isolation: isolate;
+    }
+
+    .bd-catnav-dropdown [data-dropdown-menu] {
+        pointer-events: none;
+        z-index: 110 !important;
+    }
+
+    .bd-catnav-dropdown [data-dropdown-menu].visible {
+        pointer-events: auto;
+    }
+
+}
+
+/* === Browser autofill override ===
+   Moved outside @layer to ensure maximum specificity over Tailwind base styles.
+   Forces a high-contrast text color on a white inset box-shadow. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+select:-webkit-autofill,
+.bd-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #222222 !important;
+    caret-color: #222222 !important;
+    transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s !important;
+}
+
+input:autofill,
+textarea:autofill,
+select:autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #222222 !important;
+    caret-color: #222222 !important;
+}
+
+input:-moz-autofill,
+textarea:-moz-autofill,
+select:-moz-autofill {
+    background-color: #ffffff !important;
+    color: #222222 !important;
+    filter: none;
 }

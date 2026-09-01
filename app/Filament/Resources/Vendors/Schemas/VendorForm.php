@@ -29,7 +29,7 @@ class VendorForm
                             ->createOptionForm([
                                 TextInput::make('name')->required(),
                                 TextInput::make('email')->email()->required(),
-                                TextInput::make('password')->password()->required(),
+                                TextInput::make('password')->password()->revealable()->required(),
                                 Select::make('user_type')->options([
                                     'vendor' => 'Vendor',
                                 ])->default('vendor')->required(),

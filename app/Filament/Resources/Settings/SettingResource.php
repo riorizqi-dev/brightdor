@@ -30,7 +30,7 @@ class SettingResource extends Resource
 
     public static function getNavigationGroup(): string|\UnitEnum|null
     {
-        return __('brightdor.nav.settings');
+        return __('brightdor.nav.dashboard');
     }
 
     public static function getNavigationLabel(): string

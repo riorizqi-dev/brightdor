@@ -33,7 +33,7 @@
 
                     <div>
                         <label for="login-password" class="text-xs font-bold uppercase tracking-wider text-ink-400">Password</label>
-                        <input id="login-password" type="password" name="password" required autocomplete="current-password" class="bd-input mt-1.5">
+                        <x-frontend.password-field id="login-password" name="password" autocomplete="current-password" required />
                         @error('password')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 

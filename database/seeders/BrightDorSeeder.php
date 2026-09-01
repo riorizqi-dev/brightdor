@@ -42,6 +42,9 @@ class BrightDorSeeder extends Seeder
         $this->seedContent();
         $this->seedSettings();
         $this->seedCommissionSettings();
+        $this->seedExtendedVendors();
+        $this->seedExtendedServices();
+        $this->seedExtendedBookings();
     }
 
     private function seedRoles(): void
@@ -142,7 +145,7 @@ class BrightDorSeeder extends Seeder
             $statusesArr = $statuses;
             $isVerified = in_array($statusesArr[$i], ['approved']);
 
-            Vendor::query()->updateOrCreate(
+            $vendor = Vendor::query()->updateOrCreate(
                 ['slug' => Str::slug($businessNames[$i]) . '-' . ($i + 1)],
                 [
                     'user_id' => $user->id,
@@ -166,6 +169,26 @@ class BrightDorSeeder extends Seeder
                     'bank_account_name' => $vu['name'],
                 ],
             );
+
+            if ($vendor->getMedia('portfolio')->isEmpty()) {
+                $categoryName = strtolower(VendorCategory::find($categoryIds[$i % count($categoryIds)])->name);
+                $imagePath = null;
+                if (str_contains($categoryName, 'venue')) {
+                    $imagePath = database_path('seeders/images/venue.png');
+                } elseif (str_contains($categoryName, 'catering')) {
+                    $imagePath = database_path('seeders/images/catering.png');
+                } elseif (str_contains($categoryName, 'dekorasi')) {
+                    $imagePath = database_path('seeders/images/decoration.png');
+                } elseif (str_contains($categoryName, 'fotografer') || str_contains($categoryName, 'videografer')) {
+                    $imagePath = database_path('seeders/images/photography.png');
+                } else {
+                    $imagePath = database_path('seeders/images/venue.png'); // fallback
+                }
+
+                if (file_exists($imagePath)) {
+                    $vendor->addMedia($imagePath)->preservingOriginal()->toMediaCollection('portfolio');
+                }
+            }
         }
     }
 
@@ -187,7 +210,7 @@ class BrightDorSeeder extends Seeder
 
         foreach ($vendors as $i => $vendor) {
             $sd = $serviceData[$i % count($serviceData)];
-            Service::query()->updateOrCreate(
+            $service = Service::query()->updateOrCreate(
                 ['slug' => Str::slug($sd['name']) . '-' . ($i + 1)],
                 [
                     'vendor_id' => $vendor->id,
@@ -205,6 +228,14 @@ class BrightDorSeeder extends Seeder
                     'bookings_count' => 3 + $i,
                 ],
             );
+
+            if ($service->getMedia('cover')->isEmpty()) {
+                $catName = strtolower($vendor->category?->name ?? VendorCategory::find($vendor->vendor_category_id)?->name ?? '');
+                $imagePath = $this->resolveSeederImagePath($catName);
+                if ($imagePath && file_exists($imagePath)) {
+                    $service->addMedia($imagePath)->preservingOriginal()->toMediaCollection('cover');
+                }
+            }
         }
     }
 
@@ -529,5 +560,243 @@ class BrightDorSeeder extends Seeder
                 'is_active' => true,
             ],
         );
+    }
+
+    private function seedExtendedVendors(): void
+    {
+        $categoryIds = VendorCategory::pluck('id')->toArray();
+        $categoryNames = VendorCategory::pluck('name', 'id')->toArray();
+
+        $prefixes = [
+            'Griya', 'Pesona', 'Arunika', 'Cahaya', 'Mutiara',
+            'Seruling', 'Wisma', 'Kencana', 'Nirwana', 'Bumi',
+            'Adiyasa', 'Kirana', 'Swargaloka', 'Sriwedari', 'Mandala',
+            'Puspita', 'Cendana', 'Dewi Sri', 'Garuda', 'Bintang',
+            'Asri', 'Indah', 'Lestari', 'Megah', 'Prima',
+        ];
+
+        $cities = [
+            'Jakarta', 'Bandung', 'Surabaya', 'Yogyakarta', 'Semarang',
+            'Medan', 'Makassar', 'Palembang', 'Denpasar', 'Malang',
+        ];
+
+        $provinces = [
+            'DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'DI Yogyakarta', 'Jawa Tengah',
+            'Sumatera Utara', 'Sulawesi Selatan', 'Sumatera Selatan', 'Bali', 'Jawa Timur',
+        ];
+
+        $ownerFirst = ['Agus', 'Sri', 'Bambang', 'Endang', 'Slamet', 'Wahyuni', 'Sutrisno', 'Ratna', 'Suparman', 'Indah'];
+        $ownerLast = ['Pratama', 'Wijaya', 'Santoso', 'Lestari', 'Kusuma', 'Hidayat', 'Nugroho', 'Rahayu', 'Setiawan', 'Permana'];
+        $bankNames = ['BCA', 'Bank Mandiri', 'BNI', 'BRI', 'CIMB Niaga'];
+
+        for ($i = 0; $i < 50; $i++) {
+            $owner = $ownerFirst[$i % 10] . ' ' . $ownerLast[($i + 3) % 10];
+
+            $user = User::query()->updateOrCreate(
+                ['email' => 'vendor.ext' . ($i + 1) . '@brightdor.test'],
+                [
+                    'name' => $owner,
+                    'password' => Hash::make('password'),
+                    'user_type' => 'vendor',
+                    'status' => 'active',
+                    'phone' => '081' . str_pad((string) (1000000 + $i), 7, '0', STR_PAD_LEFT),
+                ],
+            );
+            $user->syncRoles(['vendor']);
+
+            $catId = $categoryIds[$i % count($categoryIds)];
+            $catName = $categoryNames[$catId] ?? 'Vendor';
+            $city = $cities[$i % count($cities)];
+            $businessName = $prefixes[$i % count($prefixes)] . ' ' . $catName . ' ' . $city;
+
+            $status = $i % 5 === 0 ? 'pending' : 'approved';
+            $isVerified = $status === 'approved' && $i % 3 !== 0;
+
+            $vendor = Vendor::query()->updateOrCreate(
+                ['slug' => Str::slug($businessName) . '-' . ($i + 100)],
+                [
+                    'user_id' => $user->id,
+                    'vendor_category_id' => $catId,
+                    'business_name' => $businessName,
+                    'description' => $businessName . ' adalah penyedia layanan ' . strtolower($catName)
+                        . ' terpercaya di ' . $city . ' dengan pengalaman lebih dari ' . (3 + ($i % 12)) . ' tahun.',
+                    'address' => 'Jl. Merdeka ' . (10 + $i) . ', ' . $city,
+                    'city' => $city,
+                    'province' => $provinces[$i % count($provinces)],
+                    'phone' => '021-' . (1000000 + $i),
+                    'whatsapp' => '0812' . str_pad((string) (100000 + $i), 6, '0', STR_PAD_LEFT),
+                    'status' => $status,
+                    'is_verified' => $isVerified,
+                    'verified_at' => $isVerified ? now()->subDays(30 + $i) : null,
+                    'is_featured' => $i % 7 === 0,
+                    'rating_avg' => $status === 'approved' ? round(4.0 + (($i % 10) / 10), 2) : 0,
+                    'rating_count' => $status === 'approved' ? 5 + ($i % 40) : 0,
+                    'bank_name' => $bankNames[$i % count($bankNames)],
+                    'bank_account_number' => '1' . str_pad((string) (2340000 + $i), 12, '0', STR_PAD_LEFT),
+                    'bank_account_name' => $owner,
+                ],
+            );
+
+            if ($vendor->getMedia('portfolio')->isEmpty()) {
+                $imagePath = $this->resolveSeederImagePath(strtolower($catName));
+                if ($imagePath && file_exists($imagePath)) {
+                    $vendor->addMedia($imagePath)->preservingOriginal()->toMediaCollection('portfolio');
+                }
+            }
+        }
+    }
+
+    private function seedExtendedServices(): void
+    {
+        $vendors = Vendor::where('status', 'approved')->get();
+
+        if ($vendors->isEmpty()) {
+            return;
+        }
+
+        $categoryNames = VendorCategory::pluck('name', 'id')->toArray();
+        $tiers = ['Silver', 'Gold', 'Platinum', 'Diamond', 'Signature'];
+
+        $priceByKeyword = [
+            'venue' => 45000000, 'catering' => 35000000, 'dekorasi' => 25000000,
+            'fotografer' => 12000000, 'videografer' => 15000000, 'mua' => 8000000,
+            'wedding organizer' => 30000000, 'entertainment' => 7000000,
+            'gaun & jas' => 6000000, 'undangan digital' => 300000,
+        ];
+
+        for ($i = 0; $i < 100; $i++) {
+            $vendor = $vendors[$i % $vendors->count()];
+            $catName = strtolower($categoryNames[$vendor->vendor_category_id] ?? 'paket');
+            $tier = $tiers[$i % count($tiers)];
+            $name = 'Paket ' . $tier . ' ' . $catName;
+            $basePrice = $priceByKeyword[$catName] ?? 10000000;
+            $price = round($basePrice * (0.6 + ($i % 5) * 0.2), -5);
+
+            $service = Service::query()->updateOrCreate(
+                ['slug' => Str::slug($name) . '-' . $vendor->id . '-' . ($i + 1)],
+                [
+                    'vendor_id' => $vendor->id,
+                    'vendor_category_id' => $vendor->vendor_category_id,
+                    'name' => $name,
+                    'description' => 'Paket ' . $tier . ' ' . $catName . ' dari '
+                        . $vendor->business_name . ', termasuk layanan profesional dan tim berpengalaman.',
+                    'price' => $price,
+                    'price_unit' => 'paket',
+                    'capacity' => 200 + ($i % 10) * 100,
+                    'is_active' => true,
+                    'status' => 'published',
+                    'is_featured' => $i % 9 === 0,
+                    'views_count' => 100 + $i * 3,
+                    'bookings_count' => $i % 15,
+                ],
+            );
+
+            if ($service->getMedia('cover')->isEmpty()) {
+                $imagePath = $this->resolveSeederImagePath($catName);
+                if ($imagePath && file_exists($imagePath)) {
+                    $service->addMedia($imagePath)->preservingOriginal()->toMediaCollection('cover');
+                }
+            }
+        }
+    }
+
+    /**
+     * Resolve seed image path for a category (mirrors vendor portfolio mapping).
+     */
+    private function resolveSeederImagePath(string $categoryName): ?string
+    {
+        $categoryName = strtolower($categoryName);
+
+        if (str_contains($categoryName, 'venue')) {
+            return database_path('seeders/images/venue.png');
+        }
+        if (str_contains($categoryName, 'catering')) {
+            return database_path('seeders/images/catering.png');
+        }
+        if (str_contains($categoryName, 'dekorasi') || str_contains($categoryName, 'gaun') || str_contains($categoryName, 'jas')) {
+            return database_path('seeders/images/decoration.png');
+        }
+        if (str_contains($categoryName, 'fotografer') || str_contains($categoryName, 'videografer')) {
+            return database_path('seeders/images/photography.png');
+        }
+        if (str_contains($categoryName, 'mua')) {
+            return database_path('seeders/images/decoration.png');
+        }
+        if (str_contains($categoryName, 'wedding organizer') || str_contains($categoryName, 'entertainment') || str_contains($categoryName, 'undangan')) {
+            return database_path('seeders/images/venue.png');
+        }
+
+        return database_path('seeders/images/venue.png');
+    }
+
+    private function seedExtendedBookings(): void
+    {
+        $coupleFirst = ['Dimas', 'Aditya', 'Fikri', 'Gilang', 'Hafiz', 'Iqbal', 'Reza', 'Taufik', 'Yoga', 'Zaki'];
+        $coupleSecond = ['Ayu', 'Citra', 'Dina', 'Eka', 'Fitri', 'Gita', 'Hana', 'Intan', 'Lia', 'Nadia'];
+
+        $coupleIds = [];
+
+        for ($c = 0; $c < 40; $c++) {
+            $name = $coupleFirst[$c % 10] . ' & ' . $coupleSecond[($c + 4) % 10];
+            $user = User::query()->updateOrCreate(
+                ['email' => 'couple.ext' . ($c + 1) . '@brightdor.test'],
+                [
+                    'name' => $name,
+                    'password' => Hash::make('password'),
+                    'user_type' => 'couple',
+                    'status' => 'active',
+                    'phone' => '082' . str_pad((string) (2000000 + $c), 7, '0', STR_PAD_LEFT),
+                ],
+            );
+            $user->syncRoles(['couple']);
+            $coupleIds[] = $user->id;
+        }
+
+        $services = Service::where('is_active', true)->get();
+
+        if ($services->isEmpty()) {
+            return;
+        }
+
+        $statusPattern = [
+            'pending', 'confirmed', 'completed', 'cancelled', 'on_progress',
+            'completed', 'confirmed', 'pending', 'completed', 'refund',
+        ];
+
+        $locations = ['Jakarta Convention Center', 'The Ritz Carlton', 'Fairmont', 'Ballroom Hotel Mulia', 'Gedung Serbaguna'];
+        $rateByCategory = VendorCategory::pluck('commission_rate', 'id')->toArray();
+
+        for ($i = 0; $i < 200; $i++) {
+            $service = $services[$i % $services->count()];
+            $status = $statusPattern[$i % count($statusPattern)];
+            $subtotal = (float) $service->price;
+            $discount = $i % 8 === 0 ? round($subtotal * 0.05, 2) : 0;
+            $rate = (float) ($rateByCategory[$service->vendor_category_id] ?? 10);
+            $commission = round(($subtotal - $discount) * $rate / 100, 2);
+            $total = round($subtotal - $discount, 2);
+
+            Booking::query()->updateOrCreate(
+                ['booking_code' => 'BD-EXT' . str_pad((string) ($i + 1), 6, '0', STR_PAD_LEFT)],
+                [
+                    'user_id' => $coupleIds[$i % count($coupleIds)],
+                    'vendor_id' => $service->vendor_id,
+                    'service_id' => $service->id,
+                    'event_date' => now()->addDays($i - 60)->toDateString(),
+                    'event_time' => sprintf('%02d:00', 8 + ($i % 10)),
+                    'event_location' => $locations[$i % count($locations)],
+                    'guest_count' => 100 + ($i % 9) * 100,
+                    'subtotal' => $subtotal,
+                    'discount' => $discount,
+                    'admin_fee' => 0,
+                    'commission_amount' => $commission,
+                    'total_amount' => $total,
+                    'status' => $status,
+                    'confirmed_at' => in_array($status, ['confirmed', 'on_progress', 'completed'], true) ? now()->subDays(20) : null,
+                    'completed_at' => $status === 'completed' ? now()->subDays(5) : null,
+                    'cancelled_at' => in_array($status, ['cancelled', 'refund'], true) ? now()->subDays(10) : null,
+                    'cancellation_reason' => in_array($status, ['cancelled', 'refund'], true) ? 'Perubahan jadwal dari customer' : null,
+                ],
+            );
+        }
     }
 }

@@ -27,7 +27,7 @@ class InvitationTemplateResource extends Resource
 
     public static function getNavigationGroup(): string|\UnitEnum|null
     {
-        return __('brightdor.nav.invitations');
+        return __('brightdor.nav.marketplace');
     }
 
     public static function getNavigationLabel(): string

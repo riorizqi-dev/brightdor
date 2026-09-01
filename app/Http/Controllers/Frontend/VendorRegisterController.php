@@ -44,9 +44,19 @@ class VendorRegisterController extends Controller
             'subscription_plan' => ['nullable', 'string'],
         ]);
 
-        $hasPaidSubscription = $user->hasPaidVendorSubscription();
+        // Expired subscribers get a distinct message so they know to renew
+        // instead of being told they never subscribed at all.
+        abort_if(
+            $user->hasExpiredVendorSubscription(),
+            403,
+            'Langganan paket vendor Anda sudah habis. Perpanjang dulu untuk melanjutkan pendaftaran vendor.',
+        );
 
-        abort_if(! $hasPaidSubscription, 403, 'Untuk menjadi vendor, Anda harus aktif berlangganan paket vendor berbayar.');
+        abort_if(
+            ! $user->hasPaidVendorSubscription(),
+            403,
+            'Untuk menjadi vendor, Anda harus aktif berlangganan paket vendor berbayar.',
+        );
 
         Role::findOrCreate('vendor', 'web');
 

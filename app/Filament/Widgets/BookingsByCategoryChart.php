@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\Booking;
 use App\Models\VendorCategory;
+use App\Support\BrandPalette;
 use Filament\Widgets\ChartWidget;
 
 class BookingsByCategoryChart extends ChartWidget
@@ -59,20 +60,12 @@ class BookingsByCategoryChart extends ChartWidget
                 [
                     'label' => __('brightdor.dashboard.total_bookings'),
                     'data' => $data,
-                    'backgroundColor' => [
-                        'rgba(20, 20, 20, 0.92)',
-                        'rgba(196, 165, 116, 0.85)',
-                        'rgba(63, 63, 70, 0.8)',
-                        'rgba(232, 220, 200, 0.95)',
-                        'rgba(20, 20, 20, 0.65)',
-                        'rgba(196, 165, 116, 0.55)',
-                        'rgba(113, 113, 122, 0.55)',
-                        'rgba(247, 243, 235, 1)',
-                        'rgba(20, 20, 20, 0.4)',
-                        'rgba(168, 132, 74, 0.7)',
-                    ],
-                    'borderWidth' => 0,
-                    'hoverOffset' => 5,
+                    // Pink / maroon / gold series, cycled so any number of
+                    // categories still lands on a brand colour.
+                    'backgroundColor' => BrandPalette::chartSeries(),
+                    'borderColor' => '#ffffff',
+                    'borderWidth' => 2,
+                    'hoverOffset' => 6,
                 ],
             ],
             'labels' => $labels,

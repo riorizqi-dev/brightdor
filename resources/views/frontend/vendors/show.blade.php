@@ -68,20 +68,28 @@
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.83 14.12c-.25.7-1.45 1.33-2.02 1.42-.52.08-1.17.11-1.88-.12-.44-.14-1-.32-1.71-.63-3-1.3-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37h.57c.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.32-.3.5-.15.17-.32.39-.46.52-.15.15-.31.31-.13.61.18.3.79 1.3 1.7 2.11 1.16 1.04 2.14 1.36 2.44 1.51.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.27.1 1.75.83 2.05.98.3.15.5.22.57.35.08.12.08.72-.17 1.42Z"/></svg>
                     Hubungi Vendor
                 </a>
-                <a href="#pricing" class="bd-btn-secondary">
+                <button type="button" data-booking-open="quote" class="bd-btn-secondary">
                     <x-frontend.ring-icon class="h-4 w-4"/>
                     Ajukan Penawaran
-                </a>
+                </button>
             </div>
         </div>
 
-        <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
+        <div class="mt-8 grid gap-8 lg:grid-cols-12">
             {{-- Left column --}}
-            <div class="space-y-10">
+            <div class="space-y-10 lg:col-span-9">
                 {{-- Gallery --}}
                 <section>
                     @php
-                        $images = $portfolio->map(fn ($m) => $m->getUrl())->concat($gallery->pluck('image')->filter())->values();
+                        $serviceCovers = $vendor->services
+                            ->map(fn ($svc) => $svc->getFirstMediaUrl('cover'))
+                            ->filter()
+                            ->values();
+                        $images = $portfolio->map(fn ($m) => $m->getUrl())
+                            ->concat($serviceCovers)
+                            ->concat($gallery->pluck('image')->filter())
+                            ->filter()
+                            ->values();
                         $hasReal = $images->isNotEmpty();
                         $mainSrc = $hasReal ? $images->first() : null;
                     @endphp
@@ -271,7 +279,7 @@
             </div>
 
             {{-- Right sidebar --}}
-            <aside class="space-y-6 lg:sticky lg:top-32 lg:self-start">
+            <aside class="space-y-6 lg:col-span-3 lg:sticky lg:top-32 lg:self-start">
                 <div class="bd-card p-6">
                     <h3 class="font-display text-xl font-bold text-ink-900">Mulai dari</h3>
                     @php
@@ -287,11 +295,11 @@
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.83 14.12c-.25.7-1.45 1.33-2.02 1.42-.52.08-1.17.11-1.88-.12-.44-.14-1-.32-1.71-.63-3-1.3-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37h.57c.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.32-.3.5-.15.17-.32.39-.46.52-.15.15-.31.31-.13.61.18.3.79 1.3 1.7 2.11 1.16 1.04 2.14 1.36 2.44 1.51.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.27.1 1.75.83 2.05.98.3.15.5.22.57.35.08.12.08.72-.17 1.42Z"/></svg>
                             Hubungi Vendor
                         </a>
-                        <a href="#pricing" class="bd-btn-secondary w-full justify-center">
+                        <button type="button" data-booking-open="quote" class="bd-btn-secondary w-full justify-center">
                             <x-frontend.ring-icon class="h-4 w-4"/>
                             Ajukan Penawaran
-                        </a>
-                        <button data-booking-open class="bd-btn-ghost w-full justify-center ring-1 ring-ink-200 hover:ring-rose-400/50">
+                        </button>
+                        <button type="button" data-booking-open="date" class="bd-btn-ghost w-full justify-center ring-1 ring-ink-200 hover:ring-rose-400/50">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 9h16.5M4.5 5.25h15a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75h-15a.75.75 0 0 1-.75-.75V6a.75.75 0 0 1 .75-.75ZM12 13.5h.008v.008H12V13.5Zm0 3h.008v.008H12V16.5Zm-3-3h.008v.008H9V13.5Zm0 3h.008v.008H9V16.5Zm6-3h.008v.008H15V13.5Z"/></svg>
                             Booking Tanggal
                         </button>
@@ -358,15 +366,17 @@
         <div class="absolute inset-0 bg-ink-900/50 backdrop-blur-sm" data-booking-close></div>
         <div class="relative w-full max-w-md rounded-[5px] bg-white p-6 shadow-2xl shadow-ink-900/20">
             <div class="flex items-center justify-between">
-                <h3 class="font-display text-xl font-bold text-ink-900">Booking Tanggal</h3>
+                <h3 class="font-display text-xl font-bold text-ink-900" data-booking-title>Booking Tanggal</h3>
                 <button data-booking-close class="flex h-9 w-9 items-center justify-center rounded-full hover:bg-ink-50 transition-colors">
                     <svg class="h-4 w-4 text-ink-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <p class="mt-1 text-sm text-ink-500">Pilih paket dan tanggal acara kamu, lalu kirimkan ke {{ $vendor->business_name }}.</p>
+            <p class="mt-1 text-sm text-ink-500" data-booking-desc>Pilih paket dan tanggal acara kamu, lalu kirimkan ke {{ $vendor->business_name }}.</p>
 
             <form method="POST" action="{{ route('vendors.booking', $vendor->slug) }}" class="mt-6 space-y-5">
                 @csrf
+                {{-- Menyimpan maksud pengguna (penawaran / tanggal) supaya modal terbuka ulang dengan konteks yang sama saat validasi gagal. --}}
+                <input type="hidden" name="request_mode" value="{{ old('request_mode', 'date') }}" data-booking-mode-field>
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
                         <label for="booking-name" class="text-xs font-bold uppercase tracking-wider text-ink-400">Nama Lengkap</label>
@@ -413,31 +423,97 @@
                 @if ($errors->any())
                     <p class="rounded-[5px] bg-rose-50 px-4 py-3 text-sm text-rose-600 ring-1 ring-rose-500/30">Periksa kembali isian kamu, ada beberapa kolom yang belum benar.</p>
                 @endif
-                <button type="submit" class="bd-btn-primary w-full justify-center py-3">
-                    Kirim Permintaan Booking
+                <button type="submit" data-booking-submit class="bd-btn-primary w-full justify-center py-3 disabled:opacity-60 disabled:cursor-not-allowed">
+                    <span data-booking-submit-text>Kirim Permintaan Booking</span>
                 </button>
             </form>
         </div>
     </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script>
-        const modal = document.querySelector('[data-booking-modal]');
-        document.querySelectorAll('[data-booking-open]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                modal?.classList.remove('hidden');
-                modal?.classList.add('flex');
+        (function () {
+            const modal = document.querySelector('[data-booking-modal]');
+            const titleEl = modal?.querySelector('[data-booking-title]');
+            const descEl = modal?.querySelector('[data-booking-desc]');
+            const submitTextEl = modal?.querySelector('[data-booking-submit-text]');
+            const modeField = modal?.querySelector('[data-booking-mode-field]');
+            const vendorName = @json($vendor->business_name);
+
+            // Satu form, dua maksud: minta penawaran harga vs. kunci tanggal acara.
+            const MODES = {
+                quote: {
+                    title: 'Ajukan Penawaran',
+                    desc: 'Ceritakan kebutuhan acara kamu, ' + vendorName + ' akan mengirim estimasi harga.',
+                    submit: 'Kirim Permintaan Penawaran',
+                    focus: '#booking-service',
+                },
+                date: {
+                    title: 'Booking Tanggal',
+                    desc: 'Pilih paket dan tanggal acara kamu, lalu kirimkan ke ' + vendorName + '.',
+                    submit: 'Kirim Permintaan Booking',
+                    focus: '#booking-date',
+                },
+            };
+
+            const submitBtn = modal?.querySelector('[data-booking-submit]');
+
+            function applyMode(mode) {
+                const cfg = MODES[mode] ?? MODES.date;
+                if (titleEl) titleEl.textContent = cfg.title;
+                if (descEl) descEl.textContent = cfg.desc;
+                if (submitTextEl) submitTextEl.textContent = cfg.submit;
+                // Lepas kembali status loading kalau submit sebelumnya tidak sampai pindah halaman.
+                if (submitBtn) submitBtn.disabled = false;
+                return cfg;
+            }
+
+            function openBookingModal(mode) {
+                if (!modal) return;
+                const cfg = applyMode(mode);
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.classList.add('overflow-hidden');
+                modal.querySelector(cfg.focus)?.focus({ preventScroll: true });
+            }
+            function closeBookingModal() {
+                if (!modal) return;
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+            }
+            document.querySelectorAll('[data-booking-open]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.getAttribute('data-booking-open') || 'date';
+                    if (modeField) modeField.value = mode;
+                    openBookingModal(mode);
+                });
             });
-        });
-        document.querySelectorAll('[data-booking-close]').forEach(el => {
-            el.addEventListener('click', () => {
-                modal?.classList.add('hidden');
-                modal?.classList.remove('flex');
+            document.querySelectorAll('[data-booking-close]').forEach(el => {
+                el.addEventListener('click', closeBookingModal);
             });
-        });
-        document.querySelectorAll('[data-booking-success-close]').forEach(btn => {
-            btn.addEventListener('click', () => btn.closest('[data-booking-success]')?.remove());
-        });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeBookingModal();
+            });
+            document.querySelectorAll('[data-booking-success-close]').forEach(btn => {
+                btn.addEventListener('click', () => btn.closest('[data-booking-success]')?.remove());
+            });
+            const bookingForm = modal?.querySelector('form');
+            bookingForm?.addEventListener('submit', (e) => {
+                // Cegah klik ganda mengirim dua booking.
+                if (submitBtn?.disabled) {
+                    e.preventDefault();
+                    return;
+                }
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    if (submitTextEl) submitTextEl.textContent = 'Mengirim...';
+                }
+            });
+            @if ($errors->any())
+                openBookingModal(@json(old('request_mode', 'date')));
+            @endif
+        })();
     </script>
-@endsection
+@endpush

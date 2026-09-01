@@ -38,7 +38,12 @@ class VendorController extends Controller
         }
 
         $query = Vendor::query()
-            ->with(['category', 'services' => fn ($q) => $q->where('status', 'published')->where('is_active', true)])
+            ->with([
+                'category',
+                'media',
+                'services' => fn ($q) => $q->where('status', 'published')->where('is_active', true),
+                'services.media',
+            ])
             ->where('status', 'approved');
 
         if ($category) {
@@ -99,7 +104,9 @@ class VendorController extends Controller
             ->where('status', 'approved')
             ->with([
                 'category',
+                'media',
                 'services' => fn ($q) => $q->where('status', 'published')->where('is_active', true)->orderBy('price'),
+                'services.media',
             ])
             ->firstOrFail();
 
@@ -123,7 +130,7 @@ class VendorController extends Controller
             ->where('status', 'approved')
             ->where('vendor_category_id', $vendor->vendor_category_id)
             ->where('id', '!=', $vendor->id)
-            ->with(['category', 'services' => fn ($q) => $q->where('status', 'published')->where('is_active', true)])
+            ->with(['category', 'media', 'services' => fn ($q) => $q->where('status', 'published')->where('is_active', true), 'services.media'])
             ->take(3)
             ->get();
 

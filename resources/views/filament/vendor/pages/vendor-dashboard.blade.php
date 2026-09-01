@@ -104,9 +104,9 @@
             </div>
 
             {{-- Panels --}}
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
                 {{-- Recent bookings --}}
-                <div class="bd-panel xl:col-span-2">
+                <div class="bd-panel xl:col-span-8">
                     <div class="bd-panel-head">
                         <h2>{{ __('brightdor.vendor_dashboard.recent_bookings') }}</h2>
                         <span>{{ __('brightdor.vendor_dashboard.total_bookings', ['count' => $stats['bookings']]) }}</span>
@@ -150,7 +150,7 @@
                 </div>
 
                 {{-- Vendor profile --}}
-                <div class="bd-panel">
+                <div class="bd-panel xl:col-span-4">
                     <div class="bd-panel-head">
                         <h2>{{ __('brightdor.vendor_dashboard.vendor_profile') }}</h2>
                         <span

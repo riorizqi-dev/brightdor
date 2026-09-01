@@ -19,11 +19,28 @@
         ['#c6436a', '#8a2a48', '#a8923f'],
     ];
     $palette = $palettes[(crc32($title) % count($palettes))];
+    // Unique per-instance ID so multiple covers for the same vendor on one page
+    // (main + 4 thumbs) do not collide; fallback still works via onerror.
+    $fallbackId = 'fallback-' . md5($title . '|' . ($src ?? '') . '|' . uniqid('', true));
 @endphp
 
 <div {{ $attributes->merge(['class' => 'relative overflow-hidden w-full ' . $class]) }}>
     @if ($src)
-        <img src="{{ $src }}" alt="{{ $title }}" class="absolute inset-0 h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"/>
+        <img src="{{ $src }}" alt="{{ $title }}" loading="lazy" decoding="async" onerror="this.onerror=null;this.outerHTML=document.getElementById('{{ $fallbackId }}').innerHTML" class="absolute inset-0 h-full w-full object-cover transition duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"/>
+        <template id="{{ $fallbackId }}">
+            <div class="absolute inset-0"
+                 style="background: linear-gradient(135deg, {{ $palette[0] }} 0%, {{ $palette[1] }} 55%, {{ $palette[2] }} 130%);">
+                <div class="absolute -right-8 -top-8 h-40 w-40 rounded-full border border-white/10"></div>
+                <div class="absolute -bottom-10 -left-6 h-44 w-44 rounded-full border border-white/10"></div>
+                <div class="absolute -right-20 -bottom-20 h-60 w-60 rounded-full border border-white/5"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center gap-1 text-center">
+                    <span class="text-4xl font-display font-bold text-white/90 leading-none drop-shadow-sm">{{ $initials }}</span>
+                    @if ($category)
+                        <span class="mt-2 text-[10px] uppercase tracking-[0.25em] text-white/50 font-medium">{{ $category }}</span>
+                    @endif
+                </div>
+            </div>
+        </template>
     @else
         <div class="absolute inset-0"
              style="background: linear-gradient(135deg, {{ $palette[0] }} 0%, {{ $palette[1] }} 55%, {{ $palette[2] }} 130%);">

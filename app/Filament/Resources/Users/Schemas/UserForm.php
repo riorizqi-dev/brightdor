@@ -37,6 +37,7 @@ class UserForm
                         ->default('active'),
                     TextInput::make('password')
                         ->password()
+                        ->revealable()
                         ->dehydrated(fn ($state) => filled($state))
                         ->required(fn (string $operation): bool => $operation === 'create')
                         ->label('Password'),

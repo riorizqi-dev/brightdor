@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Transaction;
+use App\Support\BrandPalette;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -68,10 +69,11 @@ class RevenueChart extends ChartWidget
                     'label' => __('brightdor.dashboard.revenue'),
                     'data' => $data,
                     'fill' => true,
-                    'backgroundColor' => 'rgba(196, 165, 116, 0.14)',
-                    'borderColor' => '#141414',
+                    // Brand pink line over a soft pink wash.
+                    'backgroundColor' => 'rgba(198, 67, 106, 0.12)',
+                    'borderColor' => BrandPalette::ROSE_600,
                     'borderWidth' => 2,
-                    'pointBackgroundColor' => '#141414',
+                    'pointBackgroundColor' => BrandPalette::ROSE_700,
                     'pointBorderColor' => '#ffffff',
                     'pointRadius' => 4,
                     'pointHoverRadius' => 6,

@@ -6,6 +6,10 @@ from pptx.enum.shapes import MSO_SHAPE
 from PIL import Image
 import os
 
+OUTPUT_PPT = r"C:\Users\ADVAN\brightdor\BrightDor_Documentation.pptx"
+OUTPUT_PPT_DOCS = r"C:\Users\ADVAN\brightdor\docs\BrightDor-Dokumentasi-PPT1.pptx"
+SS_DIR = r"C:\Users\ADVAN\brightdor\screenshots"
+
 prs = Presentation()
 prs.slide_width = Inches(13.333)
 prs.slide_height = Inches(7.5)
@@ -25,8 +29,6 @@ INFO = RGBColor(0x25, 0x63, 0xEB)
 PURPLE = RGBColor(0x8B, 0x5C, 0xF6)
 
 FONT_MAIN = "Calibri"
-
-SS_DIR = r"C:\laragon\www\brightdor\screenshots"
 
 def set_slide_bg(slide, color):
     bg = slide.background
@@ -97,7 +99,7 @@ def add_top_bar(slide):
 def add_bottom_bar(slide):
     add_rect(slide, Inches(0), Inches(7.44), prs.slide_width, Inches(0.06), fill_color=CREAM)
 
-def add_slide_number(slide, num, total=14):
+def add_slide_number(slide, num, total=16):
     add_text(slide, f"{num} / {total}", Inches(12.2), Inches(7.05), Inches(1), Inches(0.35),
              font_size=Pt(10), color=LIGHT_GRAY, alignment=PP_ALIGN.RIGHT)
 
@@ -146,7 +148,7 @@ add_text(slide, "Marketplace Jasa Pernikahan Premium & Undangan Digital", Inches
          font_size=Pt(16), color=LIGHT_GRAY)
 
 info_items = [
-    "Laravel 11  |  Filament v5  |  SQLite  |  33 Tables",
+    "Laravel 11  |  Filament v5  |  SQLite  |  37 Tables (sync 1 Sep 2026)",
     "Teknologi Informasi — 2026",
 ]
 y = Inches(5.2)
@@ -199,14 +201,53 @@ for i, (title, desc) in enumerate(features):
              font_size=Pt(11), color=GRAY)
 
 
-# ==================== SLIDE 3: DASHBOARD (REAL SCREENSHOT) ====================
+# ==================== SLIDE 3: HOME & NAVBAR — TERBARU 1 Sep 2026 (menggantikan navbar sempit) ====================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
-add_section_header(slide, "Mockup: Dashboard Admin", "Panel statistik utama untuk monitoring seluruh aktivitas marketplace")
+add_section_header(slide, "Pengalaman Pengunjung — Navigasi & Kategori (1 Sep 2026)", "Satu baris .bd-catnav + ikon Heroicons konsisten + modal booking — menggantikan flex-wrap sempit")
 add_bottom_bar(slide)
 add_slide_number(slide, 3)
 
-add_screenshot(slide, "dashboard.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
+# Two home screenshots side by side (01_home_top + 02_home_scrolled) plus navbar_v2 glass
+add_screenshot(slide, "01_home_top.png", Inches(0.3), Inches(1.45), Inches(6.2), Inches(3.4))
+add_screenshot(slide, "02_home_scrolled.png", Inches(6.8), Inches(1.45), Inches(6.2), Inches(3.4))
+add_screenshot(slide, r"navbar_v2\02b_desktop_glass_clean.png", Inches(0.3), Inches(5.0), Inches(6.2), Inches(2.2))
+add_screenshot(slide, r"navbar_v2\04e_desktop_dropdown_full.png", Inches(6.8), Inches(5.0), Inches(6.2), Inches(2.2))
+
+# caption box
+cap = add_rounded_rect(slide, Inches(0.3), Inches(7.25), Inches(12.7), Inches(0.35), fill_color=WHITE, border_color=RGBColor(0xE5,0xE5,0xE5))
+add_text(slide, "  Kiri: home top (hero + kategori)  |  Kanan: scrolled (navbar glass)  |  Bawah: dropdown glass + Ajukan Penawaran modal — file: navigation.blade.php / category-icon.blade.php / vendors/show.blade.php", Inches(0.4), Inches(7.28), Inches(12.5), Inches(0.3), font_size=Pt(8), color=GRAY)
+
+# ==================== SLIDE 3b: KATEGORI FOTOGRAFER — CARD VENDOR DENGAN GAMBAR PORTFOLIO (menggantikan inisial) ====================
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+set_slide_bg(slide, CREAM_BG)
+add_section_header(slide, "Kategori Fotografer — Card Vendor dengan Gambar Portfolio", "Menggantikan inisial dengan cover image via Spatie Media Library (services.cover + vendors.portfolio)")
+add_bottom_bar(slide)
+add_slide_number(slide, 4)
+
+add_screenshot(slide, "02b_category_fotografer.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
+
+expl = add_rounded_rect(slide, Inches(9.3), Inches(1.45), Inches(3.7), Inches(5.8), fill_color=WHITE, border_color=RGBColor(0xE5,0xE5,0xE5))
+add_rect(slide, Inches(9.3), Inches(1.45), Inches(3.7), Inches(0.4), fill_color=CREAM)
+add_text(slide, "  Perbaikan Card Vendor", Inches(9.5), Inches(1.48), Inches(3.3), Inches(0.35), font_size=Pt(11), color=BLACK, bold=True)
+add_multi_text(slide, [
+    "Sebelum: card hanya inisial huruf, tanpa gambar",
+    "Sesudah: cover image dari services.cover (Spatie singleFile)",
+    "Fallback ke vendor.portfolio jika cover kosong",
+    "Kategori satu baris .bd-catnav + ikon Heroicons konsisten",
+    "Storage: public disk, conversions, responsive",
+    "Screenshot: 02b_category_fotografer.png (1 Sep, fullpage)",
+], Inches(9.5), Inches(2.0), Inches(3.3), Pt(10), DARK_GRAY, Pt(7))
+
+# ==================== SLIDE 4: DASHBOARD (REAL SCREENSHOT — UPDATED 1 Sep 2026) ====================
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+set_slide_bg(slide, CREAM_BG)
+add_section_header(slide, "Dashboard Admin — Terbaru (1 Sep 2026)", "Top navigation light (cream #C4A574) • global search Cmd+K • warna putih / cream / hitam — sync dengan perbaikan navbar")
+add_bottom_bar(slide)
+add_slide_number(slide, 5)
+
+# Use latest screenshot dated 1 Sep 2026 (04_admin_dashboard.png = 501KB) — previously dashboard.png (461KB, 31 Aug, dark sidebar)
+add_screenshot(slide, "04_admin_dashboard.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
 
 explanation_box = add_rounded_rect(slide, Inches(9.3), Inches(1.45), Inches(3.7), Inches(5.8), fill_color=WHITE, border_color=RGBColor(0xE5, 0xE5, 0xE5))
 add_rect(slide, Inches(9.3), Inches(1.45), Inches(3.7), Inches(0.4), fill_color=BLACK)
@@ -214,12 +255,11 @@ add_text(slide, "  Fitur Dashboard", Inches(9.5), Inches(1.48), Inches(3.3), Inc
          font_size=Pt(12), color=CREAM, bold=True)
 add_multi_text(slide, [
     "5 kartu statistik: Vendors, Bookings, Revenue, Couples, Undangan",
-    "Revenue chart 6 bulan (line chart)",
-    "Bookings by kategori (doughnut chart)",
-    "Quick Actions: shortcut ke halaman penting",
-    "Recent Activities: vendor pending & booking terbaru",
-    "Top Navigation dengan global search (Cmd+K)",
-    "Warna tema: Putih, Cream (#C4A574), Hitam",
+    "Revenue chart 6 bulan (line chart) + doughnut bookings/kategori",
+    "Quick Actions + Recent Activities (vendor pending & booking terbaru)",
+    "Top Navigation LIGHT: tanpa sidebar, lega, krem/hitam/putih (fixed vs dark old)",
+    "Global search Cmd+K, notif, profil — sinkron perbaikan 1 Sep",
+    "Screenshot: 04_admin_dashboard.png (1 Sep 2026, 1440x900 @2x)",
 ], Inches(9.5), Inches(2.0), Inches(3.3), Pt(11), DARK_GRAY, Pt(8))
 
 
@@ -228,7 +268,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Mockup: Manajemen Vendor", "Approval, kategori, verifikasi, dan pengelolaan vendor pernikahan")
 add_bottom_bar(slide)
-add_slide_number(slide, 4)
+add_slide_number(slide, 6)
 
 add_screenshot(slide, "vendors.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
 
@@ -253,7 +293,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Mockup: Booking & Order", "Sistem pemesanan layanan vendor dengan tracking status real-time")
 add_bottom_bar(slide)
-add_slide_number(slide, 5)
+add_slide_number(slide, 7)
 
 add_screenshot(slide, "bookings.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
 
@@ -278,7 +318,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Mockup: Undangan Digital", "Template premium undangan digital + RSVP online interaktif")
 add_bottom_bar(slide)
-add_slide_number(slide, 6)
+add_slide_number(slide, 8)
 
 add_screenshot(slide, "invitation-templates.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
 
@@ -304,7 +344,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Mockup: Keuangan", "Transaksi, komisi vendor, payout, dan pengaturan komisi")
 add_bottom_bar(slide)
-add_slide_number(slide, 7)
+add_slide_number(slide, 9)
 
 add_screenshot(slide, "transactions.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
 
@@ -330,7 +370,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Mockup: Pengaturan & Multi Bahasa", "Konfigurasi sistem, konten, dan dukungan 8 bahasa")
 add_bottom_bar(slide)
-add_slide_number(slide, 8)
+add_slide_number(slide, 10)
 
 add_screenshot(slide, "settings.png", Inches(0.5), Inches(1.45), Inches(8.5), Inches(5.8))
 
@@ -354,9 +394,9 @@ add_multi_text(slide, [
 # ==================== SLIDE 9: ERD ====================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
-add_section_header(slide, "Design Database (ERD)", "33 tabel dengan relasi polymorphic, soft deletes, dan Spatie MediaLibrary")
+add_section_header(slide, "Design Database (ERD)", "37 tabel dengan relasi polymorphic, soft deletes, dan Spatie MediaLibrary")
 add_bottom_bar(slide)
-add_slide_number(slide, 9)
+add_slide_number(slide, 11)
 
 add_screenshot(slide, "erd.png", Inches(0.5), Inches(1.45), Inches(12.3), Inches(5.8))
 
@@ -366,7 +406,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Penjelasan Tabel Utama", "Tabel-tabel inti yang menjadi fondasi sistem BrightDor")
 add_bottom_bar(slide)
-add_slide_number(slide, 10)
+add_slide_number(slide, 12)
 
 tables_info = [
     ("users", "Tabel pusat pengguna (admin, vendor, couple). Menyimpan kredensial, profil, tipe user, dan status akun.", "id, name, email, phone, user_type, status", BLACK),
@@ -394,7 +434,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Relasi Antar Tabel", "Hubungan antar entitas dalam database BrightDor")
 add_bottom_bar(slide)
-add_slide_number(slide, 11)
+add_slide_number(slide, 13)
 
 relations = [
     ("User → Vendor", "HasOne", "1 user memiliki 1 vendor"),
@@ -430,7 +470,7 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Alur Bisnis Singkat", "Alur kerja utama dari marketplace BrightDor")
 add_bottom_bar(slide)
-add_slide_number(slide, 12)
+add_slide_number(slide, 14)
 
 flows = [
     ("1", "Vendor\nMendaftar", "Vendor buat akun,\nisi profil usaha", CREAM),
@@ -489,11 +529,11 @@ slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, CREAM_BG)
 add_section_header(slide, "Kesimpulan")
 add_bottom_bar(slide)
-add_slide_number(slide, 13)
+add_slide_number(slide, 15)
 
 summary_items = [
     ("Laravel 11 + Filament v5", "Framework modern dengan admin panel powerful dan customisable"),
-    ("33 Tabel Database", "Desain relasi komprehensif dengan polymorphic relations dan soft deletes"),
+    ("37 Tabel Database", "Desain relasi komprehensif dengan polymorphic relations dan soft deletes"),
     ("7 Modul Utama", "Dashboard, Vendor, Marketplace, Undangan Digital, Keuangan, Konten, Pengaturan"),
     ("Multi Bahasa", "8 bahasa termasuk Indonesia dengan dukungan RTL untuk Arab"),
     ("Top Navigation Layout", "Desain clean tanpa sidebar, warna putih + cream + hitam"),
@@ -531,7 +571,7 @@ add_line(slide, Inches(1.2), Inches(3.6), Inches(3), CREAM)
 
 info_lines = [
     "BrightDor — Marketplace Jasa Pernikahan Premium",
-    "Laravel 11 + Filament v5  |  33 Tabel  |  8 Bahasa",
+    "Laravel 11 + Filament v5  |  37 Tabel  |  8 Bahasa",
     "Admin Panel: /admin  |  admin@brightdor.test",
 ]
 y = Inches(4.0)
@@ -548,6 +588,12 @@ add_text(slide, "2026", Inches(11.6), Inches(3.8), Inches(1.6), Inches(0.4),
 
 
 # Save
-output_path = r"C:\laragon\www\brightdor\BrightDor_Documentation.pptx"
+output_path = OUTPUT_PPT
 prs.save(output_path)
 print(f"PPT saved to: {output_path}")
+# Also save to docs for submission
+try:
+    prs.save(OUTPUT_PPT_DOCS)
+    print(f"PPT also saved to: {OUTPUT_PPT_DOCS}")
+except Exception as e:
+    print(f"Docs save failed: {e}")

@@ -18,7 +18,7 @@ class HomeController extends Controller
 
         $featuredVendors = Vendor::query()
             ->where('status', 'approved')
-            ->with(['category', 'services' => fn ($q) => $q->where('status', 'published')->where('is_active', true)])
+            ->with(['category', 'media', 'services' => fn ($q) => $q->where('status', 'published')->where('is_active', true), 'services.media'])
             ->orderByDesc('is_featured')
             ->orderByDesc('rating_count')
             ->take(3)
