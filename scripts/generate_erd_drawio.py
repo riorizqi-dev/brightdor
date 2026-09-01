@@ -220,11 +220,11 @@ legend_rows = "".join(
     ]
 )
 cells.append(
-    f'<mxCell id="legend" value="{legend_rows}<br/>'
-    '<b>PK</b> primary &nbsp; <b>FK</b> foreign &nbsp; <b>UQ</b> unique &nbsp; '
-    '<b>MP</b> polymorphic &nbsp; &#9733; new table (Task 2) &nbsp; '
-    'tebal krem = relasi utama (users-&gt;vendors-&gt;services-&gt;bookings-&gt;'
-    'transactions/payouts)" '
+    f'<mxCell id="legend" value="{esc(legend_rows + "<br/>"
+    "<b>PK</b> primary &nbsp; <b>FK</b> foreign &nbsp; <b>UQ</b> unique &nbsp; "
+    "<b>MP</b> polymorphic &nbsp; &#9733; new table (Task 2) &nbsp; "
+    "tebal krem = relasi utama (users-&gt;vendors-&gt;services-&gt;bookings-&gt;"
+    "transactions/payouts)")}" '
     'style="text;html=1;fontSize=11;fontColor=#3f3f46;align=left;verticalAlign=top;'
     'spacing=8;fillColor=#ffffff;strokeColor=#d4d4d8;rounded=1;" '
     'vertex="1" parent="1"><mxGeometry x="40" y="10" width="1100" height="60" '
@@ -240,7 +240,7 @@ for name, group, cols in TABLES:
         ";spacing=0;overflow=hidden;verticalAlign=top;"
     )
     cells.append(
-        f'<mxCell id="{name}" value="{table_html(name, group, cols)}" '
+        f'<mxCell id="{name}" value="{esc(table_html(name, group, cols))}" '
         f'style="{style}" vertex="1" parent="1">'
         f'<mxGeometry x="{x}" y="{y}" width="{TABLE_W}" height="{h}" '
         'as="geometry" /></mxCell>'
