@@ -89,12 +89,13 @@ body {
 }
 
 .pres-header-inner {
-  max-width: 1360px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 14px 32px;
+  padding: 12px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
 .pres-brand {
@@ -102,6 +103,8 @@ body {
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .pres-brand-logo {
@@ -114,6 +117,7 @@ body {
   justify-content: center;
   color: #fff;
   box-shadow: 0 4px 12px rgba(112, 19, 43, 0.25);
+  flex-shrink: 0;
 }
 
 .pres-brand-text {
@@ -122,6 +126,7 @@ body {
   font-weight: 700;
   color: var(--ink-900);
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
 .pres-brand-text span {
@@ -131,39 +136,54 @@ body {
 .pres-nav-links {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pres-nav-links li {
+  white-space: nowrap;
   list-style: none;
 }
 
 .pres-nav-links a {
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  border-radius: 999px;
   font-size: 0.84rem;
   font-weight: 600;
   color: var(--ink-600);
   text-decoration: none;
+  white-space: nowrap;
+  display: inline-block;
+  line-height: 1.4;
   transition: all 0.2s ease;
 }
 
 .pres-nav-links a:hover,
 .pres-nav-links a.active {
   color: var(--wine-800);
-  background: var(--wine-50);
+  background: var(--wine-100);
+  font-weight: 700;
 }
 
 .pres-badge-live {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
+  gap: 8px;
+  padding: 6px 14px;
   border-radius: 999px;
   background: #E8F7EE;
   color: #0E623B;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   border: 1px solid #C4EDD4;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .pres-badge-live::before {
@@ -942,10 +962,10 @@ body {
 
     <ul class="pres-nav-links">
       <li><a href="#roles">Peran User</a></li>
-      <li><a href="#customer-flow">Fitur Customer</a></li>
-      <li><a href="#admin-panel">Dashboard Admin</a></li>
-      <li><a href="#vendor-panel">Dashboard Vendor</a></li>
-      <li><a href="#security-hosting">Keamanan & Hosting</a></li>
+      <li><a href="#customer-flow">Customer</a></li>
+      <li><a href="#admin-panel">Admin</a></li>
+      <li><a href="#vendor-panel">Vendor</a></li>
+      <li><a href="#security-hosting">Keamanan</a></li>
       <li><a href="#erd-database">ERD Database</a></li>
     </ul>
 
