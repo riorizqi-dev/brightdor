@@ -34,7 +34,7 @@ def create_guide():
 
     sub = doc.add_paragraph()
     sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    s_run = sub.add_run("BrightDor Premier Wedding Marketplace — Progress 10 September 2026\nDisusun Khusus Sebagai Contekan & Panduan Menghadapi Dosen Penguji")
+    s_run = sub.add_run("BrightDor Premier Wedding Marketplace — Progress 3 September 2026\nDisusun Khusus Sebagai Contekan & Panduan Menghadapi Dosen Penguji")
     s_run.font.name = "Arial"
     s_run.font.size = Pt(11)
     s_run.font.italic = True
@@ -176,7 +176,7 @@ def create_guide():
         run_script.font.color.rgb = RGBColor(40, 34, 36)
 
     # Section 5: Security & Hosting
-    add_custom_heading("5. KEAMANAN & STRATEGI HOSTING (SESUAI ARAHAN TANGGAL 10)", 1)
+    add_custom_heading("5. KEAMANAN & STRATEGI HOSTING (SESUAI ARAHAN 3 SEPTEMBER 2026)", 1)
     doc.add_paragraph(
         "Bahan presentasi untuk menjawab pertanyaan dosen terkait kesiapan server dan keamanan data:"
     )
