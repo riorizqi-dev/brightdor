@@ -24,3 +24,6 @@ yarn-error.log
 
 artisan-serve.log
 vite-dev.log
+*.log
+__pycache__/
+*.bak-*

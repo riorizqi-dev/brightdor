@@ -137,7 +137,7 @@
             </aside>
 
             {{-- Mobile filter drawer --}}
-            <div data-mobile-filter-panel class="fixed inset-0 z-50 hidden">
+            <div data-mobile-filter-panel class="fixed inset-0 z-[200] hidden">
                 <div class="absolute inset-0 bg-ink-900/40 backdrop-blur-sm" data-filter-close></div>
                 <div class="absolute inset-y-0 left-0 w-[85%] max-w-sm overflow-y-auto bg-white p-6 shadow-2xl">
                     <div class="mb-6 flex items-center justify-between">

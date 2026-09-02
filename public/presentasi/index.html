@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentasi BrightDor — Premier Wedding Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   DESIGN TOKENS & RESET
+   Estetika: Luxury Editorial Wedding Marketplace (Non-AI Slop, No Emojis, No Clutter)
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-canvas: #FAF8F5;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F3EFEA;
+  --bg-card: #FFFFFF;
+
+  --wine-900: #4A0E1C;
+  --wine-800: #70132B;
+  --wine-700: #8E1B37;
+  --wine-600: #B22246;
+  --wine-100: #FBECEF;
+  --wine-50:  #FDF5F7;
+
+  --gold-700: #8A6D3B;
+  --gold-600: #A88647;
+  --gold-500: #C5A059;
+  --gold-200: #EEDDB8;
+  --gold-100: #F9F4E8;
+
+  --ink-900: #141213;
+  --ink-800: #262224;
+  --ink-700: #403A3C;
+  --ink-600: #5E5659;
+  --ink-400: #8C8286;
+  --ink-300: #BFB7BA;
+  --ink-100: #EBE6E8;
+
+  --border-subtle: #EBE5DC;
+  --border-medium: #DCD3C5;
+  --border-focus:  #C5A059;
+
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cinzel', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-subtle: 0 4px 20px rgba(20, 18, 19, 0.04);
+  --shadow-medium: 0 12px 36px rgba(20, 18, 19, 0.07);
+  --shadow-elevated: 0 24px 64px rgba(20, 18, 19, 0.11);
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--ink-800);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   NAVIGATION BAR (STICKY TOP PRESENTATION HEADER)
+   ========================================================================== */
+.pres-header {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background: rgba(250, 248, 245, 0.88);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.3s ease;
+}
+
+.pres-header-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pres-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.pres-brand-logo {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--wine-700), var(--wine-900));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(112, 19, 43, 0.25);
+}
+
+.pres-brand-text {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  letter-spacing: -0.01em;
+}
+
+.pres-brand-text span {
+  color: var(--wine-700);
+}
+
+.pres-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+}
+
+.pres-nav-links a {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink-600);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pres-nav-links a:hover,
+.pres-nav-links a.active {
+  color: var(--wine-800);
+  background: var(--wine-50);
+}
+
+.pres-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #E8F7EE;
+  color: #0E623B;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid #C4EDD4;
+}
+
+.pres-badge-live::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.9); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(0.9); opacity: 1; }
+}
+
+/* ==========================================================================
+   SIDEBAR DOT NAVIGATION
+   ========================================================================== */
+.sidebar-indicator {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dot-item {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ink-300);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+  text-decoration: none;
+}
+
+.dot-item.active {
+  background: var(--wine-700);
+  transform: scale(1.4);
+  box-shadow: 0 0 0 4px rgba(142, 27, 55, 0.2);
+}
+
+.dot-item:hover {
+  background: var(--gold-600);
+}
+
+.dot-tooltip {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--ink-900);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: var(--shadow-medium);
+}
+
+.dot-item:hover .dot-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-4px);
+}
+
+/* ==========================================================================
+   HERO / COVER SECTION (ELEGANT EDITORIAL DESIGN - NO HARSH SOLID RED)
+   ========================================================================== */
+.hero-cover {
+  padding: 100px 32px 120px;
+  background: radial-gradient(circle at 50% 10%, #FFFFFF 0%, var(--bg-canvas) 70%);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-cover::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(197, 160, 89, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: var(--wine-50);
+  border: 1px solid rgba(142, 27, 55, 0.18);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--wine-800);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink-900);
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.hero-title span {
+  font-style: italic;
+  color: var(--wine-800);
+  font-weight: 400;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  color: var(--ink-600);
+  max-width: 720px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+
+.hero-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 820px;
+  margin: 40px auto 0;
+  text-align: left;
+}
+
+.meta-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-subtle);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.meta-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold-500);
+}
+
+.meta-card-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold-700);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.meta-card-value {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink-900);
+}
+
+.meta-card-desc {
+  font-size: 0.8rem;
+  color: var(--ink-400);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   MAIN CONTENT CONTAINER
+   ========================================================================== */
+.pres-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px;
+}
+
+.section-anchor {
+  scroll-margin-top: 90px;
+  margin-bottom: 120px;
+}
+
+.section-head {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 60px;
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--wine-700);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+  font-weight: 700;
+  color: var(--ink-900);
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--ink-600);
+  line-height: 1.7;
+}
+
+/* ==========================================================================
+   USER ROLES SECTION (MODERN LUXURY CARDS WITH CLEAN SVG ICONS)
+   ========================================================================== */
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.role-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  box-shadow: var(--shadow-subtle);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.role-box:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-500);
+  box-shadow: var(--shadow-medium);
+}
+
+.role-icon-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  border: 1px solid transparent;
+}
+
+.role-box-couple .role-icon-wrap {
+  background: var(--wine-50);
+  color: var(--wine-700);
+  border-color: rgba(142, 27, 55, 0.15);
+}
+
+.role-box-vendor .role-icon-wrap {
+  background: var(--gold-100);
+  color: var(--gold-700);
+  border-color: rgba(197, 160, 89, 0.25);
+}
+
+.role-box-admin .role-icon-wrap {
+  background: #EEF2FF;
+  color: #4338CA;
+  border-color: #C7D2FE;
+}
+
+.role-box-badge {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.role-box-couple .role-box-badge { background: var(--wine-50); color: var(--wine-800); }
+.role-box-vendor .role-box-badge { background: var(--gold-100); color: var(--gold-700); }
+.role-box-admin .role-box-badge { background: #EEF2FF; color: #4338CA; }
+
+.role-box-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 8px;
+}
+
+.role-box-desc {
+  font-size: 0.9rem;
+  color: var(--ink-600);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.role-feature-list {
+  list-style: none;
+  margin-top: auto;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 20px;
+}
+
+.role-feature-list li {
+  font-size: 0.86rem;
+  color: var(--ink-700);
+  padding: 7px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+
+.role-feature-list li svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--wine-600);
+}
+
+/* ==========================================================================
+   FEATURE SCREEN SHOWCASE (1-BY-1, FULL WIDTH, CLEAR BROWSER CHROME)
+   ========================================================================== */
+.feature-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  margin-bottom: 72px;
+  box-shadow: var(--shadow-subtle);
+  transition: box-shadow 0.3s ease;
+}
+
+.feature-block:hover {
+  box-shadow: var(--shadow-medium);
+}
+
+.feature-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.feature-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--wine-700);
+}
+
+.feature-number {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold-600);
+}
+
+/* Browser Mockup Window */
+.browser-window {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-medium);
+  overflow: hidden;
+  box-shadow: var(--shadow-medium);
+  background: #FFFFFF;
+  margin-bottom: 32px;
+}
+
+.browser-bar {
+  background: #F6F4F0;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.browser-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.browser-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dot-red { background: #FF5F56; border: 1px solid #E0443E; }
+.dot-yellow { background: #FFBD2E; border: 1px solid #DEA123; }
+.dot-green { background: #27C93F; border: 1px solid #1AAB29; }
+
+.browser-url {
+  flex: 1;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 4px 14px;
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  color: var(--ink-400);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.browser-url svg {
+  width: 12px;
+  height: 12px;
+  color: var(--gold-600);
+}
+
+.browser-content {
+  background: #FFFFFF;
+  width: 100%;
+  display: block;
+}
+
+.browser-content img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Modal screenshot framed view */
+.modal-frame-view {
+  background: #231F20;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-frame-view img {
+  max-width: 720px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* Feature Explanations Below Screenshot */
+.feature-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.feature-detail-main h3 {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.feature-detail-main p {
+  font-size: 0.96rem;
+  color: var(--ink-600);
+  line-height: 1.75;
+}
+
+.feature-specs-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+}
+
+.feature-specs-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--wine-800);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.feature-specs-list {
+  list-style: none;
+}
+
+.feature-specs-list li {
+  font-size: 0.88rem;
+  color: var(--ink-700);
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--border-subtle);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.feature-specs-list li:last-child {
+  border-bottom: none;
+}
+
+.feature-specs-list li svg {
+  width: 16px;
+  height: 16px;
+  color: var(--gold-600);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* ==========================================================================
+   ADMIN DASHBOARD ARCHITECTURE & SPECIFICATIONS
+   ========================================================================== */
+.admin-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.pillar-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-subtle);
+  border-top: 4px solid var(--wine-700);
+}
+
+.pillar-card:nth-child(2) { border-top-color: var(--gold-500); }
+.pillar-card:nth-child(3) { border-top-color: #2563EB; }
+
+.pillar-card-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-400);
+  margin-bottom: 10px;
+}
+
+.pillar-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 12px;
+}
+
+.pillar-card-desc {
+  font-size: 0.88rem;
+  color: var(--ink-600);
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   SECURITY & HOSTING SPECIFICATIONS
+   ========================================================================== */
+.security-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.sec-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 28px 30px;
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  gap: 20px;
+  transition: border-color 0.2s;
+}
+
+.sec-card:hover {
+  border-color: var(--gold-500);
+}
+
+.sec-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--bg-subtle);
+  color: var(--wine-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sec-title {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 6px;
+}
+
+.sec-desc {
+  font-size: 0.88rem;
+  color: var(--ink-600);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   ERD DATABASE SECTION (LARGE, SHARP, INTERACTIVE BREAKDOWN)
+   ========================================================================== */
+.erd-viewer {
+  background: #FFFFFF;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-medium);
+  margin-bottom: 50px;
+  overflow-x: auto;
+}
+
+.erd-viewer img {
+  width: 100%;
+  min-width: 1200px;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+.erd-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 24px;
+}
+
+.erd-mod-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px 26px;
+  border-left: 4px solid var(--wine-700);
+  box-shadow: var(--shadow-subtle);
+}
+
+.erd-mod-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-900);
+  margin-bottom: 6px;
+}
+
+.erd-mod-desc {
+  font-size: 0.85rem;
+  color: var(--ink-600);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.erd-table-list {
+  background: var(--bg-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--wine-800);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.pres-footer {
+  background: var(--ink-900);
+  color: #FFFFFF;
+  padding: 60px 32px 40px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+}
+
+.pres-footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pres-footer-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gold-500);
+  margin-bottom: 10px;
+}
+
+.pres-footer-desc {
+  font-size: 0.9rem;
+  color: var(--ink-300);
+  margin-bottom: 30px;
+  line-height: 1.7;
+}
+
+.pres-footer-meta {
+  font-size: 0.78rem;
+  color: var(--ink-400);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* SVG Helpers */
+.svg-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 992px) {
+  .roles-grid, .admin-pillars-grid, .security-grid, .hero-meta-grid { grid-template-columns: 1fr; }
+  .feature-detail-grid { grid-template-columns: 1fr; }
+  .feature-block { padding: 24px; }
+  .sidebar-indicator { display: none; }
+  .pres-nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- STICKY TOPBAR HEADER -->
+<header class="pres-header">
+  <div class="pres-header-inner">
+    <a href="#top" class="pres-brand">
+      <div class="pres-brand-logo">
+        <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+      </div>
+      <div class="pres-brand-text">Bright<span>Dor</span></div>
+    </a>
+
+    <ul class="pres-nav-links">
+      <li><a href="#roles">Peran User</a></li>
+      <li><a href="#customer-flow">Fitur Customer</a></li>
+      <li><a href="#admin-panel">Dashboard Admin</a></li>
+      <li><a href="#vendor-panel">Dashboard Vendor</a></li>
+      <li><a href="#security-hosting">Keamanan & Hosting</a></li>
+      <li><a href="#erd-database">ERD Database</a></li>
+    </ul>
+
+    <div class="pres-badge-live">
+      Progress Tanggal 10
+    </div>
+  </div>
+</header>
+
+<!-- SIDEBAR PROGRESS DOTS -->
+<nav class="sidebar-indicator" aria-label="Navigasi Section">
+  <a href="#top" class="dot-item active"><span class="dot-tooltip">Overview</span></a>
+  <a href="#roles" class="dot-item"><span class="dot-tooltip">Peran Pengguna</span></a>
+  <a href="#customer-flow" class="dot-item"><span class="dot-tooltip">Alur Customer</span></a>
+  <a href="#admin-panel" class="dot-item"><span class="dot-tooltip">Dashboard Admin</span></a>
+  <a href="#vendor-panel" class="dot-item"><span class="dot-tooltip">Dashboard Vendor</span></a>
+  <a href="#security-hosting" class="dot-item"><span class="dot-tooltip">Security & Hosting</span></a>
+  <a href="#erd-database" class="dot-item"><span class="dot-tooltip">Database ERD</span></a>
+</nav>
+
+<!-- ========================================================================
+     HERO COVER (EDITORIAL LUXURY LOOK)
+     ======================================================================== -->
+<section id="top" class="hero-cover">
+  <div class="hero-inner">
+    <div class="hero-pill">
+      <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.67 1.18 6.88L12 17.77l-6.18 3.25L7 14.27 3 9.27l5.91-1.51z"/></svg>
+      Presentasi Kemajuan Proyek Ke-2
+    </div>
+
+    <h1 class="hero-title">
+      BrightDor Premier <span>Marketplace</span>
+    </h1>
+
+    <p class="hero-subtitle">
+      Dokumentasi komprehensif implementasi fungsional, integrasi peran pengguna (Couple, Vendor, Admin), alur transaksi pemesanan langsung & penawaran khusus, serta skema arsitektur database relasional.
+    </p>
+
+    <div class="hero-meta-grid">
+      <div class="meta-card">
+        <div class="meta-card-label">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          Status Implementasi
+        </div>
+        <div class="meta-card-value">Keseluruhan Berjalan</div>
+        <div class="meta-card-desc">Couple, Vendor, dan Admin aktif saling terhubung</div>
+      </div>
+
+      <div class="meta-card">
+        <div class="meta-card-label">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          Skema Database
+        </div>
+        <div class="meta-card-value">37 Tabel Relasional</div>
+        <div class="meta-card-desc">7 modul terstruktur + Spatie Media Library</div>
+      </div>
+
+      <div class="meta-card">
+        <div class="meta-card-label">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          Kepatuhan Pengujian
+        </div>
+        <div class="meta-card-value">54 Test Otomatis</div>
+        <div class="meta-card-desc">174 Assertion 100% Passed (Hijau)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pres-container">
+
+  <!-- ========================================================================
+       SECTION 1: PERAN PENGGUNA (USER ROLES)
+       ======================================================================== -->
+  <section id="roles" class="section-anchor">
+    <div class="section-head">
+      <span class="section-kicker">
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Bagian 1 &mdash; Klasifikasi Akses
+      </span>
+      <h2 class="section-title">Penjelasan Peran Pengguna (User Roles)</h2>
+      <p class="section-desc">
+        Aplikasi BrightDor dirancang dengan pembagian hak akses (Role-Based Access Control) yang ketat. Masing-masing tipe pengguna memiliki dashboard, alur kerja, dan kewenangan transaksi yang saling melengkapi.
+      </p>
+    </div>
+
+    <div class="roles-grid">
+      <!-- Couple -->
+      <div class="role-box role-box-couple">
+        <span class="role-box-badge">End-User / Customer</span>
+        <div class="role-icon-wrap">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        </div>
+        <h3 class="role-box-title">Couple (Calon Pengantin)</h3>
+        <p class="role-box-desc">
+          Pengguna publik pencari jasa pernikahan. Bertindak sebagai pemesan paket, pengaju penawaran anggaran, dan pemberi ulasan resmi pasca-acara.
+        </p>
+        <ul class="role-feature-list">
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Eksplorasi vendor berdasarkan kota &amp; kategori</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Reservasi tanggal langsung (Booking Form)</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Negosiasi harga khusus via Penawaran (Offer Modal)</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Pelacakan status transaksi di dashboard <em>Booking Saya</em></span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Pemberian rating &amp; ulasan terverifikasi</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Reset kata sandi mandiri (Self-Service)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Vendor -->
+      <div class="role-box role-box-vendor">
+        <span class="role-box-badge">Mitra Penyedia Jasa</span>
+        <div class="role-icon-wrap">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"/></svg>
+        </div>
+        <h3 class="role-box-title">Vendor (Mitra Bisnis)</h3>
+        <p class="role-box-desc">
+          Pelaku usaha industri pernikahan (Fotografer, Venue, MUA, Catering, dll). Memiliki panel khusus berbasis Filament untuk mengelola etalase bisnis.
+        </p>
+        <ul class="role-feature-list">
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Manajemen profil bisnis, media portofolio &amp; logo</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Katalog paket layanan (harga, diskon, kapasitas, fasilitas)</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Konfirmasi dan pengelolaan status pesanan masuk</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Pengajuan pencairan saldo pendapatan (Payout)</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Unggah dokumen legalitas untuk badge verifikasi</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Admin -->
+      <div class="role-box role-box-admin">
+        <span class="role-box-badge">Platform Superuser</span>
+        <div class="role-icon-wrap">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="role-box-title">Admin (Pengelola Sistem)</h3>
+        <p class="role-box-desc">
+          Superuser pengendali operasional BrightDor. Mengawasi kepatuhan transaksi, moderasi profil vendor, verifikasi pembayaran manual, dan keamanan data.
+        </p>
+        <ul class="role-feature-list">
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Validasi pembayaran otomatis &amp; semi-otomatis</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Moderasi kelayakan vendor &amp; kurasi vendor unggulan</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Pengawasan transaksi global &amp; pemotongan komisi platform</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Pemeriksaan riwayat audit keamanan (Audit Logs)</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Otoritas data tanpa campur tangan password user</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 2: ALUR FITUR CUSTOMER-FACING (1-BY-1 FULL VIEW)
+       ======================================================================== -->
+  <section id="customer-flow" class="section-anchor">
+    <div class="section-head">
+      <span class="section-kicker">
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Bagian 2 &mdash; Dokumentasi Visual Lengkap
+      </span>
+      <h2 class="section-title">Alur Pengalaman Customer (Couple)</h2>
+      <p class="section-desc">
+        Setiap tampilan diuji langsung dari browser dalam resolusi layar penuh tanpa pengurangan proporsi, dilengkapi ulasan teknis dan bisnis fungsi fitur.
+      </p>
+    </div>
+
+    <!-- 01: Landing Page Home -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Halaman Utama &amp; Pencarian
+        </div>
+        <div class="feature-number">FITUR 01 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/01_home.png" alt="Halaman Utama BrightDor" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Pusat Penemuan &amp; Navigasi Pernikahan</h3>
+          <p>
+            Halaman awal BrightDor dirancang sebagai pintu gerbang inspirasi pernikahan digital. Calon pengantin dapat langsung melakukan pencarian berbasis nama vendor, kategori, atau domisili kota melalui kotak pencarian pintar di header atas. Bagian beranda juga menyoroti kategori layanan terpopuler, vendor unggulan terverifikasi, dan jaminan keamanan transaksi.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Kapabilitas &amp; Nilai Bisnis
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Global Search Form:</strong> Query otomatis diarahkan ke listing dengan filter terpasang.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Katalog Kategori:</strong> Akses instan ke Venue, Catering, Dekorasi, Fotografer, dll.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Featured Showcase:</strong> Kurasi mitra terbaik untuk meningkatkan konversi transaksi.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02: Scrolled Navbar Liquid Glass -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          Interaksi Navbar Dinamis
+        </div>
+        <div class="feature-number">FITUR 02 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/ (Scrolled State)
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/02_navbar_scrolled.png" alt="Navbar Liquid Glass Scrolled" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Efek Liquid Glass &amp; Optimasi Ruang Vertikal</h3>
+          <p>
+            Ketika halaman di-scroll ke bawah melewati ambang batas 48 piksel, bilah promosi teratas disembunyikan secara halus untuk memaksimalkan area pandang pengguna. Header bertransformasi menggunakan efek <em>glassmorphism</em> (backdrop-filter blur 24px dan saturasi 200%) dengan lapisan latar belakang putih 85% soliditas, memastikan elemen teks di belakangnya tidak bocor/tumpang-tindih.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Keunggulan Teknis UI/UX
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Bebas Ghosting:</strong> Mencegah teks kartu di bawah menembus navbar saat scrolling.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Dropdown "Lainnya":</strong> Overflow terkonfigurasi dengan benar sehingga sub-menu tidak terpotong.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Indikator Aktif Bersih:</strong> Kontras warna teks putih tajam di atas kapsul gradasi merah marun.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03: Category Listing Fotografer -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Listing Vendor Kategori Fotografer
+        </div>
+        <div class="feature-number">FITUR 03 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/vendors/fotografer
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/03_category_listing.png" alt="Listing Fotografer" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Eksplorasi Vendor Spesifik &amp; Sinkronisasi Gambar Cover</h3>
+          <p>
+            Halaman listing menampilkan etalase vendor pada kategori terpilih dengan susunan kartu grid yang informatif. Setiap kartu memuat cover karya portofolio asli (bukan lagi placeholder inisial nama), nama vendor, rating bintang rata-rata, jumlah ulasan, kota domisili, badge status verifikasi, dan estimasi harga termurah.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Rincian Komponen Kartu
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Cover Asli:</strong> Diambil langsung dari Spatie Media Library via relasi portfolio.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Badge Kepercayaan:</strong> Penanda mitra Verified dan Unggulan dari tim admin.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Navigasi Cepat:</strong> Tombol 'Lihat Detail' membawa pengguna ke profil lengkap vendor.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04: Category Listing Venue -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+          Listing Vendor Kategori Venue
+        </div>
+        <div class="feature-number">FITUR 04 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/vendors/venue
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/03b_category_venue.png" alt="Listing Venue" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Katalog Lokasi &amp; Gedung Pernikahan</h3>
+          <p>
+            Kategori Venue mengorganisir opsi gedung, ballroom hotel, hingga lokasi outdoor. Informasi kapasitas tamu dan unit harga disajikan secara transparan guna membantu pasangan menentukan lokasi resepsi yang tepat sebelum menghubungi vendor bersangkutan.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Spesifikasi Layanan Venue
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Harga Paket Gedung:</strong> Transparansi harga per event atau paket pernikahan all-in.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Segmentasi Wilayah:</strong> Penelusuran venue berdasarkan kota besar di seluruh Indonesia.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05: Vendor Detail Page -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Halaman Profil &amp; Galeri Detail Vendor
+        </div>
+        <div class="feature-number">FITUR 05 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/vendor/photo-studio-pro-4
+          </div>
+        </div>
+        <div class="browser-content" style="max-height: 720px; overflow-y: auto;">
+          <img src="assets/04_vendor_detail.png" alt="Detail Profil Vendor" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Profil Menyeluruh, Portofolio Karya, &amp; Pilihan Paket Layanan</h3>
+          <p>
+            Halaman profil lengkap vendor (contoh: <em>Photo Studio Pro</em>) yang menyajikan galeri visual portofolio beresolusi tinggi, narasi tentang studio, alamat workshop terhubung Google Maps, daftar rincian paket layanan (fitur, durasi pemotretan, kapasitas tamu), breakdown bintang rating, dan ulasan asli dari pengguna sebelumnya.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Komponen Inti Profil
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Sticky CTA Sidebar:</strong> Tombol 'Booking Tanggal' dan 'Ajukan Penawaran' selalu siap diakses.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Integrasi WhatsApp Direct:</strong> Menghubungi vendor secara instan untuk konsultasi awal.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Katalog Paket Harga:</strong> Harga diskon vs normal, kapasitas tamu, dan rincian fitur.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06: Booking Date Modal -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          Modal Booking Langsung
+        </div>
+        <div class="feature-number">FITUR 06 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/vendor/photo-studio-pro-4 (Trigger: Booking Tanggal)
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/05_booking_modal.png" alt="Modal Booking Tanggal" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Reservasi Tanggal Acara &amp; Kunci Paket Pasti</h3>
+          <p>
+            Formulir modal interaktif untuk memesan paket pernikahan secara pasti. Modal ini tampil di atas seluruh elemen halaman (z-index level 200, di atas sticky navbar) dengan latar belakang gelap transparan (backdrop blur). Calon pengantin memilih paket layanan yang tersedia, menginput tanggal pelaksanaan acara (dengan validasi tidak boleh tanggal lampau), perkiraan jumlah tamu undangan, data kontak lengkap, dan catatan khusus. Begitu dikirimkan, kode booking unik otomatis diterbitkan ke database dengan status <em>pending</em>.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Validasi &amp; Aturan Bisnis
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Tampil di Atas Navbar (z-[200]):</strong> Modal tidak lagi tertutup bilah navigasi saat dibuka.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Paket Dropdown:</strong> Otomatis menampilkan harga resmi dari data tabel <code>services</code>.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Request Mode 'Date':</strong> Menandai reservasi pasti sehingga vendor dapat memblokir jadwal.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Auto Fallback Modal:</strong> Jika ada error validasi input, modal otomatis terbuka kembali.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07: Custom Offer Modal -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+          Modal Ajukan Penawaran Khusus
+        </div>
+        <div class="feature-number">FITUR 07 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/vendor/photo-studio-pro-4 (Trigger: Ajukan Penawaran)
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/06_offer_modal.png" alt="Modal Ajukan Penawaran" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Fleksibilitas Negosiasi Anggaran &amp; Custom Request</h3>
+          <p>
+            Solusi bagi calon pengantin yang membutuhkan penyesuaian paket di luar paket standar (misal: penambahan jam kerja dokumentasi, pengurangan jumlah photobook, atau penyesuaian plafon budget). Form mengarahkan pengguna untuk menceritakan spesifikasi kebutuhan acara agar vendor dapat mengkaji dan mengajukan estimasi harga penawaran khusus.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Mekanisme Negosiasi Platform
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Mode 'Quote':</strong> Membedakan penawaran dari pesanan tetap sehingga vendor merespons via penawaran.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Formulir Terpusat:</strong> Memanfaatkan 1 modal adaptif yang hemat kode namun memiliki dua fungsi bisnis.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08: Customer Bookings Dashboard -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          Dashboard Pesanan Customer
+        </div>
+        <div class="feature-number">FITUR 08 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/booking-saya
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/17_customer_bookings.png" alt="Halaman Booking Saya" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Pelacakan Transaksi &amp; Hak Pembatalan Pasangan</h3>
+          <p>
+            Setelah masuk dengan akun Couple (contoh: <code>couple.ext1@brightdor.test</code>), calon pengantin memiliki dashboard mandiri untuk memantau semua reservasi yang pernah diajukan. Status transparan mulai dari <em>Pending</em> (menunggu konfirmasi vendor), <em>Confirmed</em> (disetujui), <em>On Progress</em>, hingga <em>Completed</em>. Pasangan juga dapat membatalkan pesanan jika masih berstatus pending.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Keamanan Data &amp; Privasi
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Isolasi Multi-Tenancy:</strong> User hanya melihat booking miliknya sendiri via <code>user_id</code> auth.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Ulasan Terkunci:</strong> Tombol 'Beri Review' hanya aktif jika pesanan telah berstatus 'Completed'.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 09: Login Page -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
+          Autentikasi Masuk Pengguna
+        </div>
+        <div class="feature-number">FITUR 09 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/login
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/07_login_empty.png" alt="Halaman Login" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Gerbang Masuk Akun &amp; Perbaikan Kontras Autofill</h3>
+          <p>
+            Formulir login bersih yang mendukung autentikasi akun publik. Masalah sebelumnya di mana browser password manager menghasilkan teks putih di atas latar belakang putih saat melakukan autofill telah diperbaiki secara tuntas melalui CSS override tingkat tinggi (<code>-webkit-box-shadow inset #ffffff !important</code> dan <code>-webkit-text-fill-color: #222222 !important</code>), sehingga teks isian tetap terbaca tajam dan nyaman.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Perlindungan &amp; UX
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Proteksi Brute-Force:</strong> Limitasi percobaan login dan validasi token session.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Redirect Cerdas:</strong> Vendor yang login via form publik otomatis dialihkan ke vendor panel.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10: Register Page -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+          Registrasi Calon Pengantin Baru
+        </div>
+        <div class="feature-number">FITUR 10 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/register
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/08_register.png" alt="Halaman Register" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Pendaftaran Instan Pasangan Baru</h3>
+          <p>
+            Alur pendaftaran yang ringkas memudahkan pengguna bergabung ke BrightDor hanya dengan menyertakan nama lengkap, alamat email aktif, dan kata sandi yang terenkripsi. Pengguna yang terdaftar langsung mendapatkan peran <code>couple</code> dan diarahkan langsung ke katalog vendor untuk memulai perencanaan pernikahan.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Validasi Server-Side
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Email Unique Check:</strong> Mencegah duplikasi data pendaftaran.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Password Hashing:</strong> Otomatis di-hash menggunakan algoritma Bcrypt (work factor 12).</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11: Forgot Password Page (FIXED 404) -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Pemulihan Akun Mandiri (Self-Service)
+        </div>
+        <div class="feature-number">FITUR 11 / 11</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/lupa-password
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/16_forgot_password.png" alt="Halaman Lupa Password" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Reset Kata Sandi Mandiri &amp; Perlindungan Privasi</h3>
+          <p>
+            Sesuai prinsip keamanan modern dan arahan presentasi: <strong>Admin tidak boleh mengubah password pengguna secara manual</strong> untuk menghindari celah social engineering dan pelanggaran privasi. Halaman <code>/lupa-password</code> menyediakan mekanisme token terenkripsi yang dikirimkan langsung ke email pemilik akun asli dengan batas kadaluarsa otomatis.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Mekanisme Token Keamanan
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Tabel password_reset_tokens:</strong> Token acak 64 karakter dengan hash SHA-256.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Anti-Enumeration:</strong> Respon umum agar penyerang tidak bisa menebak email terdaftar.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================
+       SECTION 3: DASHBOARD ADMIN (FULL SCREENS + ARSITEKTUR TIPE ADMIN)
+       ======================================================================== -->
+  <section id="admin-panel" class="section-anchor">
+    <div class="section-head">
+      <span class="section-kicker">
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Bagian 3 &mdash; Kendali Platform
+      </span>
+      <h2 class="section-title">Dashboard Admin (Filament v5)</h2>
+      <p class="section-desc">
+        Pusat pengelolaan terpadu yang dirancang untuk menangani beban operasional tinggi dengan otomatisasi cerdas, validasi pembayaran terintegrasi, dan keamanan berlapis.
+      </p>
+    </div>
+
+    <!-- 3 Core Admin Pillars (From Presentation 2 Directives) -->
+    <div class="admin-pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-card-badge">Pilar 1 &mdash; Pembayaran</div>
+        <h3 class="pillar-card-title">Validasi Pembayaran Semi-Auto</h3>
+        <p class="pillar-card-desc">
+          Transaksi dari gateway pembayaran (Midtrans/Xendit) tervalidasi otomatis melalui webhook callback server-to-server. Namun untuk pembayaran transfer manual, admin memiliki antarmuka khusus untuk mencocokkan bukti mutasi rekening secara cepat sebelum mengubah status menjadi lunas.
+        </p>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-card-badge">Pilar 2 &mdash; Skalabilitas Operasional</div>
+        <h3 class="pillar-card-title">Manajemen Menu Terstruktur</h3>
+        <p class="pillar-card-desc">
+          Ketika data bisnis bertumbuh dengan puluhan menu (Users, Vendors, Services, Bookings, Transactions, Testimonials, Settings), arsitektur Filament mengelompokkannya ke dalam klaster navigasi (Master, Marketplace, Keuangan, Konten) lengkap dengan fitur pencarian global (Ctrl+K) agar admin tidak kewalahan.
+        </p>
+      </div>
+
+      <div class="pillar-card">
+        <div class="pillar-card-badge">Pilar 3 &mdash; Otomatisasi Sistem</div>
+        <h3 class="pillar-card-title">Otomatis Tervalidasi Sendiri</h3>
+        <p class="pillar-card-desc">
+          Komputasi komisi platform (contoh: 10% default), akumulasi rating vendor saat review baru masuk, pembaruan agregasi ulasan, dan pergantian status langganan vendor (subscription active vs expired) dieksekusi secara otomatis oleh background event listener tanpa memerlukan intervensi manual admin.
+        </p>
+      </div>
+    </div>
+
+    <!-- Screen Admin 1: Overview Dashboard -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          Dashboard Ringkasan Admin
+        </div>
+        <div class="feature-number">ADMIN SCREEN 01 / 05</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/admin
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/09_admin_dashboard.png" alt="Admin Dashboard Overview" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Monitoring Metrik Finansial &amp; Aktivitas Platform</h3>
+          <p>
+            Tampilan utama panel admin yang menghadirkan ringkasan metrik kesehatan bisnis: total pendapatan kotor, estimasi komisi bersih platform, jumlah pesanan aktif, total pengguna terdaftar, serta grafik tren transaksi harian. Tema visual dashboard telah diselaraskan penuh dengan palet warna BrightDor (maroon, rose, dan aksen emas).
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Widget Statistik Utama
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Omset &amp; Komisi:</strong> Perhitungan pendapatan otomatis dari transaksi sukses.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Alert Status:</strong> Penanda transaksi yang membutuhkan review manual admin.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen Admin 2: Bookings Management -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+          Tabel Kelola Pemesanan
+        </div>
+        <div class="feature-number">ADMIN SCREEN 02 / 05</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/admin/bookings
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/10_admin_bookings.png" alt="Admin Kelola Bookings" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Kontrol Lifecycle Pemesanan &amp; Penanganan Sengketa</h3>
+          <p>
+            Admin dapat meninjau seluruh transaksi antar couple dan vendor. Filter cerdas memungkinkan pengelompokan berdasarkan status (Pending, Confirmed, On Progress, Completed, Cancelled). Dilengkapi tombol aksi cepat untuk melihat rincian pemesan, tanggal acara, serta verifikasi kelayakan status pencairan dana.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Fitur Manajemen Booking
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Paginasi &amp; Pencarian:</strong> Responsif memuat ratusan data pesanan tanpa hambatan.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Audit Jejak Status:</strong> Perubahan status dari booking dicatat ke riwayat aktivitas.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen Admin 3: Users Management -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Tabel Kelola Semua Pengguna
+        </div>
+        <div class="feature-number">ADMIN SCREEN 03 / 05</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/admin/users
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/11_admin_users.png" alt="Admin Kelola Users" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Otoritas User, Manajemen Status, &amp; Langganan Vendor</h3>
+          <p>
+            Modul pengawasan akun pengguna yang mencakup peran Couple, Vendor, dan Admin. Admin dapat menonaktifkan akun yang melanggar ketentuan, memeriksa status langganan mitra (Active / Expired), serta melihat tanggal terakhir login tanpa memiliki akses terhadap password plaintext user.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Keamanan Data Pengguna
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Badge Tipe Akun:</strong> Pembedaan visual yang jelas antar peran pengguna.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Vendor Subscription Status:</strong> Tracking otomatis masa aktif lisensi vendor.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen Admin 4: Vendors Management -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>
+          Tabel Kelola Mitra Vendor
+        </div>
+        <div class="feature-number">ADMIN SCREEN 04 / 05</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/admin/vendors
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/12_admin_vendors.png" alt="Admin Kelola Vendors" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Verifikasi Profil, Akreditasi Dokumen, &amp; Kurasi Unggulan</h3>
+          <p>
+            Daftar seluruh profil bisnis mitra pernikahan. Admin bertugas memverifikasi kelayakan legalitas dokumen (KTP, NIB, portofolio) sebelum memberikan badge <em>Verified</em>, serta menentukan mitra dengan performa tinggi untuk disematkan sebagai <em>Vendor Unggulan</em> di halaman depan aplikasi.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Tindakan Kurasi Vendor
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>One User One Vendor:</strong> Validasi relasi ketat 1 akun pemilik hanya untuk 1 vendor.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Kategori Terpadu:</strong> Klasifikasi jenis jasa dan pengaturan rate komisi default.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen Admin 5: Transactions & Finance -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+          Monitoring Transaksi &amp; Arus Keuangan
+        </div>
+        <div class="feature-number">ADMIN SCREEN 05 / 05</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/admin/transactions
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/13_admin_transactions.png" alt="Admin Monitor Transaksi" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Pencatatan Keuangan Polimorfik &amp; Alur Payout</h3>
+          <p>
+            Tabel transaksi mencatat semua aliran dana masuk dan keluar (pembayaran booking pernikahan maupun pesanan undangan digital) melalui relasi polimorfik <code>payable</code>. Admin dapat memvalidasi metode pembayaran yang digunakan (Midtrans, Xendit, Manual), memeriksa kode unik transaksi, dan mengeksekusi pencairan dana (payout) ke rekening bank vendor mitra.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Transparansi Aliran Dana
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Net Amount Calculation:</strong> Otomatis memisahkan nilai pembayaran dari potongan fee &amp; komisi.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Status Lifecycle:</strong> Pending &rarr; Success &rarr; Paid Out secara akuntabel.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================
+       SECTION 4: DASHBOARD VENDOR
+       ======================================================================== -->
+  <section id="vendor-panel" class="section-anchor">
+    <div class="section-head">
+      <span class="section-kicker">
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>
+        Bagian 4 &mdash; Ruang Kerja Mitra
+      </span>
+      <h2 class="section-title">Dashboard Vendor (Mitra Bisnis)</h2>
+      <p class="section-desc">
+        Antarmuka mandiri khusus vendor untuk memantau performa usaha, mengelola etalase paket layanan, dan memproses setiap booking yang diajukan oleh calon pengantin.
+      </p>
+    </div>
+
+    <!-- Screen Vendor: Dashboard -->
+    <div class="feature-block">
+      <div class="feature-meta">
+        <div class="feature-tag">
+          <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          Panel Utama Mitra Vendor
+        </div>
+        <div class="feature-number">VENDOR SCREEN 01 / 01</div>
+      </div>
+
+      <div class="browser-window">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <span class="browser-dot dot-red"></span>
+            <span class="browser-dot dot-yellow"></span>
+            <span class="browser-dot dot-green"></span>
+          </div>
+          <div class="browser-url">
+            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            http://127.0.0.1:8000/vendor
+          </div>
+        </div>
+        <div class="browser-content">
+          <img src="assets/14_vendor_dashboard.png" alt="Vendor Dashboard" loading="lazy">
+        </div>
+      </div>
+
+      <div class="feature-detail-grid">
+        <div class="feature-detail-main">
+          <h3>Kendali Operasional Usaha Jasa Pernikahan</h3>
+          <p>
+            Vendor (contoh akun mitra <em>rina@elegantvenue.id</em>) memiliki akses terisolasi untuk melihat statistik performa bisnisnya sendiri: jumlah pesanan baru masuk, estimasi saldo pendapatan yang siap dicairkan, ulasan rating yang diberikan pasangan pengantin, serta pintasan cepat untuk menambah paket layanan baru atau memperbarui foto portofolio.
+          </p>
+        </div>
+        <div class="feature-specs-box">
+          <div class="feature-specs-title">
+            <svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Kewenangan Mitra Vendor
+          </div>
+          <ul class="feature-specs-list">
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Vendor Bookings:</strong> Menerima atau menjadwalkan ulang booking dari pasangan.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Vendor Services:</strong> Mengatur paket harga, durasi, dan diskon promosi.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Vendor Payout:</strong> Mengajukan pencairan dana hasil transaksi selesai ke bank.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================
+       SECTION 5: KEAMANAN & STRATEGI HOSTING (BERDASARKAN ARAHAN PRESENTASI)
+       ======================================================================== -->
+  <section id="security-hosting" class="section-anchor">
+    <div class="section-head">
+      <span class="section-kicker">
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Bagian 5 &mdash; Infrastruktur &amp; Standar Operasional
+      </span>
+      <h2 class="section-title">Keamanan Pengguna &amp; Efisiensi Hosting</h2>
+      <p class="section-desc">
+        Prinsip arsitektur teknis BrightDor mengedepankan efisiensi biaya infrastruktur pada tahap awal (tidak boros resource) sembari mempertahankan standar keamanan data enterprise yang kokoh.
+      </p>
+    </div>
+
+    <div class="security-grid">
+      <div class="sec-card">
+        <div class="sec-icon">
+          <svg class="svg-icon" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+          <h3 class="sec-title">Enkripsi Kata Sandi Bcrypt</h3>
+          <p class="sec-desc">
+            Semua password pengguna di-hash satu arah menggunakan algoritma Bcrypt (work factor 12) dengan salt dinamis. Teks asli kata sandi tidak pernah disimpan dan bahkan admin superuser tidak memiliki kemampuan untuk membacanya.
+          </p>
+        </div>
+      </div>
+
+      <div class="sec-card">
+        <div class="sec-icon">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        </div>
+        <div>
+          <h3 class="sec-title">Lupa Password Mandiri (Anti-Social Engineering)</h3>
+          <p class="sec-desc">
+            Sesuai standar operasional: <strong>Admin tidak mengubah password user</strong>. Pengguna yang lupa kredensial mereset sendiri via email token berbatas waktu untuk mencegah penipuan manipulasi identitas (social engineering).
+          </p>
+        </div>
+      </div>
+
+      <div class="sec-card">
+        <div class="sec-icon">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+        </div>
+        <div>
+          <h3 class="sec-title">Audit Logging Terstruktur</h3>
+          <p class="sec-desc">
+            Setiap aksi krusial sistem (persetujuan dokumen vendor, perubahan nominal harga paket, transaksi pembayaran, pencairan saldo payout) dicatat ke tabel <code>audit_logs</code> lengkap dengan metadata IP address, user-agent, nilai lama, dan nilai baru.
+          </p>
+        </div>
+      </div>
+
+      <div class="sec-card">
+        <div class="sec-icon">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h3 class="sec-title">Proteksi Otomatis CSRF &amp; XSS</h3>
+          <p class="sec-desc">
+            Laravel menyisipkan verifikasi CSRF token di setiap request formulir guna menangkal pemalsuan permintaan antar-situs, serta menerapkan context-aware HTML escaping otomatis pada Blade template engine untuk membendung injeksi skrip XSS.
+          </p>
+        </div>
+      </div>
+
+      <div class="sec-card">
+        <div class="sec-icon">
+          <svg class="svg-icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        <div>
+          <h3 class="sec-title">Strategi Hosting Database Efisien</h3>
+          <p class="sec-desc">
+            Sesuai arahan: <em>"Ketika hosting databasenya tidak sampai banyak dan sesuai standar dan kebutuhannya"</em>. Database MySQL dikonfigurasi dengan indexing tepat dan normalisasi relasional terukur sehingga berjalan ringan tanpa membebani biaya server pada tahap awal rilis.
+          </p>
+        </div>
+      </div>
+
+      <div class="sec-card">
+        <div class="sec-icon">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M2 12h20"/><path d="M20 12v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8"/><path d="m17 7-5-5-5 5"/><path d="M12 2v10"/></svg>
+        </div>
+        <div>
+          <h3 class="sec-title">Skalabilitas Domain &amp; Upgrade Infrastruktur</h3>
+          <p class="sec-desc">
+            Sesuai arahan: <em>"Ketika domain lemah harus di-upgrade kembali"</em>. Arsitektur aplikasi decoupling (stateless web + media symlink terpisah) siap dipindahkan secara mulus dari shared hosting awal ke VPS performa tinggi atau cloud container (DigitalOcean/AWS) saat lonjakan trafik pengguna terjadi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 6: ERD DATABASE LENGKAP, TAJAM & JELAS (3200 x 2200 PX)
+       ======================================================================== -->
+  <section id="erd-database" class="section-anchor">
+    <div class="section-head">
+      <span class="section-kicker">
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        Bagian 6 &mdash; Arsitektur Basis Data (37 Tabel)
+      </span>
+      <h2 class="section-title">Entity Relationship Diagram (ERD)</h2>
+      <p class="section-desc">
+        Skema database aktual hasil migrasi BrightDor (September 2026). Diagram disajikan dalam resolusi ultra-tinggi <strong>3200 &times; 2200 piksel</strong> dengan tipografi tajam, tabel diperbesar, serta penjabaran kolom dan relasi lengkap agar mudah diuji dan dipresentasikan di hadapan dosen/penguji.
+      </p>
+    </div>
+
+    <!-- ERD Controls & Fullscreen Link -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+      <div style="font-size:0.88rem;color:var(--ink-600);display:flex;align-items:center;gap:8px;">
+        <svg class="svg-icon" style="width:16px;height:16px;color:var(--gold-600);" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg>
+        <span>Diagram interaktif scroll horizontal &bull; Resolusi asli: <strong>3200 &times; 2200 px</strong></span>
+      </div>
+      <a href="assets/erd.png" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--wine-800);color:#ffffff;border-radius:var(--radius-sm);text-decoration:none;font-size:0.84rem;font-weight:700;box-shadow:var(--shadow-subtle);transition:all 0.2s ease;">
+        <span>Buka Gambar ERD Ukuran Penuh (Tab Baru)</span>
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+      </a>
+    </div>
+
+    <!-- High-Res Diagram Canvas View (Ultra Sharp & Scrollable) -->
+    <div class="erd-viewer" style="border:2px solid var(--border-medium);box-shadow:var(--shadow-elevated);">
+      <img src="assets/erd.png" alt="BrightDor Entity Relationship Diagram (3200x2200)" style="width:100%;min-width:1600px;display:block;" loading="lazy">
+    </div>
+
+    <!-- Structured 7 Modules Breakdown with Column Details -->
+    <h3 style="font-family:var(--font-serif);font-size:1.85rem;color:var(--ink-900);margin:60px 0 20px;text-align:center;">
+      Katalog Rinci 7 Modul &amp; Penjelasan Relasi Database
+    </h3>
+    <p style="text-align:center;max-width:760px;margin:0 auto 40px;color:var(--ink-600);font-size:0.95rem;">
+      Rincian struktur kolom kunci, tipe data, dan aturan keterkaitan antar tabel untuk menjawab pertanyaan teknis dosen.
+    </p>
+
+    <div class="erd-modules-grid">
+      <!-- Modul 1 -->
+      <div class="erd-mod-card" style="border-left-color: #141414;">
+        <h4 class="erd-mod-name">1. Modul Autentikasi &amp; Pengguna (Users &amp; RBAC)</h4>
+        <p class="erd-mod-desc">Pondasi keamanan akses untuk memisahkan hak login admin, mitra vendor, dan calon pengantin (couple).</p>
+        <div class="erd-table-list" style="margin-bottom:12px;">
+          <strong>Tabel:</strong> users, password_reset_tokens, sessions, roles, permissions, model_has_roles, model_has_permissions, role_has_permissions
+        </div>
+        <div style="font-size:0.82rem;color:var(--ink-700);line-height:1.6;">
+          &bull; <strong>users:</strong> PK <code>id</code>, <code>email</code> (unique), <code>password</code> (bcrypt hash), <code>user_type</code> (admin/vendor/couple), <code>status</code>, field langganan vendor (<code>vendor_subscription_status</code>, <code>vendor_subscription_expires_at</code>).<br>
+          &bull; <strong>password_reset_tokens:</strong> PK <code>email</code>, token acak SHA-256 untuk reset mandiri.<br>
+          &bull; <strong>Relasi:</strong> 1 User terhubung ke 1 Vendor (unique), atau 1 User terhubung ke banyak Bookings.
+        </div>
+      </div>
+
+      <!-- Modul 2 -->
+      <div class="erd-mod-card" style="border-left-color: #9A7432;">
+        <h4 class="erd-mod-name">2. Modul Sistem Mitra Vendor &amp; Layanan</h4>
+        <p class="erd-mod-desc">Entitas profil bisnis penyedia jasa pernikahan, katalog kategori, paket harga, dan berkas verifikasi resmi.</p>
+        <div class="erd-table-list" style="margin-bottom:12px;">
+          <strong>Tabel:</strong> vendors, vendor_categories, services, vendor_documents
+        </div>
+        <div style="font-size:0.82rem;color:var(--ink-700);line-height:1.6;">
+          &bull; <strong>vendors:</strong> PK <code>id</code>, FK <code>user_id</code> (unique 1:1), FK <code>vendor_category_id</code>, <code>business_name</code>, <code>slug</code>, <code>city</code>, <code>rating_avg</code>, <code>status</code> (pending/approved/rejected), <code>is_verified</code>.<br>
+          &bull; <strong>services:</strong> PK <code>id</code>, FK <code>vendor_id</code> (1:N), <code>name</code>, <code>price</code>, <code>discount_price</code>, <code>capacity</code>, <code>duration</code>, <code>features</code> (JSON).<br>
+          &bull; <strong>vendor_documents:</strong> PK <code>id</code>, FK <code>vendor_id</code>, dokumen KTP/NIB/sertifikasi untuk ditelaah admin.
+        </div>
+      </div>
+
+      <!-- Modul 3 -->
+      <div class="erd-mod-card" style="border-left-color: #1D4ED8;">
+        <h4 class="erd-mod-name">3. Modul Pemesanan (Booking) &amp; Ulasan (Review)</h4>
+        <p class="erd-mod-desc">Inti transaksi operasional jasa pernikahan antara calon pengantin dengan vendor terpilih.</p>
+        <div class="erd-table-list" style="margin-bottom:12px;">
+          <strong>Tabel:</strong> bookings, reviews
+        </div>
+        <div style="font-size:0.82rem;color:var(--ink-700);line-height:1.6;">
+          &bull; <strong>bookings:</strong> PK <code>id</code>, <code>booking_code</code> (unik cth. BD-XXXXX), FK <code>user_id</code> &rarr; users, FK <code>vendor_id</code> &rarr; vendors, FK <code>service_id</code> &rarr; services, <code>event_date</code>, <code>guest_count</code>, <code>total_amount</code>, <code>status</code> (pending/confirmed/on_progress/completed/cancelled).<br>
+          &bull; <strong>reviews:</strong> PK <code>id</code>, FK <code>booking_id</code> (unique per booking), FK <code>vendor_id</code>, FK <code>user_id</code>, <code>rating</code> (1-5), <code>content</code>. Otomatis memicu kalkulasi ulang <code>rating_avg</code> pada vendor.
+        </div>
+      </div>
+
+      <!-- Modul 4 -->
+      <div class="erd-mod-card" style="border-left-color: #7C3AED;">
+        <h4 class="erd-mod-name">4. Modul Undangan Digital (Invitations)</h4>
+        <p class="erd-mod-desc">Fitur add-on penciptaan undangan pernikahan berbasis web dengan domain khusus dan sistem RSVP kehadiran tamu.</p>
+        <div class="erd-table-list" style="margin-bottom:12px;">
+          <strong>Tabel:</strong> invitation_templates, invitation_template_categories, invitation_orders, invitations, invitation_rsvps
+        </div>
+        <div style="font-size:0.82rem;color:var(--ink-700);line-height:1.6;">
+          &bull; <strong>invitations:</strong> PK <code>id</code>, FK <code>invitation_order_id</code>, <code>slug</code>, <code>subdomain</code>, <code>content</code> (JSON susunan acara, galeri, musik), counter <code>views_count</code>, <code>rsvp_yes/no/maybe</code>.<br>
+          &bull; <strong>invitation_rsvps:</strong> PK <code>id</code>, FK <code>invitation_id</code>, <code>guest_name</code>, <code>attendance</code>, <code>guest_count</code>, <code>message</code> ucapan selamat.
+        </div>
+      </div>
+
+      <!-- Modul 5 -->
+      <div class="erd-mod-card" style="border-left-color: #0E7036;">
+        <h4 class="erd-mod-name">5. Modul Transaksi Finansial &amp; Payout Mitra</h4>
+        <p class="erd-mod-desc">Pencatatan mutasi pembayaran serbaguna dan mekanisme pencairan penghasilan vendor.</p>
+        <div class="erd-table-list" style="margin-bottom:12px;">
+          <strong>Tabel:</strong> transactions, commission_settings, payouts
+        </div>
+        <div style="font-size:0.82rem;color:var(--ink-700);line-height:1.6;">
+          &bull; <strong>transactions:</strong> PK <code>id</code>, <code>transaction_code</code>, FK <code>user_id</code>, <code>payable_type</code> &amp; <code>payable_id</code> (polimorfik ke Booking atau InvitationOrder), <code>amount</code>, <code>payment_gateway</code> (Midtrans/Xendit/Manual), <code>status</code> (pending/success/failed).<br>
+          &bull; <strong>payouts:</strong> PK <code>id</code>, <code>payout_code</code>, FK <code>vendor_id</code>, <code>amount</code>, <code>net_amount</code>, status pencairan, FK <code>processed_by</code> &rarr; users (admin pemroses).
+        </div>
+      </div>
+
+      <!-- Modul 6 -->
+      <div class="erd-mod-card" style="border-left-color: #C2410C;">
+        <h4 class="erd-mod-name">6. Modul Manajemen Konten (CMS)</h4>
+        <p class="erd-mod-desc">Pengelolaan materi informasi publik beranda untuk membangun kepercayaan dan panduan calon pengantin.</p>
+        <div class="erd-table-list" style="margin-bottom:12px;">
+          <strong>Tabel:</strong> blogs, banners, testimonials, faqs, galleries
+        </div>
+        <div style="font-size:0.82rem;color:var(--ink-700);line-height:1.6;">
+          &bull; <strong>blogs:</strong> Artikel inspirasi pernikahan (FK <code>user_id</code> penulis, <code>title</code>, <code>slug</code>, <code>content</code>, <code>status</code>).<br>
+          &bull; <strong>banners &amp; testimonials:</strong> Banner promosi hero serta testimoni nyata pengantin untuk meningkatkan kredibilitas platform.
+        </div>
+      </div>
+
+      <!-- Modul 7 -->
+      <div class="erd-mod-card" style="border-left-color: #4B5563;">
+        <h4 class="erd-mod-name">7. Modul Media Spatie &amp; Sistem Internal</h4>
+        <p class="erd-mod-desc">Penyimpanan aset media polimorfik, audit forensik keamanan, notifikasi sistem, dan queue engine.</p>
+        <div class="erd-table-list" style="margin-bottom:12px;">
+          <strong>Tabel:</strong> media, audit_logs, notifications, settings, jobs, failed_jobs, job_batches, cache, cache_locks
+        </div>
+        <div style="font-size:0.82rem;color:var(--ink-700);line-height:1.6;">
+          &bull; <strong>media:</strong> Spatie Media Library polimorfik (<code>model_type</code>, <code>model_id</code>, <code>collection_name</code>: logo, portfolio, documents, cover). Mendukung konversi thumbnail otomatis.<br>
+          &bull; <strong>audit_logs:</strong> FK <code>user_id</code>, <code>action</code>, <code>model</code>, <code>old_values</code> &amp; <code>new_values</code> (JSON snapshot data sebelum vs sesudah perubahan), <code>ip_address</code> forensik.<br>
+          &bull; <strong>notifications:</strong> UUID PK, notifikasi event booking dan approval ke akun pengguna.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="pres-footer">
+  <div class="pres-footer-inner">
+    <div class="pres-footer-title">BrightDor Premier Wedding Marketplace</div>
+    <p class="pres-footer-desc">
+      Platform marketplace digital penyedia layanan pernikahan terintegrasi di Indonesia. Disusun untuk evaluasi Presentasi Ke-2 Proyek Pengembangan Web Berbasis Laravel 11 dan Filament v5.
+    </p>
+    <div class="pres-footer-meta">
+      <span>Progress Status: 10 September 2026</span>
+      <span>Arsitektur: Laravel 11 &bull; Filament v5 &bull; Tailwind CSS &bull; MySQL</span>
+    </div>
+  </div>
+</footer>
+
+<!-- INTERSECTION OBSERVER FOR ACTIVE NAV HIGHLIGHT -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(".section-anchor, .hero-cover");
+  const dots = document.querySelectorAll(".dot-item");
+  const navLinks = document.querySelectorAll(".pres-nav-links a");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute("id");
+        
+        dots.forEach((dot) => {
+          dot.classList.toggle("active", dot.getAttribute("href") === `#${id}`);
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+        });
+      }
+    });
+  }, {
+    rootMargin: "-20% 0px -70% 0px"
+  });
+
+  sections.forEach((sec) => observer.observe(sec));
+});
+</script>
+</body>
+</html>
