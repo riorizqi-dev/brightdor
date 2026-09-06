@@ -101,91 +101,200 @@ class BrightDorSeeder extends Seeder
 
     private function seedVendors(): void
     {
-        $vendorUsers = [
-            ['name' => 'Rina Sari', 'email' => 'rina@elegantvenue.id', 'phone' => '081234567891'],
-            ['name' => 'Budi Santoso', 'email' => 'budi@masakjawa.id', 'phone' => '081234567892'],
-            ['name' => 'Siti Nurhaliza', 'email' => 'siti@bungaindah.id', 'phone' => '081234567893'],
-            ['name' => 'Andi Wijaya', 'email' => 'andi@photostudio.id', 'phone' => '081234567894'],
-            ['name' => 'Maya Putri', 'email' => 'maya@makeupart.id', 'phone' => '081234567895'],
-            ['name' => 'Raka Pratama', 'email' => 'raka@djentertain.id', 'phone' => '081234567896'],
-            ['name' => 'Dewi Lestari', 'email' => 'dewi@woelegance.id', 'phone' => '081234567897'],
-            ['name' => 'Fajar Nugroho', 'email' => 'fajar@galerifoto.id', 'phone' => '081234567898'],
-            ['name' => 'Anisa Rahmawati', 'email' => 'anisa@gaunindah.id', 'phone' => '081234567899'],
-            ['name' => 'Hendra Kurniawan', 'email' => 'hendra@digitalinv.id', 'phone' => '081234567800'],
-            ['name' => 'Lestari Budiman', 'email' => 'lestari@premiumcatering.id', 'phone' => '081234567801'],
-            ['name' => 'Bambang Sutrisno', 'email' => 'bambang@dekorasiasri.id', 'phone' => '081234567802'],
+        $vendorProfiles = [
+            [
+                'name' => 'Rina Sasmita',
+                'email' => 'rina.sasmita@brightdor.test',
+                'phone' => '0812-3456-7891',
+                'business_name' => 'The Grand Pavilion Ballroom',
+                'city' => 'Bandung',
+                'province' => 'Jawa Barat',
+                'address' => 'Jl. Ir. H. Juanda No. 128, Dago',
+                'description' => 'The Grand Pavilion menghadirkan kemegahan arsitektur kolonial kontemporer dengan kapasitas hingga 1.200 tamu. Dilengkapi kristal chandelier megah, ceiling setinggi 8 meter, sistem pendingin udara terpusat, dan private bridal suite eksklusif.',
+                'status' => 'approved',
+                'is_featured' => true,
+            ],
+            [
+                'name' => 'Budi Prasetyo',
+                'email' => 'budi.prasetyo@brightdor.test',
+                'phone' => '0812-3456-7892',
+                'business_name' => 'Dulang Rasa Royal Catering',
+                'city' => 'Jakarta',
+                'province' => 'DKI Jakarta',
+                'address' => 'Jl. Kemang Raya No. 45, Jakarta Selatan',
+                'description' => 'Spesialis hidangan resepsi pernikahan nusantara dan fusion internasional. Diracik langsung oleh tim executive chef berpengalaman hotel berbintang, mengedepankan bahan organik segar, standar higienis bersertifikasi, dan tata saji buffet artistik.',
+                'status' => 'approved',
+                'is_featured' => true,
+            ],
+            [
+                'name' => 'Siti Nurhaliza',
+                'email' => 'siti.nurhaliza@brightdor.test',
+                'phone' => '0812-3456-7893',
+                'business_name' => 'Larasati Atelier & Floral Design',
+                'city' => 'Surabaya',
+                'province' => 'Jawa Timur',
+                'address' => 'Jl. Raya Darmo No. 88, Surabaya',
+                'description' => 'Atelier dekorasi pernikahan konseptual bernuansa modern romantic dan botanical luxury. Mengutamakan instalasi bunga segar impor, pelaminan berdimensi arsitektural, dan pencahayaan panggung tematik yang menghidupkan setiap sudut momen bahagia.',
+                'status' => 'approved',
+                'is_featured' => true,
+            ],
+            [
+                'name' => 'Andi Wijaya',
+                'email' => 'andi.wijaya@brightdor.test',
+                'phone' => '0812-3456-7894',
+                'business_name' => 'Lentera Cerita Visuals',
+                'city' => 'Yogyakarta',
+                'province' => 'DI Yogyakarta',
+                'address' => 'Jl. Kaliurang Km 8.5, Sleman',
+                'description' => 'Kolektif fotografer dokumenter pernikahan yang mendedikasikan diri untuk menangkap emosi otentik, keintiman keluarga, dan detail estetis hari bahagia Anda. Hasil akhir dikurasi dengan tone warna film hangat abadi tanpa kesan pose kaku.',
+                'status' => 'approved',
+                'is_featured' => true,
+            ],
+            [
+                'name' => 'Maya Amanda Putri',
+                'email' => 'maya.putri@brightdor.test',
+                'phone' => '0812-3456-7895',
+                'business_name' => 'Aura Pengantin Makeup Studio',
+                'city' => 'Denpasar',
+                'province' => 'Bali',
+                'address' => 'Jl. Sunset Road No. 102, Kuta, Badung',
+                'description' => 'Studio tata rias pengantin profesional spesialisasi complexion flawless dan natural glam yang tahan uji sepanjang hari. Menggunakan rangkaian produk kosmetik high-end internasional yang disesuaikan dengan skin undertone dan karakter gaun pengantin.',
+                'status' => 'approved',
+                'is_featured' => false,
+            ],
+            [
+                'name' => 'Raka Pratama',
+                'email' => 'raka.pratama@brightdor.test',
+                'phone' => '0812-3456-7896',
+                'business_name' => 'Harmoni Nada Orchestral & Band',
+                'city' => 'Semarang',
+                'province' => 'Jawa Tengah',
+                'address' => 'Jl. Pandanaran No. 56, Semarang',
+                'description' => 'Penyedia hiburan musik pernikahan premium mulai dari string quartet untuk prosesi akad/pemberkatan sakral hingga all-star live band 8-piece untuk kemeriahan resepsi, dipandu oleh MC profesional dwibahasa.',
+                'status' => 'pending',
+                'is_featured' => false,
+            ],
+            [
+                'name' => 'Dewi Lestari Kusuma',
+                'email' => 'dewi.lestari@brightdor.test',
+                'phone' => '0812-3456-7897',
+                'business_name' => 'Kalyana Wedding Planner & Organizer',
+                'city' => 'Malang',
+                'province' => 'Jawa Timur',
+                'address' => 'Jl. Ijen No. 34, Klojen, Malang',
+                'description' => 'Perencana dan pelaksana pernikahan menyeluruh dari hulu ke hilir. Tim planner bersertifikasi kami mengelola detail timeline, sinkronisasi puluhan vendor, dan protokol acara agar kedua mempelai serta keluarga dapat menikmati momen tanpa rasa cemas.',
+                'status' => 'pending',
+                'is_featured' => false,
+            ],
+            [
+                'name' => 'Fajar Nugroho',
+                'email' => 'fajar.nugroho@brightdor.test',
+                'phone' => '0812-3456-7898',
+                'business_name' => 'Pratama Cinematic Motion Films',
+                'city' => 'Medan',
+                'province' => 'Sumatera Utara',
+                'address' => 'Jl. Ring Road No. 72, Medan',
+                'description' => 'Rumah produksi sinematik pernikahan dengan teknologi kamera bioskop 4K, rekaman aerial drone berlisensi, dan penyuntingan audio emosional. Menghadirkan wedding teaser same-day edit dan film dokumenter dokumentasi utuh berdurasi 20 menit.',
+                'status' => 'approved',
+                'is_featured' => false,
+            ],
+            [
+                'name' => 'Anisa Rahmawati',
+                'email' => 'anisa.rahmawati@brightdor.test',
+                'phone' => '0812-3456-7899',
+                'business_name' => 'Maison de Kebaya & Bespoke Bridal',
+                'city' => 'Makassar',
+                'province' => 'Sulawesi Selatan',
+                'address' => 'Jl. Pengayoman No. 19, Panakkukang',
+                'description' => 'House of couture spesialis kebaya pengantin nusantara modern, gaun pesta adibusana, serta setelan jas pria tailor-made. Menggunakan material lace Prancis, sutra alami, dan sulaman payet tangan presisi tinggi dengan sesi fitting eksklusif.',
+                'status' => 'approved',
+                'is_featured' => false,
+            ],
+            [
+                'name' => 'Hendra Kurniawan',
+                'email' => 'hendra.kurniawan@brightdor.test',
+                'phone' => '0812-3456-7800',
+                'business_name' => 'Warkat Cinta Digital Invitation',
+                'city' => 'Palembang',
+                'province' => 'Sumatera Selatan',
+                'address' => 'Jl. Basuki Rahmat No. 40, Palembang',
+                'description' => 'Studio kreatif undangan pernikahan digital berbasis web interaktif. Dilengkapi fitur manajemen RSVP real-time, live streaming link, maps integration, QR code check-in tamu undangan, dan musik pengiring berlisensi resmi.',
+                'status' => 'approved',
+                'is_featured' => false,
+            ],
+            [
+                'name' => 'Lestari Budiman',
+                'email' => 'lestari.budiman@brightdor.test',
+                'phone' => '0812-3456-7801',
+                'business_name' => 'Nirmala Culinary Heritage',
+                'city' => 'Jakarta',
+                'province' => 'DKI Jakarta',
+                'address' => 'Jl. Senopati No. 62, Kebayoran Baru',
+                'description' => 'Pelopor katering jamuan adat dan jamuan modern nusantara berkelas dunia. Menyajikan signature menu legendaris, live cooking stall interaktif, dessert corner artisan, dan pramusaji berseragam rapi dengan protokol hospitality prima.',
+                'status' => 'approved',
+                'is_featured' => false,
+            ],
+            [
+                'name' => 'Bambang Sutrisno',
+                'email' => 'bambang.sutrisno@brightdor.test',
+                'phone' => '0812-3456-7802',
+                'business_name' => 'Svarga Botanical Wedding Design',
+                'city' => 'Bandung',
+                'province' => 'Jawa Barat',
+                'address' => 'Jl. R.E. Martadinata No. 90, Citarum',
+                'description' => 'Jasa tata ruang dan perancangan panggung pernikahan bertema botanical luxury dan glasshouse elegance. Mengombinasikan dedaunan tropis eksotis, instalasi gantung melayang, dan struktur backdrop modern kontemporer.',
+                'status' => 'approved',
+                'is_featured' => false,
+            ],
         ];
 
         $categoryIds = VendorCategory::pluck('id')->toArray();
-        $statuses = ['approved', 'approved', 'approved', 'approved', 'approved', 'pending', 'pending', 'approved', 'approved', 'approved', 'rejected', 'approved'];
 
-        foreach ($vendorUsers as $i => $vu) {
+        foreach ($vendorProfiles as $i => $vp) {
             $user = User::query()->updateOrCreate(
-                ['email' => $vu['email']],
+                ['email' => $vp['email']],
                 [
-                    'name' => $vu['name'],
+                    'name' => $vp['name'],
                     'password' => Hash::make('password'),
                     'user_type' => 'vendor',
                     'status' => 'active',
-                    'phone' => $vu['phone'],
+                    'phone' => $vp['phone'],
                 ],
             );
             $user->assignRole('vendor');
 
-            $businessNames = [
-                'Elegant Venue Bandung', 'Catering Masak Jawa', 'Dekorasi Bunga Indah',
-                'Photo Studio Pro', 'Makeup Artis Studio', 'DJ Entertainment Jakarta',
-                'Wedding Organizer Elegance', 'Galeri Foto Nusantara', 'Gaun & Jas Couture',
-                'Digital Invitation Pro', 'Premium Catering Service', 'Dekorasi Asri Decoration',
-            ];
-
-            $cities = ['Bandung', 'Jakarta', 'Surabaya', 'Yogyakarta', 'Bali', 'Semarang', 'Malang', 'Medan', 'Makassar', 'Palembang', 'Jakarta', 'Bandung'];
-            $provinces = ['Jawa Barat', 'DKI Jakarta', 'Jawa Timur', 'DI Yogyakarta', 'Bali', 'Jawa Tengah', 'Jawa Timur', 'Sumatera Utara', 'Sulawesi Selatan', 'Sumatera Selatan', 'DKI Jakarta', 'Jawa Barat'];
-
-            $statusesArr = $statuses;
-            $isVerified = in_array($statusesArr[$i], ['approved']);
+            $isVerified = in_array($vp['status'], ['approved'], true);
 
             $vendor = Vendor::query()->updateOrCreate(
-                ['slug' => Str::slug($businessNames[$i]) . '-' . ($i + 1)],
+                ['slug' => Str::slug($vp['business_name']) . '-' . ($i + 1)],
                 [
                     'user_id' => $user->id,
                     'vendor_category_id' => $categoryIds[$i % count($categoryIds)],
-                    'business_name' => $businessNames[$i],
-                    'description' => $businessNames[$i] . ' adalah vendor pernikahan premium terbaik di ' . $cities[$i] . '. Kami menyediakan layanan berkualitas tinggi dengan pengalaman lebih dari 5 tahun.',
-                    'address' => 'Jl. Sudirman No. ' . ($i + 10) . ', ' . $cities[$i],
-                    'city' => $cities[$i],
-                    'province' => $provinces[$i],
-                    'phone' => $vu['phone'],
-                    'whatsapp' => $vu['phone'],
-                    'instagram' => '@' . Str::slug($businessNames[$i]),
-                    'rating_avg' => round(4.0 + ($i % 5) * 0.2, 2),
-                    'rating_count' => 10 + $i * 5,
-                    'status' => $statusesArr[$i],
+                    'business_name' => $vp['business_name'],
+                    'description' => $vp['description'],
+                    'address' => $vp['address'],
+                    'city' => $vp['city'],
+                    'province' => $vp['province'],
+                    'phone' => $vp['phone'],
+                    'whatsapp' => $vp['phone'],
+                    'instagram' => '@' . Str::slug($vp['business_name']),
+                    'rating_avg' => round(4.5 + ($i % 5) * 0.1, 2),
+                    'rating_count' => 15 + $i * 6,
+                    'status' => $vp['status'],
                     'is_verified' => $isVerified,
-                    'verified_at' => $isVerified ? now()->subDays(30 - $i) : null,
-                    'is_featured' => $i < 4,
+                    'verified_at' => $isVerified ? now()->subDays(45 - $i) : null,
+                    'is_featured' => $vp['is_featured'],
                     'bank_name' => 'Bank Central Asia',
-                    'bank_account_number' => '12345678' . str_pad($i, 2, '0', STR_PAD_LEFT),
-                    'bank_account_name' => $vu['name'],
+                    'bank_account_number' => '12345678' . str_pad((string) $i, 2, '0', STR_PAD_LEFT),
+                    'bank_account_name' => $vp['name'],
                 ],
             );
 
             if ($vendor->getMedia('portfolio')->isEmpty()) {
                 $categoryName = strtolower(VendorCategory::find($categoryIds[$i % count($categoryIds)])->name);
-                $imagePath = null;
-                if (str_contains($categoryName, 'venue')) {
-                    $imagePath = database_path('seeders/images/venue.png');
-                } elseif (str_contains($categoryName, 'catering')) {
-                    $imagePath = database_path('seeders/images/catering.png');
-                } elseif (str_contains($categoryName, 'dekorasi')) {
-                    $imagePath = database_path('seeders/images/decoration.png');
-                } elseif (str_contains($categoryName, 'fotografer') || str_contains($categoryName, 'videografer')) {
-                    $imagePath = database_path('seeders/images/photography.png');
-                } else {
-                    $imagePath = database_path('seeders/images/venue.png'); // fallback
-                }
+                $imagePath = $this->resolveSeederImagePath($categoryName, $i);
 
-                if (file_exists($imagePath)) {
+                if ($imagePath && file_exists($imagePath)) {
                     $vendor->addMedia($imagePath)->preservingOriginal()->toMediaCollection('portfolio');
                 }
             }
@@ -196,16 +305,76 @@ class BrightDorSeeder extends Seeder
     {
         $vendors = Vendor::where('status', 'approved')->get();
         $serviceData = [
-            ['name' => 'Paket Premium Ballroom', 'price' => 15000000, 'discount_price' => 12000000, 'description' => 'Ballroom eksklusif kapasitas 500 tamu, sudah termasuk dekorasi dasar dan sound system.', 'features' => ['Ballroom 500 pax', 'Free parking', 'AC centralized', 'Sound system']],
-            ['name' => 'Paket Catering Prasmanan', 'price' => 85000, 'discount_price' => null, 'description' => 'Prasmanan premium dengan 10 menu pilihan, chef profesional, dan pelayanan terbaik.', 'features' => ['10 menu', 'Prasmanan', 'Chef profesional', 'Pelayanan 8 jam']],
-            ['name' => 'Dekorasi Full Package', 'price' => 5000000, 'discount_price' => 4500000, 'description' => 'Dekorasi lengkap pelaminan, meja tamu, bunga segar, dan lighting.', 'features' => ['Pelaminan', 'Bunga segar', 'Lighting', 'Meja tamu']],
-            ['name' => 'Paket Foto & Video Cinematic', 'price' => 12000000, 'discount_price' => 10000000, 'description' => 'Dokumentasi foto & video cinematic, 2 kamera, drone, 200 foto edit, video 15 menit.', 'features' => ['2 kamera', 'Drone', '200 foto', 'Video cinematic']],
-            ['name' => 'Bridal Makeup Premium', 'price' => 3500000, 'discount_price' => null, 'description' => 'Makeup artist premium untuk pengantin, termasuk trial makeup dan hairdo.', 'features' => ['Trial makeup', 'Hairdo', 'Lashes', 'Skin prep']],
-            ['name' => 'Live Band & DJ', 'price' => 4500000, 'discount_price' => 4000000, 'description' => 'Live band 5 person + DJ 4 jam, MC profesional termasuk.', 'features' => ['Band 5 person', 'DJ 4 jam', 'MC profesional', 'Sound system']],
-            ['name' => 'Full Wedding Organizer', 'price' => 8000000, 'discount_price' => 7000000, 'description' => 'WO lengkap dari konsultasi hingga hari H, koordinasi vendor, timeline acara.', 'features' => ['Konsultasi', 'Koordinasi vendor', 'Timeline', 'Hari H']],
-            ['name' => 'Foto Pre-Wedding', 'price' => 5000000, 'discount_price' => null, 'description' => 'Sesuatu foto pre-wedding di lokasi pilihan, 100 foto edit, album 20 halaman.', 'features' => ['100 foto', 'Album 20h', '2 lokasi', 'Retouch']],
-            ['name' => 'Gaun Pengantin Custom', 'price' => 7500000, 'discount_price' => 6500000, 'description' => 'Gaun pengantin custom design, bahan premium, fitting 3x, aksesoris lengkap.', 'features' => ['Custom design', 'Bahan premium', '3x fitting', 'Aksesoris']],
-            ['name' => 'Paket Undangan Digital Premium', 'price' => 250000, 'discount_price' => 200000, 'description' => 'Undangan digital interaktif dengan RSVP, galeri foto, love story, dan countdown timer.', 'features' => ['RSVP online', 'Galeri foto', 'Love story', 'Countdown']],
+            [
+                'name' => 'Grand Crystal Ballroom Package',
+                'price' => 48000000,
+                'discount_price' => 42000000,
+                'description' => 'Penggunaan Grand Ballroom eksklusif 6 jam untuk hingga 800 tamu, termasuk fasilitas 2 ruang VIP keluarga, sound system 10.000 watt, dan 20 voucher parkir VIP.',
+                'features' => ['Kapasitas hingga 800 tamu', 'Sound system 10.000W & lighting panggung', '2 Ruang rias & transit VIP ber-AC', 'Genset cadangan 150 kVA otomatis'],
+            ],
+            [
+                'name' => 'Royal Heritage Buffet (500 Pax)',
+                'price' => 45000000,
+                'discount_price' => 39500000,
+                'description' => 'Paket prasmanan istimewa untuk 500 porsi dengan 6 menu utama nusantara, 4 macam makanan penutup, sajian wedang tradisional, dan free flow minuman dingin.',
+                'features' => ['Menu utama 6 macam pilihan chef', '3 Food stall live cooking', 'Dessert corner & fruit display', 'Pramusaji bersertifikat & peralatan mewah'],
+            ],
+            [
+                'name' => 'Imperial Botanical Floral Stage',
+                'price' => 32000000,
+                'discount_price' => 28000000,
+                'description' => 'Dekorasi pelaminan megah lebar 16 meter dengan instalasi bunga segar impor, pathway jalan bertabur kelopak, gate masuk artistik, dan pergola penerima tamu.',
+                'features' => ['Pelaminan 16m full fresh flowers', 'Standing flower jalur karpet merah', 'Mini garden panggung & lighting ambient', 'Gazebo akad nikah / photobooth interaktif'],
+            ],
+            [
+                'name' => 'Cinematic 4K Wedding Story Collection',
+                'price' => 16000000,
+                'discount_price' => 13500000,
+                'description' => 'Liputan foto dan video penuh dari persiapan pagi hingga resepsi malam. Melibatkan 3 fotografer senior, 2 videografer sinematik, pilot drone, dan output album leatherette.',
+                'features' => ['Same-Day Edit video 3-5 menit', 'Dokumenter cinematic 15-20 menit', 'Exclusive magnetic leather photo album', 'Semua file resolusi tinggi dalam flashdisk kayu'],
+            ],
+            [
+                'name' => 'Bridal High-End Glow & Hairdo',
+                'price' => 7500000,
+                'discount_price' => 6500000,
+                'description' => 'Riasan pengantin wanita untuk akad dan resepsi dengan complexion tahan hingga 16 jam. Sudah termasuk 1x trial makeup sebelum hari H dan hairdo/hijab do modern.',
+                'features' => ['Kosmetik high-end (Dior, Chanel, Charlotte Tilbury)', '1x Sesi trial makeup & konsultasi look', 'Touch-up stand by hingga resepsi selesai', 'Free makeup & hairdo untuk 2 ibu pengantin'],
+            ],
+            [
+                'name' => 'Chamber Orchestra & Modern Pop Band',
+                'price' => 11000000,
+                'discount_price' => 9500000,
+                'description' => 'Ensemble musik 7 personil (vocal, piano, violin, cello, bass, drum, saksofon) membawakan repertoar lagu klasik romantis, jazz ballad, dan Top 40 internasional.',
+                'features' => ['Ensemble 7 musisi profesional', 'Sound engineering & monitor panggung', 'MC dwibahasa (Indonesia - Inggris)', 'Custom song request untuk grand entrance'],
+            ],
+            [
+                'name' => 'All-In Full Day Wedding Coordination',
+                'price' => 18000000,
+                'discount_price' => 15000000,
+                'description' => 'Pendampingan persiapan pernikahan selama 3 bulan dan koordinasi total pada hari H dengan tim 10 orang crew berseragam dan berkamera komunikasi radio.',
+                'features' => ['10 Crew profesional on the day', 'Technical meeting seluruh vendor & keluarga', 'Penyusunan rundown detail menit-per-menit', 'Handling perijinan & protokol tamu VVIP'],
+            ],
+            [
+                'name' => 'Romantic Destination Pre-Wedding Shoot',
+                'price' => 8500000,
+                'discount_price' => 7500000,
+                'description' => 'Sesi pemotretan pre-wedding outdoor 1 hari penuh di lokasi eksotis. Termasuk konsep moodboard visual, 2 set pakaian casual/formal, dan 40 foto retouch.',
+                'features' => ['1 Hari shooting (hingga 8 jam kerja)', '40 Foto retouch profesional resolusi tinggi', '1 Frame kanvas ukuran 60x90 cm', 'Klip video teaser vertikal untuk reels/undangan'],
+            ],
+            [
+                'name' => 'Bespoke Traditional Kebaya & Groom Beskap',
+                'price' => 12500000,
+                'discount_price' => 11000000,
+                'description' => 'Rancangan kebaya brokat berpayet swarovski dan beskap pengantin pria berbahan wool premium. Desain disesuaikan dengan proporsi tubuh pengantin melalui 3x fitting.',
+                'features' => ['Material brokat Prancis & payet kristal', '3x Fitting & penyesuaian siluet gaun', 'Termasuk kain batik tulis sarimbit', 'Free sewa veil pengantin & aksesori kepala'],
+            ],
+            [
+                'name' => 'Custom Interactive Web Wedding Invitation',
+                'price' => 450000,
+                'discount_price' => 350000,
+                'description' => 'Website undangan pernikahan eksklusif dengan nama domain khusus, amplop digital terintegrasi QRIS, galeri interaktif, countdown timer, dan buku tamu online.',
+                'features' => ['Nama tamu tak terbatas (personalized link)', 'Integrasi peta Google Maps & navigasi GPS', 'Konfirmasi kehadiran RSVP instan ke WhatsApp', 'Masa aktif website hingga 1 tahun ke depan'],
+            ],
         ];
 
         foreach ($vendors as $i => $vendor) {
@@ -223,15 +392,15 @@ class BrightDorSeeder extends Seeder
                     'features' => $sd['features'],
                     'status' => 'published',
                     'is_active' => true,
-                    'is_featured' => $i < 3,
-                    'views_count' => 50 + $i * 20,
-                    'bookings_count' => 3 + $i,
+                    'is_featured' => $i < 4,
+                    'views_count' => 120 + $i * 35,
+                    'bookings_count' => 5 + $i * 2,
                 ],
             );
 
             if ($service->getMedia('cover')->isEmpty()) {
                 $catName = strtolower($vendor->category?->name ?? VendorCategory::find($vendor->vendor_category_id)?->name ?? '');
-                $imagePath = $this->resolveSeederImagePath($catName);
+                $imagePath = $this->resolveSeederImagePath($catName, $i);
                 if ($imagePath && file_exists($imagePath)) {
                     $service->addMedia($imagePath)->preservingOriginal()->toMediaCollection('cover');
                 }
@@ -484,45 +653,122 @@ class BrightDorSeeder extends Seeder
     {
         // Blogs
         $blogs = [
-            ['title' => '10 Tips Memilih Venue Pernikahan Impian', 'excerpt' => 'Memilih venue pernikahan adalah salah satu keputusan terpenting...', 'status' => 'published', 'is_featured' => true],
-            ['title' => 'Tren Dekorasi Pernikahan 2026', 'excerpt' => 'Tahun 2026 membawa tren dekorasi baru yang segar...', 'status' => 'published', 'is_featured' => true],
-            ['title' => 'Panduan Lengkap Undangan Digital', 'excerpt' => 'Undangan digital semakin populer di kalangan millennial...', 'status' => 'published', 'is_featured' => false],
+            [
+                'title' => '10 Panduan Menentukan Venue Pernikahan Impian Sesuai Kapasitas & Anggaran',
+                'excerpt' => 'Menentukan lokasi resepsi adalah langkah pertama yang menentukan jalannya seluruh persiapan pernikahan. Simak parameter krusial seperti ceiling height, load-in vendor, hingga regulasi katering.',
+                'content' => '<p>Menemukan venue pernikahan yang tepat bukan sekadar mencocokkan luas ruangan dengan estimasi jumlah undangan. Banyak faktor teknis yang memengaruhi kenyamanan para tamu dan kelancaran alur vendor pendukung.</p><h3>1. Perhatikan Tinggi Langit-Langit (Ceiling Height)</h3><p>Ruangan dengan ceiling minimal 5-7 meter akan memberikan sirkulasi udara yang lebih segar dan memungkinkan dekorasi pelaminan menjulang tanpa terasa sesak.</p><h3>2. Akses Bongkar Muat (Load-In) Vendor</h3><p>Pastikan gedung memiliki loading dock khusus dan lift barang yang memadai agar tim dekorasi, sound system, dan katering dapat bekerja tepat waktu tanpa menghambat operasional lokasi.</p><h3>3. Sistem Pendingin & Cadangan Daya</h3><p>Konfirmasikan kapasitas total pendingin udara (AC sentral maupun standing unit) saat kapasitas tamu terisi 100%, serta kepastian otomatisasi genset cadangan saat terjadi pemadaman listrik.</p>',
+                'status' => 'published',
+                'is_featured' => true,
+            ],
+            [
+                'title' => 'Evolusi Tren Dekorasi Pernikahan 2026: Botanical Romance & Modern Minimalis',
+                'excerpt' => 'Tahun 2026 memperlihatkan pergeseran estetika dari dekorasi masif artifisial menuju instalasi organik alami dengan palet warna champagne, sage green, dan sentuhan kristal elegan.',
+                'content' => '<p>Konsep dekorasi pernikahan kini semakin personal dan ramah lingkungan. Pasangan modern lebih memilih arsitektur panggung yang bersih dipadukan dengan instalasi flora segar yang mengalir natural.</p><h3>Penggunaan Material Alami & Bunga Lokal Unggulan</h3><p>Kombinasi antara mawar lokal berkualitas, dedaunan tropis, dan ranting bertekstur memberikan kedalaman visual yang memukau tanpa harus bergantung sepenuhnya pada bunga impor berbiaya tinggi.</p><h3>Pencahayaan Ambient & Architectural Lighting</h3><p>Lampu sorot keras kini digantikan oleh tata cahaya hangat bertingkat (warm amber wash, pinspot accent pada meja jamuan, dan lampu gantung berdimmer lembut).</p>',
+                'status' => 'published',
+                'is_featured' => true,
+            ],
+            [
+                'title' => 'Etika & Efisiensi Penggunaan Undangan Digital untuk Pernikahan Masa Kini',
+                'excerpt' => 'Undangan digital berbasis website interaktif kini menjadi pilihan utama calon pengantin. Pelajari cara personalisasi nama tamu, pengelolaan RSVP, dan etika penyampaian pesan.',
+                'content' => '<p>Pemanfaatan undangan digital bukan hanya menghemat biaya cetak dan kertas, namun juga mempermudah penghitungan porsi katering berkat integrasi formulir kehadiran instan.</p><h3>Gunakan Personalized Link</h3><p>Selalu gunakan fitur personalisasi agar nama masing-masing kerabat tertulis rapi di halaman pembuka undangan layaknya kartu cetak eksklusif.</p><h3>Sertakan Panduan Dresscode & Peta Lokasi yang Akurat</h3><p>Fitur navigasi satu klik menuju Google Maps dan panduan tema busana sangat diapresiasi oleh tamu undangan untuk mempermudah perencanaan kehadiran mereka.</p>',
+                'status' => 'published',
+                'is_featured' => false,
+            ],
         ];
         foreach ($blogs as $i => $blog) {
             Blog::query()->updateOrCreate(
                 ['slug' => Str::slug($blog['title'])],
                 array_merge($blog, [
-                    'content' => '<p>' . $blog['excerpt'] . ' Ini adalah konten lengkap dari artikel ' . $blog['title'] . '.</p>',
-                    'views_count' => 100 + $i * 50,
-                    'published_at' => now()->subDays(10 - $i * 3),
+                    'views_count' => 350 + $i * 120,
+                    'published_at' => now()->subDays(14 - $i * 4),
                 ]),
             );
         }
 
-        // Testimonials
+        // Testimonials with genuine couple stories
         $testimonials = [
-            ['name' => 'Rina & Andi', 'role' => 'Jakarta', 'content' => 'BrightDor membantu kami menemukan vendor terbaik untuk pernikahan kami. Sangat puas!', 'rating' => 5],
-            ['name' => 'Sinta & Budi', 'role' => 'Bandung', 'content' => 'Undangan digital dari BrightDor sangat elegan. Tamu-tamu kami terkesan!', 'rating' => 5],
-            ['name' => 'Maya & Raka', 'role' => 'Bali', 'content' => 'Proses booking sangat mudah dan transparan. Terima kasih BrightDor!', 'rating' => 4],
+            [
+                'name' => 'Dimas & Anindya',
+                'role' => 'Pernikahan di The Grand Pavilion, Bandung',
+                'content' => 'BrightDor benar-benar memangkas stres kami dalam mencari vendor pernikahan. Transparansi harga paket dan respons vendor yang cepat sangat membantu kami mengunci tanggal impian dalam waktu kurang dari satu minggu.',
+                'rating' => 5,
+                'wedding_date' => now()->subMonths(3)->toDateString(),
+            ],
+            [
+                'name' => 'Rizky & Clarissa',
+                'role' => 'Pernikahan di Plataran Dharmawangsa, Jakarta',
+                'content' => 'Sistem booking dan pembayarannya sangat rapi. Kami memesan paket katering dan fotografer dari dua vendor berbeda di BrightDor, dan semuanya berjalan sinkron tanpa kendala koordinasi sedikit pun.',
+                'rating' => 5,
+                'wedding_date' => now()->subMonths(2)->toDateString(),
+            ],
+            [
+                'name' => 'Farhan & Nadira',
+                'role' => 'Pernikahan Botanical di Yogyakarta',
+                'content' => 'Undangan digital dari BrightDor sangat praktis dan elegan! Para tamu memuji tampilan interaktifnya dan fitur konfirmasi kehadiran real-time membuat kami bisa memesan porsi prasmanan dengan sangat presisi.',
+                'rating' => 5,
+                'wedding_date' => now()->subMonths(1)->toDateString(),
+            ],
+            [
+                'name' => 'Adrian & Michelle',
+                'role' => 'Pernikahan Intimate di Uluwatu, Bali',
+                'content' => 'Koleksi vendor di BrightDor terkurasi dengan standar yang tinggi. Foto portofolio yang ditampilkan sesuai dengan realitas di hari H, terutama dekorasi dan makeup pengantin yang luar biasa memuaskan.',
+                'rating' => 5,
+                'wedding_date' => now()->subWeeks(3)->toDateString(),
+            ],
+            [
+                'name' => 'Taufik & Safira',
+                'role' => 'Pernikahan Adat di Surabaya',
+                'content' => 'Sangat mengapresiasi kejelasan rincian item tiap paket layanan. Tidak ada biaya tersembunyi, dan tim customer support BrightDor sangat sigap membantu ketika kami membutuhkan penyesuaian rundown.',
+                'rating' => 5,
+                'wedding_date' => now()->subWeeks(2)->toDateString(),
+            ],
         ];
         foreach ($testimonials as $i => $t) {
-            Testimonial::query()->create(array_merge($t, ['is_active' => true, 'sort_order' => $i]));
+            Testimonial::query()->updateOrCreate(
+                ['name' => $t['name']],
+                array_merge($t, ['is_active' => true, 'sort_order' => $i])
+            );
         }
 
         // Banners
         Banner::query()->updateOrCreate(
-            ['title' => 'Promo Pernikahan Spesial'],
-            ['subtitle' => 'Diskon hingga 30% untuk semua vendor', 'position' => 'home_hero', 'is_active' => true, 'sort_order' => 1],
+            ['title' => 'Wujudkan Pernikahan Impian Bersama BrightDor'],
+            [
+                'subtitle' => 'Temukan kurasi venue mewah, katering terpercaya, dan vendor pernikahan profesional dalam satu platform terintegrasi.',
+                'position' => 'home_hero',
+                'is_active' => true,
+                'sort_order' => 1,
+            ],
         );
 
         // FAQs
         $faqs = [
-            ['question' => 'Bagaimana cara mendaftar sebagai vendor?', 'answer' => 'Klik tombol "Daftar Vendor" di halaman utama, isi form profil usaha, lalu tunggu approval admin.', 'category' => 'Vendor'],
-            ['question' => 'Bagaimana sistem pembayaran?', 'answer' => 'BrightDor mendukung pembayaran via bank transfer, e-wallet (GoPay, OVO, Dana), dan kartu kredit.', 'category' => 'Pembayaran'],
-            ['question' => 'Apakah bisa custom domain untuk undangan digital?', 'answer' => 'Ya, Anda bisa menggunakan custom domain sendiri atau menggunakan subdomain brightdor.id.', 'category' => 'Undangan Digital'],
+            [
+                'question' => 'Bagaimana alur pemesanan dan pembayaran vendor di BrightDor?',
+                'answer' => 'Pilih vendor dan paket layanan yang Anda inginkan, tentukan tanggal acara, lalu ajukan booking. Setelah ketersediaan dikonfirmasi, lakukan pembayaran melalui Transfer Bank atau QRIS resmi. Dana Anda disimpan secara aman di rekening penampung (escrow) BrightDor hingga layanan selesai diverifikasi.',
+                'category' => 'Pemesanan',
+            ],
+            [
+                'question' => 'Metode pembayaran apa saja yang tersedia?',
+                'answer' => 'BrightDor menyediakan pembayaran instan melalui QRIS (dapat dipindai dari BCA Mobile, Livin Mandiri, GoPay, OVO, ShopeePay, DANA) serta Transfer Bank langsung ke rekening resmi PT BrightDor Indonesia (BCA, Mandiri, BNI, BRI).',
+                'category' => 'Pembayaran',
+            ],
+            [
+                'question' => 'Bagaimana cara mendaftar dan memverifikasi usaha sebagai vendor?',
+                'answer' => 'Klik menu "Daftar Vendor", lengkapi informasi profil usaha, izin usaha, portofolio karya, dan nomor rekening penarikan dana. Tim kurasi BrightDor akan melakukan verifikasi data maksimal dalam 1x24 jam kerja sebelum akun Anda aktif.',
+                'category' => 'Vendor',
+            ],
+            [
+                'question' => 'Apakah saya bisa mengajukan kustomisasi paket atau penawaran khusus?',
+                'answer' => 'Tentu. Anda dapat menggunakan tombol "Ajukan Penawaran" pada halaman vendor untuk menyampaikan kebutuhan spesifik, estimasi tamu, atau permintaan penyesuaian menu/dekorasi langsung kepada vendor bersangkutan.',
+                'category' => 'Layanan',
+            ],
         ];
         foreach ($faqs as $i => $faq) {
-            Faq::query()->create(array_merge($faq, ['is_active' => true, 'sort_order' => $i]));
+            Faq::query()->updateOrCreate(
+                ['question' => $faq['question']],
+                array_merge($faq, ['is_active' => true, 'sort_order' => $i])
+            );
         }
     }
 
@@ -589,6 +835,19 @@ class BrightDorSeeder extends Seeder
         $ownerLast = ['Pratama', 'Wijaya', 'Santoso', 'Lestari', 'Kusuma', 'Hidayat', 'Nugroho', 'Rahayu', 'Setiawan', 'Permana'];
         $bankNames = ['BCA', 'Bank Mandiri', 'BNI', 'BRI', 'CIMB Niaga'];
 
+        $catDescriptions = [
+            'venue' => 'Menyediakan ballroom megah dan function hall serbaguna dengan fasilitas audio visual mutakhir, pendingin ruangan sentral, dan area parkir luas.',
+            'catering' => 'Menyajikan aneka hidangan jamuan pesta pernikahan lezat dengan bahan segar berkualitas tinggi dan presentasi meja prasmanan artistik bintang lima.',
+            'dekorasi' => 'Atelier tata ruang dan perancangan panggung pernikahan bertema elegan yang memadukan keindahan bunga segar pilihan dan pencahayaan panggung berkelas.',
+            'fotografer' => 'Kolektif fotografer pernikahan berpengalaman yang mengabadikan setiap momen penuh kehangatan, emosi, dan ekspresi tulus pengantin serta keluarga.',
+            'videografer' => 'Spesialis video sinematik pernikahan 4K dengan narasi audio emosional dan pengambilan gambar drone profesional untuk mengenang hari bahagia Anda.',
+            'mua' => 'Tata rias pengantin profesional dengan produk kecantikan premium internasional, menghadirkan look natural glow yang tahan uji sepanjang hari.',
+            'wedding organizer' => 'Konsultan dan perencana pernikahan komprehensif yang siap membantu mengelola anggaran, timeline, koordinasi vendor, dan kelancaran acara.',
+            'entertainment' => 'Grup musik dan ensemble akustik pernikahan profesional dengan repertoar lagu romantis dan MC handal untuk kemeriahan resepsi pernikahan.',
+            'gaun & jas' => 'Butik perancang kebaya adibusana dan setelan jas pengantin pria bespoke dengan material kain mewah dan fitting presisi sesuai kenyamanan Anda.',
+            'undangan digital' => 'Layanan undangan digital interaktif responsif dengan fitur RSVP cepat, integrasi Google Maps, galeri pre-wedding, dan buku tamu online.',
+        ];
+
         for ($i = 0; $i < 50; $i++) {
             $owner = $ownerFirst[$i % 10] . ' ' . $ownerLast[($i + 3) % 10];
 
@@ -611,6 +870,7 @@ class BrightDorSeeder extends Seeder
 
             $status = $i % 5 === 0 ? 'pending' : 'approved';
             $isVerified = $status === 'approved' && $i % 3 !== 0;
+            $descSnippet = $catDescriptions[strtolower($catName)] ?? "Penyedia layanan {$catName} profesional di {$city}.";
 
             $vendor = Vendor::query()->updateOrCreate(
                 ['slug' => Str::slug($businessName) . '-' . ($i + 100)],
@@ -618,9 +878,8 @@ class BrightDorSeeder extends Seeder
                     'user_id' => $user->id,
                     'vendor_category_id' => $catId,
                     'business_name' => $businessName,
-                    'description' => $businessName . ' adalah penyedia layanan ' . strtolower($catName)
-                        . ' terpercaya di ' . $city . ' dengan pengalaman lebih dari ' . (3 + ($i % 12)) . ' tahun.',
-                    'address' => 'Jl. Merdeka ' . (10 + $i) . ', ' . $city,
+                    'description' => "{$businessName} adalah mitra resmi BrightDor di {$city}. {$descSnippet} Didukung tim berdedikasi dengan pengalaman lebih dari " . (3 + ($i % 8)) . ' tahun di industri pernikahan Indonesia.',
+                    'address' => 'Jl. Merdeka No. ' . (10 + $i) . ', ' . $city,
                     'city' => $city,
                     'province' => $provinces[$i % count($provinces)],
                     'phone' => '021-' . (1000000 + $i),
@@ -629,8 +888,8 @@ class BrightDorSeeder extends Seeder
                     'is_verified' => $isVerified,
                     'verified_at' => $isVerified ? now()->subDays(30 + $i) : null,
                     'is_featured' => $i % 7 === 0,
-                    'rating_avg' => $status === 'approved' ? round(4.0 + (($i % 10) / 10), 2) : 0,
-                    'rating_count' => $status === 'approved' ? 5 + ($i % 40) : 0,
+                    'rating_avg' => $status === 'approved' ? round(4.5 + (($i % 5) / 10), 2) : 0,
+                    'rating_count' => $status === 'approved' ? 8 + ($i % 30) : 0,
                     'bank_name' => $bankNames[$i % count($bankNames)],
                     'bank_account_number' => '1' . str_pad((string) (2340000 + $i), 12, '0', STR_PAD_LEFT),
                     'bank_account_name' => $owner,
@@ -638,7 +897,7 @@ class BrightDorSeeder extends Seeder
             );
 
             if ($vendor->getMedia('portfolio')->isEmpty()) {
-                $imagePath = $this->resolveSeederImagePath(strtolower($catName));
+                $imagePath = $this->resolveSeederImagePath(strtolower($catName), $i);
                 if ($imagePath && file_exists($imagePath)) {
                     $vendor->addMedia($imagePath)->preservingOriginal()->toMediaCollection('portfolio');
                 }
@@ -655,7 +914,7 @@ class BrightDorSeeder extends Seeder
         }
 
         $categoryNames = VendorCategory::pluck('name', 'id')->toArray();
-        $tiers = ['Silver', 'Gold', 'Platinum', 'Diamond', 'Signature'];
+        $tiers = ['Silver Elegance', 'Gold Royal', 'Platinum Luxury', 'Diamond Signature', 'Exclusive Atelier'];
 
         $priceByKeyword = [
             'venue' => 45000000, 'catering' => 35000000, 'dekorasi' => 25000000,
@@ -668,9 +927,14 @@ class BrightDorSeeder extends Seeder
             $vendor = $vendors[$i % $vendors->count()];
             $catName = strtolower($categoryNames[$vendor->vendor_category_id] ?? 'paket');
             $tier = $tiers[$i % count($tiers)];
-            $name = 'Paket ' . $tier . ' ' . $catName;
+            $name = 'Paket ' . $tier . ' ' . ucwords($catName);
             $basePrice = $priceByKeyword[$catName] ?? 10000000;
-            $price = round($basePrice * (0.6 + ($i % 5) * 0.2), -5);
+            $price = round($basePrice * (0.7 + ($i % 4) * 0.15), -5);
+
+            $featuresList = [
+                ['Layanan tim profesional tersertifikasi', 'Konsultasi konsep & rundown acara', 'Garansi kepuasan & protokol resmi BrightDor', 'Dukungan koordinasi hari H'],
+                ['Bahan & material kualitas premium', 'Pengawasan supervisor berpengalaman', 'Free trial / sesi konsultasi pra-acara', 'Laporan dokumentasi & serah terima rapi'],
+            ];
 
             $service = Service::query()->updateOrCreate(
                 ['slug' => Str::slug($name) . '-' . $vendor->id . '-' . ($i + 1)],
@@ -678,21 +942,22 @@ class BrightDorSeeder extends Seeder
                     'vendor_id' => $vendor->id,
                     'vendor_category_id' => $vendor->vendor_category_id,
                     'name' => $name,
-                    'description' => 'Paket ' . $tier . ' ' . $catName . ' dari '
-                        . $vendor->business_name . ', termasuk layanan profesional dan tim berpengalaman.',
+                    'description' => 'Paket ' . $tier . ' ' . ucwords($catName) . ' persembahan eksklusif dari '
+                        . $vendor->business_name . '. Dirancang untuk menghadirkan kenyamanan prima dan kesempurnaan momen pernikahan Anda.',
                     'price' => $price,
-                    'price_unit' => 'paket',
-                    'capacity' => 200 + ($i % 10) * 100,
+                    'price_unit' => $catName === 'catering' ? 'per porsi' : ($catName === 'undangan digital' ? 'per tema' : 'per event'),
+                    'capacity' => 200 + ($i % 8) * 100,
+                    'features' => $featuresList[$i % 2],
                     'is_active' => true,
                     'status' => 'published',
-                    'is_featured' => $i % 9 === 0,
-                    'views_count' => 100 + $i * 3,
-                    'bookings_count' => $i % 15,
+                    'is_featured' => $i % 8 === 0,
+                    'views_count' => 120 + $i * 5,
+                    'bookings_count' => 2 + ($i % 12),
                 ],
             );
 
             if ($service->getMedia('cover')->isEmpty()) {
-                $imagePath = $this->resolveSeederImagePath($catName);
+                $imagePath = $this->resolveSeederImagePath($catName, $i);
                 if ($imagePath && file_exists($imagePath)) {
                     $service->addMedia($imagePath)->preservingOriginal()->toMediaCollection('cover');
                 }
@@ -701,28 +966,62 @@ class BrightDorSeeder extends Seeder
     }
 
     /**
-     * Resolve seed image path for a category (mirrors vendor portfolio mapping).
+     * Resolve realistic, royalty-free seed image path for any vendor category.
+     * Rotates through 4 curated high-res photos per category.
      */
-    private function resolveSeederImagePath(string $categoryName): ?string
+    private function resolveSeederImagePath(string $categoryName, int $index = 0): ?string
     {
-        $categoryName = strtolower($categoryName);
+        $cat = strtolower($categoryName);
+        $num = ($index % 4) + 1;
 
-        if (str_contains($categoryName, 'venue')) {
+        if (str_contains($cat, 'venue')) {
+            $path = database_path("seeders/images/venue/venue_{$num}.jpg");
+            if (file_exists($path)) return $path;
             return database_path('seeders/images/venue.png');
         }
-        if (str_contains($categoryName, 'catering')) {
+        if (str_contains($cat, 'catering')) {
+            $path = database_path("seeders/images/catering/catering_{$num}.jpg");
+            if (file_exists($path)) return $path;
             return database_path('seeders/images/catering.png');
         }
-        if (str_contains($categoryName, 'dekorasi') || str_contains($categoryName, 'gaun') || str_contains($categoryName, 'jas')) {
+        if (str_contains($cat, 'dekorasi')) {
+            $path = database_path("seeders/images/dekorasi/dekorasi_{$num}.jpg");
+            if (file_exists($path)) return $path;
             return database_path('seeders/images/decoration.png');
         }
-        if (str_contains($categoryName, 'fotografer') || str_contains($categoryName, 'videografer')) {
+        if (str_contains($cat, 'fotografer')) {
+            $path = database_path("seeders/images/fotografer/fotografer_{$num}.jpg");
+            if (file_exists($path)) return $path;
             return database_path('seeders/images/photography.png');
         }
-        if (str_contains($categoryName, 'mua')) {
+        if (str_contains($cat, 'videografer')) {
+            $path = database_path("seeders/images/videografer/videografer_{$num}.jpg");
+            if (file_exists($path)) return $path;
+            return database_path('seeders/images/photography.png');
+        }
+        if (str_contains($cat, 'mua') || str_contains($cat, 'makeup')) {
+            $path = database_path("seeders/images/mua/mua_{$num}.jpg");
+            if (file_exists($path)) return $path;
             return database_path('seeders/images/decoration.png');
         }
-        if (str_contains($categoryName, 'wedding organizer') || str_contains($categoryName, 'entertainment') || str_contains($categoryName, 'undangan')) {
+        if (str_contains($cat, 'wedding organizer') || str_contains($cat, 'organizer')) {
+            $path = database_path("seeders/images/wedding_organizer/wo_{$num}.jpg");
+            if (file_exists($path)) return $path;
+            return database_path('seeders/images/venue.png');
+        }
+        if (str_contains($cat, 'entertainment') || str_contains($cat, 'musik')) {
+            $path = database_path("seeders/images/entertainment/entertainment_{$num}.jpg");
+            if (file_exists($path)) return $path;
+            return database_path('seeders/images/venue.png');
+        }
+        if (str_contains($cat, 'gaun') || str_contains($cat, 'jas') || str_contains($cat, 'attire')) {
+            $path = database_path("seeders/images/gaun_jas/gaun_jas_{$num}.jpg");
+            if (file_exists($path)) return $path;
+            return database_path('seeders/images/decoration.png');
+        }
+        if (str_contains($cat, 'undangan')) {
+            $path = database_path("seeders/images/undangan_digital/undangan_{$num}.jpg");
+            if (file_exists($path)) return $path;
             return database_path('seeders/images/venue.png');
         }
 

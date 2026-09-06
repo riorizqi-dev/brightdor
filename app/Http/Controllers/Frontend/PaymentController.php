@@ -45,7 +45,7 @@ class PaymentController extends Controller
         }
 
         $validated = $request->validate([
-            'payment_method' => ['required', 'in:bank_transfer,ewallet,virtual_account'],
+            'payment_method' => ['required', 'in:bank_transfer,ewallet,virtual_account,qris'],
             'payment_reference' => ['required', 'string', 'max:100'],
             'payment_proof' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ]);

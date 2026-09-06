@@ -313,6 +313,27 @@ class PaymentFlowTest extends TestCase
         $this->assertSame('confirmed', $booking->status);
     }
 
+    public function test_couple_can_submit_qris_payment(): void
+    {
+        $couple = $this->couple('qris-user@brightdor.test');
+        $booking = $this->createBooking($couple);
+        $transaction = $booking->transactions->firstOrFail();
+
+        $this->actingAs($couple)
+            ->withoutMiddleware(VerifyCsrfToken::class)
+            ->post(route('my-bookings.payment.store', $booking), [
+                'payment_method' => 'qris',
+                'payment_reference' => 'RRN-QRIS-20260906-0099',
+            ])
+            ->assertRedirect(route('my-bookings.index'))
+            ->assertSessionHas('success');
+
+        $transaction->refresh();
+        $this->assertSame('qris', $transaction->payment_method);
+        $this->assertSame('RRN-QRIS-20260906-0099', $transaction->gateway_reference);
+        $this->assertSame('pending', $transaction->status);
+    }
+
     public function test_admin_can_render_transactions_list(): void
     {
         $couple = $this->couple('devina@brightdor.test');
