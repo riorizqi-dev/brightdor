@@ -962,6 +962,7 @@ body {
 
     <ul class="pres-nav-links">
       <li><a href="#roles">Peran User</a></li>
+      <li><a href="#user-flow">Alur Sistem</a></li>
       <li><a href="#customer-flow">Customer</a></li>
       <li><a href="#admin-panel">Admin</a></li>
       <li><a href="#vendor-panel">Vendor</a></li>
@@ -979,6 +980,7 @@ body {
 <nav class="sidebar-indicator" aria-label="Navigasi Section">
   <a href="#top" class="dot-item active"><span class="dot-tooltip">Overview</span></a>
   <a href="#roles" class="dot-item"><span class="dot-tooltip">Peran Pengguna</span></a>
+  <a href="#user-flow" class="dot-item"><span class="dot-tooltip">Alur Sistem (Flow)</span></a>
   <a href="#customer-flow" class="dot-item"><span class="dot-tooltip">Alur Customer</span></a>
   <a href="#admin-panel" class="dot-item"><span class="dot-tooltip">Dashboard Admin</span></a>
   <a href="#vendor-panel" class="dot-item"><span class="dot-tooltip">Dashboard Vendor</span></a>
@@ -1157,6 +1159,119 @@ body {
             <span>Otoritas data tanpa campur tangan password user</span>
           </li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 1.5: DIAGRAM ALUR SISTEM & INTERAKSI PENGGUNA (USER FLOW)
+       ======================================================================== -->
+  <section id="user-flow" class="section-anchor">
+    <div class="section-head">
+      <span class="section-kicker">
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        Bagian 1.5 &mdash; Diagram Alur Kerja Terintegrasi
+      </span>
+      <h2 class="section-title">Diagram Alur Sistem (User Flow Diagram)</h2>
+      <p class="section-desc">
+        Peta visual interaksi menyeluruh antara 3 aktor utama: <strong>Calon Pengantin (Couple)</strong>, <strong>Mitra Usaha (Vendor)</strong>, dan <strong>Pengelola Platform (Admin)</strong> mulai dari pendaftaran, kurasi berkas, pemesanan paket, validasi pembayaran, hingga ulasan dan pencairan saldo.
+      </p>
+    </div>
+
+    <!-- Controls & Fullscreen Link -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+      <div style="font-size:0.88rem;color:var(--ink-600);display:flex;align-items:center;gap:8px;">
+        <svg class="svg-icon" style="width:16px;height:16px;color:var(--gold-600);" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg>
+        <span>Diagram Swimlane Resolusi Ultra-Tinggi &bull; <strong>3200 &times; 2400 px</strong></span>
+      </div>
+      <a href="assets/user_flow_diagram.png" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:var(--wine-800);color:#ffffff;border-radius:var(--radius-sm);text-decoration:none;font-size:0.84rem;font-weight:700;box-shadow:var(--shadow-subtle);transition:all 0.2s ease;">
+        <span>Buka Gambar Alur Ukuran Penuh (Tab Baru)</span>
+        <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+      </a>
+    </div>
+
+    <!-- High-Res Diagram Canvas View -->
+    <div class="erd-viewer" style="border:2px solid var(--border-medium);box-shadow:var(--shadow-elevated);margin-bottom:48px;">
+      <img src="assets/user_flow_diagram.png" alt="BrightDor User Flow Diagram (3200x2400)" style="width:100%;min-width:1600px;display:block;" loading="lazy">
+    </div>
+
+    <!-- Structured 3 Swimlanes & 5 Key Cross-Interactions Breakdown -->
+    <div class="roles-grid" style="margin-bottom:40px;">
+      <!-- Lane 1 Breakdown -->
+      <div class="role-box role-box-couple">
+        <span class="role-box-badge">Jalur 1 &mdash; 7 Tahap</span>
+        <h3 class="role-box-title">Alur Calon Pengantin (Couple)</h3>
+        <p class="role-box-desc">Perjalanan customer dari penemuan vendor hingga penyelesaian acara.</p>
+        <ul class="role-feature-list">
+          <li><strong>01. Eksplorasi:</strong> Filter kategori &amp; kota di beranda/katalog vendor.</li>
+          <li><strong>02. Akun:</strong> Registrasi/Login aman dengan Bcrypt &amp; self-service reset.</li>
+          <li><strong>03. Evaluasi:</strong> Telaah portofolio Spatie, paket harga &amp; review.</li>
+          <li><strong>04. Pesan/Nego:</strong> Booking tanggal pasti atau minta penawaran khusus.</li>
+          <li><strong>05. Bayar:</strong> Transaksi via Midtrans/Xendit atau transfer manual.</li>
+          <li><strong>06. Pelacakan:</strong> Pantau status transparan di menu <em>Booking Saya</em>.</li>
+          <li><strong>07. Review:</strong> Berikan rating 1-5 bintang resmi setelah acara sukses.</li>
+        </ul>
+      </div>
+
+      <!-- Lane 2 Breakdown -->
+      <div class="role-box role-box-vendor">
+        <span class="role-box-badge">Jalur 2 &mdash; 6 Tahap</span>
+        <h3 class="role-box-title">Alur Mitra Usaha (Vendor)</h3>
+        <p class="role-box-desc">Siklus operasional penyedia jasa mengelola etalase &amp; pesanan masuk.</p>
+        <ul class="role-feature-list">
+          <li><strong>01. Pendaftaran:</strong> Hubungkan akun user (1 User = 1 Vendor unik).</li>
+          <li><strong>02. Berkas:</strong> Unggah KTP, NIB, sertifikasi untuk diverifikasi Admin.</li>
+          <li><strong>03. Etalase:</strong> Atur paket jasa di <code>services</code> &amp; unggah foto portofolio.</li>
+          <li><strong>04. Booking Masuk:</strong> Terima pesanan, tinjau jadwal, atau ajukan penawaran.</li>
+          <li><strong>05. Eksekusi:</strong> Laksanakan layanan resepsi hingga status <em>Completed</em>.</li>
+          <li><strong>06. Payout:</strong> Tarik saldo bersih hasil transaksi ke rekening bank mitra.</li>
+        </ul>
+      </div>
+
+      <!-- Lane 3 Breakdown -->
+      <div class="role-box role-box-admin">
+        <span class="role-box-badge">Jalur 3 &mdash; 7 Tahap</span>
+        <h3 class="role-box-title">Alur Pengelola (Admin)</h3>
+        <p class="role-box-desc">Pengawasan integritas data, validasi finansial, &amp; keamanan sistem.</p>
+        <ul class="role-feature-list">
+          <li><strong>01. Autentikasi:</strong> Login ke panel Filament dengan guard khusus admin.</li>
+          <li><strong>02. Moderasi:</strong> Verifikasi berkas mitra &amp; sematkan badge <em>Verified</em>.</li>
+          <li><strong>03. Pembayaran:</strong> Validasi semi-auto (webhook gateway + mutasi bank).</li>
+          <li><strong>04. Komisi:</strong> Hitung otomatis potongan komisi platform (10%).</li>
+          <li><strong>05. Payout:</strong> Konfirmasi transfer pencairan dana ke rekening vendor.</li>
+          <li><strong>06. User &amp; Keamanan:</strong> Awasi akun tanpa menyentuh password plaintext.</li>
+          <li><strong>07. Audit Log:</strong> Rekam riwayat aksi forensik &amp; kelola materi CMS publik.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5 Cross-Lane Points -->
+    <div style="background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:32px 36px;box-shadow:var(--shadow-subtle);">
+      <h4 style="font-family:var(--font-serif);font-size:1.3rem;color:var(--ink-900);margin-bottom:12px;">5 Titik Interaksi Silang Antar-Aktor (Cross-Lane Interaction)</h4>
+      <p style="font-size:0.9rem;color:var(--ink-600);margin-bottom:20px;line-height:1.6;">
+        Titik temu penting di mana aksi dari satu aktor secara langsung memicu reaksi di dashboard aktor lainnya:
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;">
+        <div style="background:var(--bg-subtle);padding:16px 20px;border-radius:var(--radius-sm);border-left:3px solid #7C3AED;">
+          <strong style="color:var(--ink-900);font-size:0.88rem;">1. Verifikasi Legalitas Dokumen</strong>
+          <p style="font-size:0.8rem;color:var(--ink-600);margin-top:4px;">Vendor mengunggah berkas KTP/NIB &rarr; Admin menelaah &amp; memberi badge Verified.</p>
+        </div>
+        <div style="background:var(--bg-subtle);padding:16px 20px;border-radius:var(--radius-sm);border-left:3px solid #B22246;">
+          <strong style="color:var(--ink-900);font-size:0.88rem;">2. Booking &amp; Negosiasi Penawaran</strong>
+          <p style="font-size:0.8rem;color:var(--ink-600);margin-top:4px;">Couple mengirim booking/custom quote &rarr; Notifikasi pesanan masuk ke dashboard Vendor.</p>
+        </div>
+        <div style="background:var(--bg-subtle);padding:16px 20px;border-radius:var(--radius-sm);border-left:3px solid #2563EB;">
+          <strong style="color:var(--ink-900);font-size:0.88rem;">3. Validasi Pembayaran Transaksi</strong>
+          <p style="font-size:0.8rem;color:var(--ink-600);margin-top:4px;">Couple membayar transaksi &rarr; Gateway otomatis atau Admin validasi &rarr; Booking menjadi Confirmed.</p>
+        </div>
+        <div style="background:var(--bg-subtle);padding:16px 20px;border-radius:var(--radius-sm);border-left:3px solid #0E7036;">
+          <strong style="color:var(--ink-900);font-size:0.88rem;">4. Transfer Pencairan Saldo (Payout)</strong>
+          <p style="font-size:0.8rem;color:var(--ink-600);margin-top:4px;">Vendor mengajukan payout pasca-acara &rarr; Admin memproses transfer ke rekening bank mitra.</p>
+        </div>
+        <div style="background:var(--bg-subtle);padding:16px 20px;border-radius:var(--radius-sm);border-left:3px solid #C2410C;">
+          <strong style="color:var(--ink-900);font-size:0.88rem;">5. Otomatisasi Ulasan &amp; Rating</strong>
+          <p style="font-size:0.8rem;color:var(--ink-600);margin-top:4px;">Couple mengisi ulasan 1-5 bintang &rarr; Sistem otomatis menghitung ulang <code>rating_avg</code> Vendor.</p>
+        </div>
       </div>
     </div>
   </section>

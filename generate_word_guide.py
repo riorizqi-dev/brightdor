@@ -109,6 +109,64 @@ def create_guide():
                 for r in p.runs:
                     r.font.size = Pt(9.5)
 
+    # Section 2.5: Panduan Diagram Alur Sistem (User Flow)
+    add_custom_heading("2.5 PANDUAN MENJELASKAN DIAGRAM ALUR SISTEM (USER FLOW DIAGRAM)", 1)
+    doc.add_paragraph(
+        "Diagram alur sistem divisualisasikan dalam bentuk Swimlane 3 Aktor Utama (3200 x 2400 px) "
+        "yang menunjukkan bagaimana aksi dari satu peran pengguna secara langsung menggerakkan alur di peran lainnya:"
+    )
+
+    p_flow_lead = doc.add_paragraph()
+    p_flow_lead.add_run("Naskah Pembuka Alur Sistem:\n").bold = True
+    r_flow_say = p_flow_lead.add_run(
+        "\"Bapak/Ibu Dosen, diagram ini merangkum proses bisnis BrightDor secara end-to-end melalui 3 jalur renang (swimlane): "
+        "Jalur Merah (Couple), Jalur Emas (Vendor), dan Jalur Abu-abu (Admin). Seluruh alur saling terhubung melalui 5 titik interaksi silang.\""
+    )
+    r_flow_say.italic = True
+    r_flow_say.font.color.rgb = RGBColor(40, 34, 36)
+
+    flows_data = [
+        ("A. Alur Couple (7 Tahap)", 
+         "1) Eksplorasi & filter vendor di beranda; "
+         "2) Registrasi akun aman (Bcrypt + self-service); "
+         "3) Evaluasi portofolio Spatie & review asli; "
+         "4) Pemesanan via Booking Tanggal atau Ajukan Penawaran khusus; "
+         "5) Pembayaran transaksi (Gateway otomatis / transfer manual); "
+         "6) Pelacakan status transparan di menu 'Booking Saya'; "
+         "7) Memberikan ulasan & rating bintang setelah resepsi selesai."),
+        
+        ("B. Alur Mitra Vendor (6 Tahap)", 
+         "1) Pendaftaran mitra via form pendaftaran (1 User = 1 Vendor); "
+         "2) Unggah dokumen legalitas (KTP/NIB) ke vendor_documents; "
+         "3) Pengaturan paket jasa (services) & portofolio foto; "
+         "4) Menerima notifikasi booking / permintaan penawaran harga; "
+         "5) Eksekusi layanan pernikahan saat resepsi hingga status Completed; "
+         "6) Pengajuan pencairan saldo (Payouts) ke rekening bank mitra."),
+        
+        ("C. Alur Pengelola Admin (7 Tahap)", 
+         "1) Login aman di panel Filament dengan guard khusus; "
+         "2) Moderasi berkas legalitas & sematkan badge Verified; "
+         "3) Validasi pembayaran transaksi (semi-auto webhook & mutasi); "
+         "4) Pemotongan otomatis komisi platform (10%); "
+         "5) Persetujuan dan transfer pencairan dana (Payout); "
+         "6) Pengawasan operasional user tanpa campur tangan password; "
+         "7) Forensik jejak audit_logs & pengelolaan materi CMS.")
+    ]
+
+    for f_title, f_desc in flows_data:
+        p_f = doc.add_paragraph()
+        p_f.paragraph_format.left_indent = Inches(0.2)
+        p_f.add_run(f_title + ":\n").bold = True
+        p_f.add_run(f_desc)
+
+    p_cross = doc.add_paragraph()
+    p_cross.add_run("5 Titik Interaksi Silang Antar-Aktor (Cross-Lane Interaction):\n").bold = True
+    p_cross.add_run("1. Verifikasi Dokumen: Vendor unggah KTP/NIB → Admin menelaah & verifikasi.\n")
+    p_cross.add_run("2. Kirim Booking/Nego: Couple reservasi tanggal → Vendor menerima notifikasi pesanan.\n")
+    p_cross.add_run("3. Validasi Pembayaran: Couple membayar → Gateway/Admin validasi status Confirmed.\n")
+    p_cross.add_run("4. Transfer Payout: Vendor ajukan pencairan → Admin transfer dana bersih ke rekening.\n")
+    p_cross.add_run("5. Auto-Update Rating: Couple beri ulasan → Sistem otomatis hitung ulang rating_avg vendor.")
+
     # Section 3: 3 Tipe / Pilar Admin
     add_custom_heading("3. PENJELASAN 3 PILAR ARSITEKTUR DASHBOARD ADMIN", 1)
     doc.add_paragraph(
