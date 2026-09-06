@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Vendor;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +85,7 @@ class BookingController extends Controller
 
             $subtotal = $service->final_price;
 
-            return Booking::create([
+            $booking = Booking::create([
                 'user_id' => $resolvedUser->id,
                 'vendor_id' => $vendor->id,
                 'service_id' => $service->id,
@@ -100,6 +101,10 @@ class BookingController extends Controller
                 'total_amount' => $subtotal,
                 'status' => 'pending',
             ]);
+
+            PaymentService::createPaymentTransaction($booking);
+
+            return $booking;
         });
 
         return back()->with(

@@ -103,6 +103,47 @@
                 </div>
             </div>
 
+            {{-- Payout balance --}}
+            <div class="bd-panel">
+                <div class="bd-panel-head">
+                    <h2>{{ __('brightdor.vendor_dashboard.available_balance') }}</h2>
+                    <span
+                        @class([
+                            'bd-pill',
+                            'bd-pill-ok' => $stats['available'] > 0,
+                            'bd-pill-warn' => $stats['available'] <= 0,
+                        ])
+                    >
+                        Rp {{ number_format($stats['available'], 0, ',', '.') }}
+                    </span>
+                </div>
+                <div class="bd-panel-body">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="text-[0.85rem] text-[#6b7280]">
+                            @if ($stats['available'] > 0)
+                                {{ __('brightdor.vendor_dashboard.available_balance_hint') }}
+                            @else
+                                {{ __('brightdor.vendor_dashboard.no_balance') }}
+                            @endif
+                        </div>
+                        @if ($stats['available'] > 0)
+                            <a
+                                class="bd-action"
+                                href="{{ route('filament.vendor.resources.vendor-payout.vendor-payouts.create') }}"
+                            >
+                                <span class="bd-action-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                                </span>
+                                <span>
+                                    <strong>{{ __('brightdor.vendor_dashboard.request_payout') }}</strong>
+                                    <small>{{ __('brightdor.vendor_dashboard.request_payout_hint') }}</small>
+                                </span>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
             {{-- Panels --}}
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
                 {{-- Recent bookings --}}

@@ -31,6 +31,12 @@ return [
         'general_settings' => 'Paramètres généraux',
         'language_settings' => 'Paramètres de langue',
     ],
+    'vendor_nav' => [
+        'booking' => 'Mes réservations',
+        'services' => 'Mes services',
+        'finance' => 'Finances',
+        'profile' => 'Profil',
+    ],
     'dashboard' => [
         'kicker' => 'Centre de contrôle BrightDor',
         'welcome' => 'Bienvenue, :name',

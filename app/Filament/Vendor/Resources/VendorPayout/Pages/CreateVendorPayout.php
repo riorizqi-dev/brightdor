@@ -17,6 +17,8 @@ class CreateVendorPayout extends CreateRecord
 
         $data['vendor_id'] = $vendor->id;
         $data['status'] = 'pending';
+        $data['fee'] = 0;
+        $data['net_amount'] = round((float) $data['amount'], 2);
 
         return $data;
     }

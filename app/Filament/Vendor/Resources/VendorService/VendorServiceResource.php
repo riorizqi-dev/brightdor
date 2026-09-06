@@ -22,7 +22,12 @@ class VendorServiceResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Jasa Saya';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): string|\UnitEnum|null
+    {
+        return __('brightdor.vendor_nav.services');
+    }
 
     public static function getNavigationLabel(): string
     {

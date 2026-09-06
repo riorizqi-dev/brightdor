@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'brightdor' => [
+        'webhook_key' => env('BRIGHTDOR_WEBHOOK_KEY', 'brightdor-demo-key'),
+    ],
+
 ];

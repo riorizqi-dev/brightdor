@@ -21,6 +21,7 @@ class Transaction extends Model
         'payment_method',
         'payment_gateway',
         'gateway_reference',
+        'payment_proof',
         'status',
         'paid_at',
         'meta',

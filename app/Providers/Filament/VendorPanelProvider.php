@@ -45,7 +45,7 @@ class VendorPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex(BrandPalette::ROSE_600),
                 'secondary' => Color::hex(BrandPalette::GOLD_500),
-                'gray' => Color::Zinc,
+                'gray' => Color::Stone,
                 'success' => Color::hex('#3f7d5c'),
                 'warning' => Color::hex(BrandPalette::GOLD_600),
                 'danger' => Color::hex(BrandPalette::ROSE_800),
@@ -55,8 +55,11 @@ class VendorPanelProvider extends PanelProvider
             // Light elegant default
             ->darkMode(false)
             ->defaultThemeMode(ThemeMode::Light)
-            // TOP NAV ONLY
-            ->topNavigation()
+            // Sidebar navigation (elegant, professional)
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('17rem')
+            ->collapsedSidebarWidth('4.6rem')
+            ->collapsibleNavigationGroups()
             ->maxContentWidth(Width::Full)
             ->discoverResources(in: app_path('Filament/Vendor/Resources'), for: 'App\\Filament\\Vendor\\Resources')
             ->discoverPages(in: app_path('Filament/Vendor/Pages'), for: 'App\\Filament\\Vendor\\Pages')

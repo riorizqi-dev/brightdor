@@ -31,6 +31,12 @@ return [
         'general_settings' => 'Pengaturan Umum',
         'language_settings' => 'Pengaturan Bahasa',
     ],
+    'vendor_nav' => [
+        'booking' => 'Booking Saya',
+        'services' => 'Jasa Saya',
+        'finance' => 'Keuangan',
+        'profile' => 'Profil',
+    ],
     'dashboard' => [
         'kicker' => 'Pusat Kendali BrightDor',
         'welcome' => 'Selamat datang, :name',
@@ -52,6 +58,8 @@ return [
         'successful_payments' => 'Transaksi sukses',
         'registered_customers' => 'Pelanggan terdaftar',
         'paid_active_orders' => 'Pesanan dibayar / aktif',
+        'pending_payments' => 'Antrian Validasi',
+        'pending_payments_hint' => ':count transaksi menunggu validasi admin',
         'revenue_chart' => 'Pendapatan 6 Bulan',
         'revenue_chart_desc' => 'Transaksi pembayaran yang berhasil',
         'booking_chart' => 'Pemesanan per Kategori',
@@ -116,5 +124,10 @@ return [
         'status_pending' => 'Menunggu',
         'status_rejected' => 'Ditolak',
         'customer' => 'Pelanggan',
+        'available_balance' => 'Saldo Payout Tersedia',
+        'available_balance_hint' => 'Sisa pendapatan dari acara yang sudah selesai, setelah potongan komisi BrightDor.',
+        'request_payout' => 'Ajukan Payout',
+        'request_payout_hint' => 'Tarik saldo ke bank / e-wallet kamu',
+        'no_balance' => 'Belum ada saldo. Saldo bertambah otomatis setelah booking selesai dan kamu bisa tarik.',
     ],
 ];

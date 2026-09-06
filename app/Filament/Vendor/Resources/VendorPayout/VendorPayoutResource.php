@@ -22,7 +22,12 @@ class VendorPayoutResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCurrencyDollar;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Keuangan';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): string|\UnitEnum|null
+    {
+        return __('brightdor.vendor_nav.finance');
+    }
 
     public static function getNavigationLabel(): string
     {

@@ -21,7 +21,12 @@ class VendorProfileResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserCircle;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Profil';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): string|\UnitEnum|null
+    {
+        return __('brightdor.vendor_nav.profile');
+    }
 
     public static function getNavigationLabel(): string
     {

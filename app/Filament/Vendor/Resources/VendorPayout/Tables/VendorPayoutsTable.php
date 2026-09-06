@@ -26,15 +26,14 @@ class VendorPayoutsTable
                     ->colors([
                         'warning' => 'pending',
                         'info' => 'processing',
-                        'success' => 'completed',
-                        'danger' => ['failed', 'cancelled'],
+                        'success' => 'paid',
+                        'danger' => 'rejected',
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'pending' => 'Menunggu',
                         'processing' => 'Diproses',
-                        'completed' => 'Selesai',
-                        'failed' => 'Gagal',
-                        'cancelled' => 'Dibatalkan',
+                        'paid' => 'Dibayar',
+                        'rejected' => 'Ditolak',
                         default => $state,
                     })
                     ->sortable(),
@@ -55,9 +54,8 @@ class VendorPayoutsTable
                     ->options([
                         'pending' => 'Menunggu',
                         'processing' => 'Diproses',
-                        'completed' => 'Selesai',
-                        'failed' => 'Gagal',
-                        'cancelled' => 'Dibatalkan',
+                        'paid' => 'Dibayar',
+                        'rejected' => 'Ditolak',
                     ]),
             ])
             ->recordActions([

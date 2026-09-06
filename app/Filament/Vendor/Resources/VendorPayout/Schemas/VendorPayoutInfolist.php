@@ -2,8 +2,8 @@
 
 namespace App\Filament\Vendor\Resources\VendorPayout\Schemas;
 
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class VendorPayoutInfolist
@@ -22,17 +22,15 @@ class VendorPayoutInfolist
                             ->color(fn (string $state): string => match ($state) {
                                 'pending' => 'warning',
                                 'processing' => 'info',
-                                'completed' => 'success',
-                                'failed' => 'danger',
-                                'cancelled' => 'danger',
+                                'paid' => 'success',
+                                'rejected' => 'danger',
                                 default => 'gray',
                             })
                             ->formatStateUsing(fn (string $state): string => match ($state) {
                                 'pending' => 'Menunggu',
                                 'processing' => 'Diproses',
-                                'completed' => 'Selesai',
-                                'failed' => 'Gagal',
-                                'cancelled' => 'Dibatalkan',
+                                'paid' => 'Dibayar',
+                                'rejected' => 'Ditolak',
                                 default => $state,
                             }),
                         \Filament\Infolists\Components\TextEntry::make('amount')->label('Jumlah')->money('IDR'),

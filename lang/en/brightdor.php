@@ -31,6 +31,12 @@ return [
         'general_settings' => 'General Settings',
         'language_settings' => 'Language Settings',
     ],
+    'vendor_nav' => [
+        'booking' => 'My Bookings',
+        'services' => 'My Services',
+        'finance' => 'Finance',
+        'profile' => 'Profile',
+    ],
     'dashboard' => [
         'kicker' => 'BrightDor Control Center',
         'welcome' => 'Welcome, :name',
@@ -52,6 +58,8 @@ return [
         'successful_payments' => 'Successful payments',
         'registered_customers' => 'Registered customers',
         'paid_active_orders' => 'Paid / active orders',
+        'pending_payments' => 'Payments Pending Validation',
+        'pending_payments_hint' => ':count transactions waiting for admin validation',
         'revenue_chart' => 'Revenue · 6 Months',
         'revenue_chart_desc' => 'Successful payment transactions',
         'booking_chart' => 'Bookings by Category',
@@ -116,5 +124,10 @@ return [
         'status_pending' => 'Pending',
         'status_rejected' => 'Rejected',
         'customer' => 'Customer',
+        'available_balance' => 'Available Payout Balance',
+        'available_balance_hint' => 'Remaining earnings from completed bookings, after the BrightDor commission is deducted.',
+        'request_payout' => 'Request Payout',
+        'request_payout_hint' => 'Withdraw your balance to bank / e-wallet',
+        'no_balance' => 'No balance yet. Balance grows automatically as soon as a booking is completed.',
     ],
 ];

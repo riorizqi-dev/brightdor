@@ -31,6 +31,12 @@ return [
         'general_settings' => '常规设置',
         'language_settings' => '语言设置',
     ],
+    'vendor_nav' => [
+        'booking' => '我的预订',
+        'services' => '我的服务',
+        'finance' => '财务',
+        'profile' => '个人资料',
+    ],
     'dashboard' => [
         'kicker' => 'BrightDor 控制中心',
         'welcome' => '欢迎，:name',

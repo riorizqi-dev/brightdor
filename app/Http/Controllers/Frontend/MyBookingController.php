@@ -15,7 +15,7 @@ class MyBookingController extends Controller
     public function index(): View
     {
         $bookings = Auth::user()->bookings()
-            ->with(['vendor.category', 'service'])
+            ->with(['vendor.category', 'service', 'transactions'])
             ->latest()
             ->paginate(10);
 

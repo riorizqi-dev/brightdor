@@ -362,9 +362,10 @@
     </div>
 
     {{-- Booking modal --}}
-    <div data-booking-modal class="fixed inset-0 hidden items-center justify-center p-4" style="z-index: 99999 !important;">
-        <div class="absolute inset-0 bg-ink-900/70 backdrop-blur-sm" data-booking-close style="z-index: 1;"></div>
-        <div class="relative w-full max-w-md rounded-[8px] bg-white p-6 shadow-2xl shadow-ink-900/30" style="z-index: 2;">
+    <div data-booking-modal class="fixed inset-0 hidden flex-col overflow-y-auto" style="z-index: 99999 !important;">
+        <div class="relative flex min-h-full items-center justify-center p-4">
+            <div class="absolute inset-0 bg-ink-900/70 backdrop-blur-sm" data-booking-close style="z-index: 1;"></div>
+            <div class="relative w-full max-w-md rounded-[8px] bg-white p-6 shadow-2xl shadow-ink-900/30" style="z-index: 2;">
             <div class="flex items-center justify-between">
                 <h3 class="font-display text-xl font-bold text-ink-900" data-booking-title>Booking Tanggal</h3>
                 <button data-booking-close class="flex h-9 w-9 items-center justify-center rounded-full hover:bg-ink-50 transition-colors">
@@ -427,6 +428,7 @@
                     <span data-booking-submit-text>Kirim Permintaan Booking</span>
                 </button>
             </form>
+        </div>
         </div>
     </div>
 @endsection

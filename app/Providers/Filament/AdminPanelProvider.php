@@ -43,7 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex(BrandPalette::ROSE_600),
                 'secondary' => Color::hex(BrandPalette::GOLD_500),
-                'gray' => Color::Zinc,
+                'gray' => Color::Stone,
                 'success' => Color::hex('#3f7d5c'),
                 'warning' => Color::hex(BrandPalette::GOLD_600),
                 'danger' => Color::hex(BrandPalette::ROSE_800),
@@ -53,12 +53,14 @@ class AdminPanelProvider extends PanelProvider
             // Light elegant default
             ->darkMode(false)
             ->defaultThemeMode(ThemeMode::Light)
-            // TOP NAV ONLY
-            ->topNavigation()
+            // Sidebar navigation (elegant, professional)
+            ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('17rem')
+            ->collapsedSidebarWidth('4.6rem')
+            ->collapsibleNavigationGroups()
             ->maxContentWidth(Width::Full)
             ->globalSearchKeyBindings(['command+k', 'ctrl+k'])
             ->globalSearchFieldSuffix(fn (): ?string => '⌘K')
-            ->sidebarCollapsibleOnDesktop(false)
             ->navigationGroups([
                 NavigationGroup::make(fn () => __('brightdor.nav.dashboard')),
                 NavigationGroup::make(fn () => __('brightdor.nav.vendors')),

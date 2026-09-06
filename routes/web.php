@@ -6,6 +6,8 @@ use App\Http\Controllers\Frontend\InvitationController;
 use App\Http\Controllers\Frontend\LoginController;
 use App\Http\Controllers\Frontend\MyBookingController;
 use App\Http\Controllers\Frontend\PasswordResetController;
+use App\Http\Controllers\Frontend\PaymentController;
+use App\Http\Controllers\Frontend\PaymentWebhookController;
 use App\Http\Controllers\Frontend\RegisterController;
 use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Frontend\VendorController;
@@ -53,8 +55,19 @@ Route::middleware('auth')->prefix('daftar-vendor')->name('vendors.register.')->g
 Route::middleware('auth')->prefix('booking-saya')->name('my-bookings.')->group(function () {
     Route::get('/', [MyBookingController::class, 'index'])->name('index');
     Route::post('/{booking}/batal', [MyBookingController::class, 'cancel'])->name('cancel');
+    Route::get('/{booking}/bayar', [PaymentController::class, 'create'])->name('payment');
+    Route::post('/{booking}/bayar', [PaymentController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('payment.store');
     Route::get('/{booking}/review', [ReviewController::class, 'create'])->name('review.create');
     Route::post('/{booking}/review', [ReviewController::class, 'store'])->name('review.store');
+});
+
+Route::prefix('webhook')->name('webhook.')->group(function () {
+    Route::post('/payment', [PaymentWebhookController::class, 'markPaid'])
+        ->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class)
+        ->middleware('throttle:30,1')
+        ->name('payment.mark-paid');
 });
 
 Route::prefix('i')->name('invitations.')->group(function () {

@@ -31,6 +31,12 @@ return [
         'general_settings' => 'إعدادات عامة',
         'language_settings' => 'إعدادات اللغة',
     ],
+    'vendor_nav' => [
+        'booking' => 'حجوزاتي',
+        'services' => 'خدماتي',
+        'finance' => 'المالية',
+        'profile' => 'الملف الشخصي',
+    ],
     'dashboard' => [
         'kicker' => 'مركز تحكم BrightDor',
         'welcome' => 'مرحباً، :name',

@@ -61,6 +61,7 @@ class VendorDashboard extends Page
                 'rating_avg' => null,
                 'rating_count' => 0,
                 'verified' => false,
+                'available' => 0,
             ];
         }
 
@@ -76,6 +77,7 @@ class VendorDashboard extends Page
             'rating_avg' => $vendor->rating_avg,
             'rating_count' => $vendor->rating_count,
             'verified' => (bool) $vendor->is_verified,
+            'available' => $vendor->payoutsAvailable(),
         ];
     }
 

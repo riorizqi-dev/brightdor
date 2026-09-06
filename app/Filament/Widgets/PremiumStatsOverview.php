@@ -30,6 +30,10 @@ class PremiumStatsOverview extends Widget
             ->where('status', 'success')
             ->where('type', 'payment')
             ->sum('amount');
+        $pendingPayments = Transaction::query()
+            ->where('type', 'payment')
+            ->where('status', 'pending')
+            ->count();
         $invitations = InvitationOrder::query()
             ->whereIn('status', ['paid', 'active'])
             ->count();
@@ -62,6 +66,14 @@ class PremiumStatsOverview extends Widget
                 'value' => number_format(User::query()->where('user_type', 'couple')->count()),
                 'hint' => __('brightdor.dashboard.registered_customers'),
                 'icon' => 'users',
+            ],
+            [
+                'label' => __('brightdor.dashboard.pending_payments'),
+                'value' => number_format($pendingPayments),
+                'hint' => $pendingPayments > 0
+                    ? __('brightdor.dashboard.pending_payments_hint', ['count' => $pendingPayments])
+                    : __('brightdor.dashboard.no_queue'),
+                'icon' => 'wallet',
             ],
             [
                 'label' => __('brightdor.dashboard.digital_invites'),

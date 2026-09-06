@@ -31,6 +31,12 @@ return [
         'general_settings' => '일반 설정',
         'language_settings' => '언어 설정',
     ],
+    'vendor_nav' => [
+        'booking' => '내 예약',
+        'services' => '내 서비스',
+        'finance' => '재무',
+        'profile' => '프로필',
+    ],
     'dashboard' => [
         'kicker' => 'BrightDor 컨트롤 센터',
         'welcome' => '환영합니다, :name',

@@ -17,6 +17,8 @@ class Payout extends Model
         'bank_name',
         'bank_account_number',
         'bank_account_name',
+        'ewallet_provider',
+        'ewallet_number',
         'status',
         'admin_notes',
         'processed_by',

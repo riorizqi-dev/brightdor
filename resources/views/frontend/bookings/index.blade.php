@@ -56,6 +56,9 @@
             @else
                 <div class="mt-8 space-y-4">
                     @foreach ($bookings as $booking)
+                        @php
+                            $paymentTxn = $booking->transactions->first(static fn ($t) => (string) $t->type === 'payment');
+                        @endphp
                         <article class="bd-card p-6">
                             <div class="flex flex-wrap items-start justify-between gap-4">
                                 <div>
@@ -105,6 +108,20 @@
 
                             <div class="mt-5 flex flex-wrap items-center gap-3">
                                 <a href="{{ route('vendors.show', $booking->vendor->slug) }}" class="bd-btn-ghost text-sm">Lihat Vendor</a>
+
+                                @if ($booking->status === 'pending' || ($booking->status === 'confirmed' && $paymentTxn && $paymentTxn->status === 'pending'))
+                                    @if ($paymentTxn && $paymentTxn->status === 'success')
+                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-emerald-100 px-4 py-2 text-sm font-bold text-emerald-700">Lunas</span>
+                                    @elseif ($paymentTxn && $paymentTxn->status === 'pending' && $paymentTxn->payment_method)
+                                        <span class="inline-flex items-center gap-1.5 rounded-md bg-sky-100 px-4 py-2 text-sm font-bold text-sky-700">Menunggu Validasi Admin</span>
+                                        <a href="{{ route('my-bookings.payment', $booking) }}" class="bd-btn-secondary text-sm">Lihat / Update Bukti</a>
+                                    @else
+                                        <a href="{{ route('my-bookings.payment', $booking) }}" class="inline-flex items-center gap-1.5 rounded-md bg-rose-600 px-5 py-2 text-sm font-bold text-white transition-all hover:bg-rose-700">
+                                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25c0-1.5 1.5-2.25 3-2.25h13.5c1.5 0 3 .75 3 2.25v3m-19.5 0L2.25 22h19.5l-1.5-10.75M15 15.75h3.75"/></svg>
+                                            Bayar Sekarang
+                                        </a>
+                                    @endif
+                                @endif
 
                                 @if (in_array($booking->status, ['pending', 'confirmed'], true))
                                     <form method="POST" action="{{ route('my-bookings.cancel', $booking) }}"
