@@ -59,20 +59,6 @@
                     </span>
                 </div>
             </div>
-
-            {{-- Sticky-ish CTA (desktop) --}}
-            <div class="hidden flex-col gap-2.5 md:flex">
-                <a href="{{ $vendor->whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $vendor->whatsapp) : '#' }}"
-                   target="_blank" rel="noopener"
-                   class="bd-btn-primary">
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.83 14.12c-.25.7-1.45 1.33-2.02 1.42-.52.08-1.17.11-1.88-.12-.44-.14-1-.32-1.71-.63-3-1.3-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37h.57c.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.32-.3.5-.15.17-.32.39-.46.52-.15.15-.31.31-.13.61.18.3.79 1.3 1.7 2.11 1.16 1.04 2.14 1.36 2.44 1.51.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.27.1 1.75.83 2.05.98.3.15.5.22.57.35.08.12.08.72-.17 1.42Z"/></svg>
-                    Hubungi Vendor
-                </a>
-                <button type="button" data-booking-open="quote" class="bd-btn-secondary">
-                    <x-frontend.ring-icon class="h-4 w-4"/>
-                    Ajukan Penawaran
-                </button>
-            </div>
         </div>
 
         <div class="mt-8 grid gap-8 lg:grid-cols-12">
@@ -81,13 +67,14 @@
                 {{-- Gallery --}}
                 <section>
                     @php
+                        $normalizeUrl = fn ($u) => (is_string($u) && preg_match('#^https?://[^/]+(/storage/.*)$#', $u, $m)) ? $m[1] : $u;
                         $serviceCovers = $vendor->services
-                            ->map(fn ($svc) => $svc->getFirstMediaUrl('cover'))
+                            ->map(fn ($svc) => $normalizeUrl($svc->getFirstMediaUrl('cover')))
                             ->filter()
                             ->values();
-                        $images = $portfolio->map(fn ($m) => $m->getUrl())
+                        $images = $portfolio->map(fn ($m) => $normalizeUrl($m->getUrl()))
                             ->concat($serviceCovers)
-                            ->concat($gallery->pluck('image')->filter())
+                            ->concat($gallery->pluck('image')->map($normalizeUrl)->filter())
                             ->filter()
                             ->values();
                         $hasReal = $images->isNotEmpty();
@@ -286,7 +273,11 @@
                         $starting = $vendor->services->min(fn ($s) => (float) $s->final_price);
                     @endphp
                     <p class="mt-1 font-display text-3xl font-extrabold text-rose-600">{{ rupiah($starting) }}</p>
-                    <p class="mt-1 text-xs text-ink-400">per {{ $vendor->services->first()?->price_unit ?? 'event' }}</p>
+                    @php
+                        $rawUnit = $vendor->services->first()?->price_unit ?? 'event';
+                        $cleanUnit = str_starts_with(strtolower(trim($rawUnit)), 'per ') ? $rawUnit : 'per ' . $rawUnit;
+                    @endphp
+                    <p class="mt-1 text-xs text-ink-400">{{ $cleanUnit }}</p>
 
                     <div class="mt-6 space-y-3">
                         <a href="{{ $vendor->whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $vendor->whatsapp) : '#' }}"

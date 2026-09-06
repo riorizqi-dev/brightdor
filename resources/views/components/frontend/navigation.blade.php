@@ -92,7 +92,7 @@
     {{-- Category navigation (desktop only) — inline first 5 + "Lainnya" dropdown --}}
     <nav class="navbar-catnav hidden border-t border-ink-200/60 bg-white lg:block">
         <div class="bd-container px-6">
-            <div class="bd-catnav flex items-center gap-1 py-1 overflow-visible">
+            <div class="bd-catnav flex items-center justify-center gap-1 py-1 overflow-visible">
                 <a href="{{ route('home') }}"
                    class="bd-catnav-item flex-shrink-0 whitespace-nowrap px-4 py-2 text-sm font-semibold text-ink-600 transition-all duration-300 {{ request()->routeIs('home') ? 'active' : 'hover:text-rose-600 hover:bg-rose-50 rounded-full' }}">
                     Home
