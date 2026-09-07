@@ -30,19 +30,19 @@
                     @csrf
 
                     <div>
-                        <label class="text-xs font-bold uppercase tracking-wider text-ink-400">Paket Vendor</label>
+                        <label class="text-xs font-bold uppercase tracking-wider text-ink-700">Paket Vendor</label>
                         <div class="mt-2 space-y-2">
-                            <label class="flex cursor-pointer items-start gap-3 rounded-[5px] border border-ink-200 bg-white p-3 text-sm text-ink-700 transition hover:border-rose-300">
+                            <label class="flex cursor-pointer items-start gap-3 rounded-[6px] border border-ink-200 bg-white p-3.5 text-sm text-ink-700 transition hover:border-rose-300">
                                 <input type="radio" name="subscription_plan" value="premium_monthly" checked class="mt-0.5 h-4 w-4 border-ink-300 text-rose-600 focus:ring-rose-500/50">
                                 <span>
-                                    <span class="block font-semibold text-ink-900">Premium Monthly</span>
+                                    <span class="block font-bold text-ink-900">Premium Monthly</span>
                                     <span class="text-ink-500">Rp 299.000 / bulan • akses vendor penuh</span>
                                 </span>
                             </label>
-                            <label class="flex cursor-pointer items-start gap-3 rounded-[5px] border border-ink-200 bg-white p-3 text-sm text-ink-700 transition hover:border-rose-300">
+                            <label class="flex cursor-pointer items-start gap-3 rounded-[6px] border border-ink-200 bg-white p-3.5 text-sm text-ink-700 transition hover:border-rose-300">
                                 <input type="radio" name="subscription_plan" value="premium_yearly" class="mt-0.5 h-4 w-4 border-ink-300 text-rose-600 focus:ring-rose-500/50">
                                 <span>
-                                    <span class="block font-semibold text-ink-900">Premium Yearly</span>
+                                    <span class="block font-bold text-ink-900">Premium Yearly</span>
                                     <span class="text-ink-500">Rp 2.990.000 / tahun • hemat 17%</span>
                                 </span>
                             </label>
@@ -51,18 +51,18 @@
                     </div>
 
                     <div>
-                        <label for="reg-name" class="text-xs font-bold uppercase tracking-wider text-ink-400">Nama Lengkap</label>
+                        <label for="reg-name" class="text-xs font-bold uppercase tracking-wider text-ink-700">Nama Lengkap</label>
                         <input id="reg-name" type="text" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" class="bd-input mt-1.5">
                         @error('name')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
                     <div>
-                        <label for="reg-phone" class="text-xs font-bold uppercase tracking-wider text-ink-400">No. WhatsApp / Telepon</label>
+                        <label for="reg-phone" class="text-xs font-bold uppercase tracking-wider text-ink-700">No. WhatsApp / Telepon</label>
                         <input id="reg-phone" type="tel" name="phone" value="{{ old('phone', $user->phone) }}" required autocomplete="tel" placeholder="cth. 0812xxxxxxx" class="bd-input mt-1.5">
                         @error('phone')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
-                    <button type="submit" class="bd-btn-primary w-full justify-center py-3">Daftar sebagai Vendor</button>
+                    <button type="submit" class="bd-btn-primary w-full justify-center py-3.5 text-base font-bold shadow-md">Daftar sebagai Vendor</button>
                 </form>
             </section>
 

@@ -26,19 +26,19 @@
                     @csrf
 
                     <div>
-                        <label for="login-email" class="text-xs font-bold uppercase tracking-wider text-ink-400">Email</label>
+                        <label for="login-email" class="text-xs font-bold uppercase tracking-wider text-ink-700">Email</label>
                         <input id="login-email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" class="bd-input mt-1.5" autofocus>
                         @error('email')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
                     <div>
-                        <label for="login-password" class="text-xs font-bold uppercase tracking-wider text-ink-400">Password</label>
+                        <label for="login-password" class="text-xs font-bold uppercase tracking-wider text-ink-700">Password</label>
                         <x-frontend.password-field id="login-password" name="password" autocomplete="current-password" required />
                         @error('password')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
                     <div class="flex items-center justify-between">
-                        <label class="flex items-center gap-2 text-sm text-ink-500">
+                        <label class="flex items-center gap-2 text-sm text-ink-600 font-medium">
                             <input type="checkbox" name="remember" value="1" class="h-4 w-4 rounded border-ink-300 text-rose-600 focus:ring-rose-500">
                             Ingat saya
                         </label>
@@ -47,7 +47,7 @@
                         </a>
                     </div>
 
-                    <button type="submit" class="bd-btn-primary w-full justify-center py-3">
+                    <button type="submit" class="bd-btn-primary w-full justify-center py-3.5 text-base font-bold shadow-md">
                         Masuk
                     </button>
                 </form>

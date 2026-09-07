@@ -16,36 +16,36 @@
                     @csrf
 
                     <div>
-                        <label for="reg-name" class="text-xs font-bold uppercase tracking-wider text-ink-400">Nama Lengkap</label>
+                        <label for="reg-name" class="text-xs font-bold uppercase tracking-wider text-ink-700">Nama Lengkap</label>
                         <input id="reg-name" type="text" name="name" value="{{ old('name') }}" required autocomplete="name" class="bd-input mt-1.5">
                         @error('name')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
                     <div>
-                        <label for="reg-email" class="text-xs font-bold uppercase tracking-wider text-ink-400">Email</label>
+                        <label for="reg-email" class="text-xs font-bold uppercase tracking-wider text-ink-700">Email</label>
                         <input id="reg-email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" class="bd-input mt-1.5">
                         @error('email')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
                     <div>
-                        <label for="reg-phone" class="text-xs font-bold uppercase tracking-wider text-ink-400">No. WhatsApp / Telepon</label>
+                        <label for="reg-phone" class="text-xs font-bold uppercase tracking-wider text-ink-700">No. WhatsApp / Telepon</label>
                         <input id="reg-phone" type="tel" name="phone" value="{{ old('phone') }}" required autocomplete="tel" class="bd-input mt-1.5">
                         @error('phone')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
 
                     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                         <div>
-                            <label for="reg-password" class="text-xs font-bold uppercase tracking-wider text-ink-400">Password</label>
+                            <label for="reg-password" class="text-xs font-bold uppercase tracking-wider text-ink-700">Password</label>
                             <x-frontend.password-field id="reg-password" name="password" autocomplete="new-password" required />
                             @error('password')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                         </div>
                         <div>
-                            <label for="reg-password-confirm" class="text-xs font-bold uppercase tracking-wider text-ink-400">Konfirmasi Password</label>
+                            <label for="reg-password-confirm" class="text-xs font-bold uppercase tracking-wider text-ink-700">Konfirmasi Password</label>
                             <x-frontend.password-field id="reg-password-confirm" name="password_confirmation" autocomplete="new-password" required />
                         </div>
                     </div>
 
-                    <button type="submit" class="bd-btn-primary w-full justify-center py-3">Daftar sebagai User</button>
+                    <button type="submit" class="bd-btn-primary w-full justify-center py-3.5 text-base font-bold shadow-md">Daftar sebagai User</button>
                 </form>
             </section>
 

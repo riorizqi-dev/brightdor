@@ -277,20 +277,20 @@
                         $rawUnit = $vendor->services->first()?->price_unit ?? 'event';
                         $cleanUnit = str_starts_with(strtolower(trim($rawUnit)), 'per ') ? $rawUnit : 'per ' . $rawUnit;
                     @endphp
-                    <p class="mt-1 text-xs text-ink-400">{{ $cleanUnit }}</p>
+                    <p class="mt-1 text-sm text-ink-500 font-medium">{{ $cleanUnit }}</p>
 
                     <div class="mt-6 space-y-3">
                         <a href="{{ $vendor->whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $vendor->whatsapp) : '#' }}"
                            target="_blank" rel="noopener"
-                           class="bd-btn-primary w-full justify-center">
-                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.83 14.12c-.25.7-1.45 1.33-2.02 1.42-.52.08-1.17.11-1.88-.12-.44-.14-1-.32-1.71-.63-3-1.3-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37h.57c.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.32-.3.5-.15.17-.32.39-.46.52-.15.15-.31.31-.13.61.18.3.79 1.3 1.7 2.11 1.16 1.04 2.14 1.36 2.44 1.51.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.27.1 1.75.83 2.05.98.3.15.5.22.57.35.08.12.08.72-.17 1.42Z"/></svg>
+                           class="bd-btn-primary w-full justify-center gap-2 py-3.5 px-6 text-base font-bold shadow-md">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.83 14.12c-.25.7-1.45 1.33-2.02 1.42-.52.08-1.17.11-1.88-.12-.44-.14-1-.32-1.71-.63-3-1.3-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37h.57c.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.32-.3.5-.15.17-.32.39-.46.52-.15.15-.31.31-.13.61.18.3.79 1.3 1.7 2.11 1.16 1.04 2.14 1.36 2.44 1.51.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.27.1 1.75.83 2.05.98.3.15.5.22.57.35.08.12.08.72-.17 1.42Z"/></svg>
                             Hubungi Vendor
                         </a>
-                        <button type="button" data-booking-open="quote" class="bd-btn-secondary w-full justify-center">
+                        <button type="button" data-booking-open="quote" class="bd-btn-secondary w-full justify-center gap-2 py-3 px-5 text-sm font-bold shadow-xs">
                             <x-frontend.ring-icon class="h-4 w-4"/>
                             Ajukan Penawaran
                         </button>
-                        <button type="button" data-booking-open="date" class="bd-btn-ghost w-full justify-center ring-1 ring-ink-200 hover:ring-rose-400/50">
+                        <button type="button" data-booking-open="date" class="bd-btn-ghost w-full justify-center gap-2 py-3 px-5 text-sm font-bold ring-1 ring-ink-200 hover:ring-rose-400/50 shadow-2xs">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 9h16.5M4.5 5.25h15a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75h-15a.75.75 0 0 1-.75-.75V6a.75.75 0 0 1 .75-.75ZM12 13.5h.008v.008H12V13.5Zm0 3h.008v.008H12V16.5Zm-3-3h.008v.008H9V13.5Zm0 3h.008v.008H9V16.5Zm6-3h.008v.008H15V13.5Z"/></svg>
                             Booking Tanggal
                         </button>
@@ -371,23 +371,23 @@
                 <input type="hidden" name="request_mode" value="{{ old('request_mode', 'date') }}" data-booking-mode-field>
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
-                        <label for="booking-name" class="text-xs font-bold uppercase tracking-wider text-ink-400">Nama Lengkap</label>
+                        <label for="booking-name" class="text-xs font-bold uppercase tracking-wider text-ink-700">Nama Lengkap</label>
                         <input id="booking-name" type="text" name="name" value="{{ old('name') }}" required class="bd-input mt-1.5">
                         @error('name')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="booking-email" class="text-xs font-bold uppercase tracking-wider text-ink-400">Email</label>
+                        <label for="booking-email" class="text-xs font-bold uppercase tracking-wider text-ink-700">Email</label>
                         <input id="booking-email" type="email" name="email" value="{{ old('email') }}" required class="bd-input mt-1.5">
                         @error('email')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
                 </div>
                 <div>
-                    <label for="booking-phone" class="text-xs font-bold uppercase tracking-wider text-ink-400">No. HP / WhatsApp</label>
+                    <label for="booking-phone" class="text-xs font-bold uppercase tracking-wider text-ink-700">No. HP / WhatsApp</label>
                     <input id="booking-phone" type="tel" name="phone" value="{{ old('phone') }}" placeholder="cth. 0812xxxxxxx" required class="bd-input mt-1.5">
                     @error('phone')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <label for="booking-service" class="text-xs font-bold uppercase tracking-wider text-ink-400">Pilih Paket</label>
+                    <label for="booking-service" class="text-xs font-bold uppercase tracking-wider text-ink-700">Pilih Paket</label>
                     <select id="booking-service" name="service_id" class="bd-input mt-1.5" required>
                         @foreach ($vendor->services as $service)
                             <option value="{{ $service->id }}" @selected(old('service_id') == $service->id)>{{ $service->name }} — {{ rupiah($service->final_price) }}</option>
@@ -397,25 +397,25 @@
                 </div>
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
-                        <label for="booking-date" class="text-xs font-bold uppercase tracking-wider text-ink-400">Tanggal Acara</label>
+                        <label for="booking-date" class="text-xs font-bold uppercase tracking-wider text-ink-700">Tanggal Acara</label>
                         <input id="booking-date" type="date" name="event_date" value="{{ old('event_date') }}" min="{{ now()->toDateString() }}" class="bd-input mt-1.5">
                         @error('event_date')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
                     <div>
-                        <label for="booking-guests" class="text-xs font-bold uppercase tracking-wider text-ink-400">Jumlah Tamu</label>
+                        <label for="booking-guests" class="text-xs font-bold uppercase tracking-wider text-ink-700">Jumlah Tamu</label>
                         <input id="booking-guests" type="number" name="guest_count" value="{{ old('guest_count') }}" placeholder="cth. 300" min="1" class="bd-input mt-1.5">
                         @error('guest_count')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                     </div>
                 </div>
                 <div>
-                    <label for="booking-notes" class="text-xs font-bold uppercase tracking-wider text-ink-400">Catatan</label>
+                    <label for="booking-notes" class="text-xs font-bold uppercase tracking-wider text-ink-700">Catatan</label>
                     <textarea id="booking-notes" name="customer_notes" rows="3" placeholder="Ceritakan kebutuhanmu..." class="bd-input mt-1.5 resize-none">{{ old('customer_notes') }}</textarea>
                     @error('customer_notes')<p class="mt-1 text-xs text-rose-600">{{ $message }}</p>@enderror
                 </div>
                 @if ($errors->any())
                     <p class="rounded-[5px] bg-rose-50 px-4 py-3 text-sm text-rose-600 ring-1 ring-rose-500/30">Periksa kembali isian kamu, ada beberapa kolom yang belum benar.</p>
                 @endif
-                <button type="submit" data-booking-submit class="bd-btn-primary w-full justify-center py-3 disabled:opacity-60 disabled:cursor-not-allowed">
+                <button type="submit" data-booking-submit class="bd-btn-primary w-full justify-center py-3.5 text-base font-bold shadow-md disabled:opacity-60 disabled:cursor-not-allowed">
                     <span data-booking-submit-text>Kirim Permintaan Booking</span>
                 </button>
             </form>

@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\InvitationController;
 use App\Http\Controllers\Frontend\LoginController;
 use App\Http\Controllers\Frontend\MyBookingController;
+use App\Http\Controllers\Frontend\PackageController;
 use App\Http\Controllers\Frontend\PasswordResetController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\PaymentWebhookController;
@@ -41,6 +42,8 @@ Route::prefix('vendors')->name('vendors.')->group(function () {
     Route::get('/', [VendorController::class, 'index'])->name('index');
     Route::get('/{categorySlug}', [VendorController::class, 'index'])->name('category');
 });
+
+Route::get('/paket-populer', [PackageController::class, 'index'])->name('packages.index');
 
 Route::get('/vendor/{slug}', [VendorController::class, 'show'])->name('vendors.show');
 Route::post('/vendor/{slug}/booking', [BookingController::class, 'store'])

@@ -75,7 +75,11 @@ class VendorController extends Controller
         $this->applyPriceRange($query, $request);
         $this->applyCapacityRange($query, $request);
 
-        $sort = $request->string('sort', 'popular')->toString();
+        if ($request->query('sort') === 'popular' && ! $category && ! $request->hasAny(['q', 'category', 'city', 'price', 'capacity', 'rating'])) {
+            return redirect()->route('packages.index');
+        }
+
+        $sort = $request->string('sort', 'curated')->toString();
         $priceSortSql = '(SELECT MIN(COALESCE(discount_price, price)) FROM services WHERE services.vendor_id = vendors.id AND services.status = \'published\' AND services.is_active = 1)';
 
         match ($sort) {
@@ -84,7 +88,7 @@ class VendorController extends Controller
             'price_desc' => $query->orderByRaw('(' . $priceSortSql . ') IS NULL')->orderByRaw($priceSortSql . ' desc'),
             'rating' => $query->orderByDesc('rating_avg')->orderByDesc('rating_count'),
             'featured' => $query->orderByDesc('is_featured')->orderByDesc('rating_count'),
-            default => $query->orderByDesc('is_featured')->orderByDesc('rating_count')->orderByDesc('rating_avg'),
+            default => $query->orderByDesc('is_featured')->orderByDesc('is_verified')->orderByDesc('rating_avg'),
         };
 
         $vendors = $query->paginate(12)->withQueryString();

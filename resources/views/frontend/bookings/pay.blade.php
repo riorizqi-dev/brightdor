@@ -274,7 +274,7 @@
                                 <p class="font-display text-2xl font-extrabold text-rose-600">{{ rupiah((float) $transaction->amount) }}</p>
                             </div>
                             <button type="button" onclick="copyText('{{ (int) $transaction->amount }}', this)"
-                                    class="bd-btn-primary py-2 px-4 text-xs font-bold">
+                                    class="bd-btn-primary py-2.5 px-5 text-sm font-bold shadow-xs">
                                 Salin Jumlah Transfer
                             </button>
                         </div>
@@ -292,7 +292,7 @@
                         @csrf
 
                         <div>
-                            <label for="pay-method" class="text-xs font-bold uppercase tracking-wider text-ink-400">Metode Pembayaran</label>
+                            <label for="pay-method" class="text-xs font-bold uppercase tracking-wider text-ink-700">Metode Pembayaran</label>
                             <select id="pay-method" name="payment_method" required class="bd-input mt-1.5" onchange="onSelectMethodChange(this.value)">
                                 <option value="">— Pilih metode —</option>
                                 <option value="qris" @selected($currentMethod === 'qris')>QRIS (Semua E-Wallet &amp; Mobile Banking)</option>
@@ -304,7 +304,7 @@
                         </div>
 
                         <div>
-                            <label for="pay-reference" class="text-xs font-bold uppercase tracking-wider text-ink-400">Nomor Referensi / ID Transaksi Bank</label>
+                            <label for="pay-reference" class="text-xs font-bold uppercase tracking-wider text-ink-700">Nomor Referensi / ID Transaksi Bank</label>
                             <input id="pay-reference" type="text" name="payment_reference"
                                    value="{{ old('payment_reference', $transaction->gateway_reference) }}"
                                    placeholder="Contoh: RRN-20260906-0012 atau TRX-BCA-849201"
@@ -314,7 +314,7 @@
                         </div>
 
                         <div>
-                            <label for="pay-proof" class="text-xs font-bold uppercase tracking-wider text-ink-400">Unggah Bukti Transfer / Struk (Opsional)</label>
+                            <label for="pay-proof" class="text-xs font-bold uppercase tracking-wider text-ink-700">Unggah Bukti Transfer / Struk (Opsional)</label>
                             <input id="pay-proof" type="file" name="payment_proof" accept="image/png,image/jpeg"
                                    class="bd-input mt-1.5 file:border-0 file:bg-ink-100 file:px-4 file:py-2 file:text-ink-700 file:font-bold file:rounded file:cursor-pointer">
                             <p class="mt-1 text-xs text-ink-400">Format JPG atau PNG, ukuran maksimal 2 MB.</p>
@@ -322,10 +322,10 @@
                         </div>
 
                         <div class="flex flex-wrap gap-3 pt-4">
-                            <button type="submit" class="bd-btn-primary flex-1 justify-center py-3 text-sm font-bold shadow-sm">
+                            <button type="submit" class="bd-btn-primary flex-1 justify-center py-3.5 text-base font-bold shadow-md">
                                 {{ $alreadySubmitted ? 'Perbarui Bukti Pembayaran' : 'Kirim Bukti Pembayaran' }}
                             </button>
-                            <a href="{{ route('my-bookings.index') }}" class="bd-btn-secondary flex-1 justify-center py-3 text-sm">
+                            <a href="{{ route('my-bookings.index') }}" class="bd-btn-secondary flex-1 justify-center py-3.5 text-base font-bold">
                                 Kembali ke Booking Saya
                             </a>
                         </div>

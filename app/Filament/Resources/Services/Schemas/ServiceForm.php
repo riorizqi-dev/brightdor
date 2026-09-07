@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Services\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
@@ -67,6 +68,30 @@ class ServiceForm
                             ->required(),
                         Toggle::make('is_featured')->label('Featured / Highlight'),
                         Toggle::make('is_active')->label('Aktif')->default(true),
+                    ]),
+                Section::make('Foto & Galeri Jasa')
+                    ->description('Unggah foto cover utama dan foto galeri pendukung untuk paket jasa ini.')
+                    ->schema([
+                        FileUpload::make('cover_image')
+                            ->label('Foto Cover / Sampul Paket')
+                            ->image()
+                            ->disk('public')
+                            ->directory('services/covers')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->maxSize(5120)
+                            ->helperText('Format JPG, PNG, atau WEBP (maks. 5MB). Foto ini akan menjadi foto utama paket di katalog.'),
+                        FileUpload::make('gallery_images')
+                            ->label('Galeri Foto Hasil Karya')
+                            ->image()
+                            ->multiple()
+                            ->reorderable()
+                            ->disk('public')
+                            ->directory('services/gallery')
+                            ->visibility('public')
+                            ->maxFiles(8)
+                            ->maxSize(5120)
+                            ->helperText('Upload hingga 8 foto hasil dokumentasi atau detail paket ini.'),
                     ]),
             ]);
     }

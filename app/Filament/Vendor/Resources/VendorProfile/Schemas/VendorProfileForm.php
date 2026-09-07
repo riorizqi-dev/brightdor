@@ -2,6 +2,7 @@
 
 namespace App\Filament\Vendor\Resources\VendorProfile\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -60,6 +61,30 @@ class VendorProfileForm
                     ->schema([
                         TextInput::make('latitude')->label('Latitude')->numeric()->step('any'),
                         TextInput::make('longitude')->label('Longitude')->numeric()->step('any'),
+                    ]),
+                Section::make('Logo & Foto Portofolio Bisnis')
+                    ->description('Unggah logo bisnis dan foto portofolio terbaik Anda untuk ditampilkan di halaman profil vendor dan kartu pencarian.')
+                    ->schema([
+                        FileUpload::make('logo')
+                            ->label('Logo Usaha / Brand')
+                            ->image()
+                            ->disk('public')
+                            ->directory('vendors/logos')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->maxSize(2048)
+                            ->helperText('Logo atau avatar bisnis resmi (JPG, PNG, atau WEBP, maks. 2MB).'),
+                        FileUpload::make('portfolio_images')
+                            ->label('Foto Portofolio & Galeri Karya')
+                            ->image()
+                            ->multiple()
+                            ->reorderable()
+                            ->disk('public')
+                            ->directory('vendors/portfolio')
+                            ->visibility('public')
+                            ->maxFiles(10)
+                            ->maxSize(5120)
+                            ->helperText('Foto portofolio terbaik yang akan menjadi cover utama dan galeri profil vendor Anda (maks. 10 foto).'),
                     ]),
             ]);
     }

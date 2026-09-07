@@ -32,11 +32,11 @@
 @endphp
 
 <a href="{{ route('vendors.show', $vendor->slug) }}"
-   class="group flex flex-col overflow-hidden rounded-[5px] bg-white ring-1 ring-black/5 shadow-[0_1px_2px_rgba(0,0,0,0.02),_0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_4px_8px_rgba(0,0,0,0.04),_0_20px_44px_rgba(0,0,0,0.09)]"
+   class="group bd-vendor-card"
    wire:navigate>
     <div class="relative overflow-hidden">
         <x-frontend.cover :src="$coverUrl" :title="$vendor->business_name" :category="$category?->name"
-                          class="aspect-[4/3] transition duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04]"/>
+                          class="aspect-[4/3] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"/>
 
         <div class="absolute left-3 top-3 flex items-center gap-2">
             @if ($vendor->is_featured)
@@ -62,7 +62,7 @@
     </div>
 
     <div class="flex flex-1 flex-col p-5">
-        <h3 class="font-display text-lg font-bold leading-snug text-ink-900 transition duration-300 group-hover:text-rose-600">
+        <h3 class="font-display text-lg sm:text-[1.15rem] font-bold leading-snug text-ink-900 transition duration-300 group-hover:text-rose-600">
             {{ $vendor->business_name }}
         </h3>
 
@@ -84,13 +84,13 @@
             <div class="bd-divider"></div>
             <div class="mt-4 flex items-end justify-between">
                 <div>
-                    <p class="text-[10px] uppercase tracking-wider text-ink-400 font-bold">Mulai dari</p>
-                    <p class="font-display text-lg font-bold text-ink-900 mt-0.5">
+                    <p class="text-[11px] uppercase tracking-wider text-ink-400 font-bold">Mulai dari</p>
+                    <p class="font-display text-xl sm:text-[1.35rem] font-extrabold text-ink-900 mt-0.5 tracking-tight">
                         {{ rupiah($startingPrice, true) }}
                     </p>
                 </div>
 
-                <span class="inline-flex items-center gap-1 rounded-[4px] border border-rose-500/40 bg-rose-50 px-3.5 py-1.5 text-xs font-bold text-rose-600 transition-all duration-300 group-hover:bg-rose-600 group-hover:text-white group-hover:border-rose-600 group-hover:shadow-md group-hover:translate-x-0.5">
+                <span class="inline-flex items-center gap-1 rounded-[5px] border border-rose-500/40 bg-rose-50 px-3.5 py-1.5 text-xs font-bold text-rose-600 transition-all duration-300 group-hover:bg-rose-600 group-hover:text-white group-hover:border-rose-600 group-hover:shadow-md group-hover:translate-x-0.5">
                     Lihat Detail
                     <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M21 12H3"/></svg>
                 </span>

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Vendors\Schemas;
 
 use App\Models\User;
 use App\Models\VendorCategory;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -87,6 +88,30 @@ class VendorForm
                             ->label('Alasan Reject')
                             ->rows(2)
                             ->columnSpanFull(),
+                    ]),
+                Section::make('Logo & Foto Portofolio Bisnis')
+                    ->description('Unggah logo bisnis dan foto portofolio vendor.')
+                    ->schema([
+                        FileUpload::make('logo')
+                            ->label('Logo Usaha / Brand')
+                            ->image()
+                            ->disk('public')
+                            ->directory('vendors/logos')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->maxSize(2048)
+                            ->helperText('Logo atau avatar bisnis resmi (JPG, PNG, atau WEBP, maks. 2MB).'),
+                        FileUpload::make('portfolio_images')
+                            ->label('Foto Portofolio & Galeri Karya')
+                            ->image()
+                            ->multiple()
+                            ->reorderable()
+                            ->disk('public')
+                            ->directory('vendors/portfolio')
+                            ->visibility('public')
+                            ->maxFiles(10)
+                            ->maxSize(5120)
+                            ->helperText('Foto portofolio terbaik vendor (maks. 10 foto).'),
                     ]),
             ]);
     }

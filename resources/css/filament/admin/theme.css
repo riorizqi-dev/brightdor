@@ -273,6 +273,7 @@
 }
 
 .fi-header-heading {
+    font-family: var(--font-display), serif !important;
     color: var(--color-bd-ink) !important;
     font-weight: 700 !important;
     letter-spacing: -0.03em !important;
@@ -309,6 +310,7 @@
 }
 
 .fi-section-header-heading {
+    font-family: var(--font-display), serif !important;
     color: var(--color-bd-ink) !important;
     font-weight: 650 !important;
     letter-spacing: -0.01em !important;
@@ -410,6 +412,7 @@
     border-radius: 999px !important;
     font-weight: 600 !important;
     letter-spacing: -0.005em;
+    transition: all 0.2s ease !important;
 }
 
 /* =====================================================================
@@ -471,7 +474,7 @@ a.fi-link,
     border: 1px solid var(--color-bd-hairline) !important;
     background: var(--color-bd-surface) !important;
     box-shadow: 0 1px 2px rgba(38, 34, 29, 0.03), 0 12px 32px rgba(38, 34, 29, 0.05) !important;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease !important;
 }
 
 .fi-wi-stats-overview-stat::before {
@@ -485,8 +488,8 @@ a.fi-link,
 }
 
 .fi-wi-stats-overview-stat:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 4px rgba(38, 34, 29, 0.03), 0 18px 40px rgba(38, 34, 29, 0.07);
+    transform: translateY(-3px) !important;
+    box-shadow: 0 4px 12px rgba(38, 34, 29, 0.04), 0 20px 44px rgba(38, 34, 29, 0.08) !important;
 }
 
 .fi-wi-stats-overview-stat-label {
@@ -498,9 +501,12 @@ a.fi-link,
 }
 
 .fi-wi-stats-overview-stat-value {
+    font-family: var(--font-display), serif !important;
+    font-size: 2.15rem !important;
     color: var(--color-bd-ink) !important;
     font-weight: 700 !important;
-    letter-spacing: -0.03em !important;
+    letter-spacing: -0.035em !important;
+    line-height: 1.05 !important;
 }
 
 .fi-wi-stats-overview-stat-description {
@@ -618,12 +624,40 @@ a.fi-link,
 }
 
 .bd-greeting {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 0.1rem 0.1rem 0.3rem;
+    gap: 1.25rem;
+    padding: 1.75rem 2rem;
+    background: linear-gradient(135deg, rgba(253, 243, 246, 0.85) 0%, rgba(255, 255, 255, 0.95) 55%, rgba(247, 242, 236, 0.75) 100%);
+    border: 1px solid var(--color-bd-hairline);
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 30px -10px rgba(38, 34, 29, 0.05), 0 1px 3px rgba(38, 34, 29, 0.02);
+}
+
+.bd-greeting::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-bd-rose-600) 0%, var(--color-bd-gold-500) 50%, var(--color-bd-rose-400) 100%);
+}
+
+.bd-greeting::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(224, 90, 119, 0.08) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .bd-greeting-kicker {
@@ -693,7 +727,7 @@ a.fi-link,
     background: var(--color-bd-surface);
     border: 1px solid var(--color-bd-hairline);
     box-shadow: 0 1px 2px rgba(38, 34, 29, 0.03), 0 12px 32px rgba(38, 34, 29, 0.04);
-    transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
 }
 
 .bd-stat::before {
@@ -707,9 +741,9 @@ a.fi-link,
 }
 
 .bd-stat:hover {
-    transform: translateY(-2px);
-    border-color: rgba(38, 34, 29, 0.16);
-    box-shadow: 0 2px 4px rgba(38, 34, 29, 0.03), 0 18px 40px rgba(38, 34, 29, 0.06);
+    transform: translateY(-3px);
+    border-color: rgba(38, 34, 29, 0.18);
+    box-shadow: 0 4px 12px rgba(38, 34, 29, 0.04), 0 20px 44px rgba(38, 34, 29, 0.08);
 }
 
 .bd-stat-top {
@@ -748,9 +782,10 @@ a.fi-link,
 }
 
 .bd-stat-value {
-    font-size: 1.75rem;
+    font-family: var(--font-display), serif;
+    font-size: 2.15rem;
     font-weight: 700;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.035em;
     color: var(--color-bd-ink);
     line-height: 1.05;
 }
@@ -1051,4 +1086,81 @@ select:autofill {
     box-shadow: 0 0 0px 1000px #ffffff inset !important;
     -webkit-text-fill-color: var(--color-bd-ink) !important;
     caret-color: var(--color-bd-ink) !important;
+}
+
+/* =====================================================================
+   Page-load Staggered Fade-in Animation
+   ===================================================================== */
+
+@keyframes bd-dash-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bd-greeting {
+    animation: bd-dash-fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.bd-stats > :nth-child(1),
+.fi-wi-stats-overview-stat:nth-child(1) {
+    animation: bd-dash-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.04s both;
+}
+.bd-stats > :nth-child(2),
+.fi-wi-stats-overview-stat:nth-child(2) {
+    animation: bd-dash-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+.bd-stats > :nth-child(3),
+.fi-wi-stats-overview-stat:nth-child(3) {
+    animation: bd-dash-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+.bd-stats > :nth-child(4),
+.fi-wi-stats-overview-stat:nth-child(4) {
+    animation: bd-dash-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+}
+.bd-stats > :nth-child(5),
+.fi-wi-stats-overview-stat:nth-child(5) {
+    animation: bd-dash-fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.20s both;
+}
+
+.bd-panel,
+.fi-section,
+.fi-ta-ctn {
+    animation: bd-dash-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+
+/* =====================================================================
+   Accessibility: prefers-reduced-motion
+   ===================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001s !important;
+    }
+
+    .bd-greeting,
+    .bd-stats > *,
+    .fi-wi-stats-overview-stat,
+    .bd-panel,
+    .fi-section,
+    .fi-ta-ctn {
+        animation: none !important;
+    }
+
+    .bd-stat:hover,
+    .fi-wi-stats-overview-stat:hover,
+    .bd-action:hover,
+    .bd-lang-card:hover,
+    .fi-btn:active {
+        transform: none !important;
+    }
 }

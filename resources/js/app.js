@@ -27,8 +27,49 @@ function initPasswordToggles() {
     });
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPasswordToggles);
-} else {
-    initPasswordToggles();
+// Micro-animations: Scroll Reveal via Intersection Observer
+function initScrollAnimations() {
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+            el.classList.add('is-revealed');
+        });
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.08,
+    });
+
+    document.querySelectorAll('.reveal-on-scroll:not(.is-revealed)').forEach((el) => {
+        // If element is already in viewport on initial load, reveal it
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('is-revealed');
+        } else {
+            observer.observe(el);
+        }
+    });
 }
+
+function initApp() {
+    initPasswordToggles();
+    initScrollAnimations();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
+
+document.addEventListener('livewire:navigated', initApp);
+
