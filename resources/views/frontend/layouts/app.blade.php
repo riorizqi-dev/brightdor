@@ -18,7 +18,7 @@
 <body class="flex min-h-screen flex-col bg-white text-ink-600 font-sans antialiased selection:bg-rose-600/20 selection:text-ink-900">
     <x-frontend.navigation/>
 
-    <main class="flex-1 pt-[104px] lg:pt-[116px]">
+    <main class="flex-1 pt-[96px] lg:pt-[104px]">
         @yield('content')
     </main>
 

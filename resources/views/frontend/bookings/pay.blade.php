@@ -27,16 +27,15 @@
 
             <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <p class="bd-section-kicker">Konfirmasi &amp; Pelunasan</p>
-                    <h1 class="mt-1 font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">Bayar Booking</h1>
-                    <p class="mt-1.5 text-sm text-ink-500">
+                    <h1 class="font-display text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">Bayar Booking</h1>
+                    <p class="mt-1 text-sm text-ink-500">
                         Kode booking: <span class="font-bold text-ink-800">{{ $booking->booking_code }}</span> ·
                         Vendor: <span class="font-semibold text-ink-800">{{ $booking->vendor->business_name }}</span>
                     </p>
                 </div>
-                <div class="rounded-[5px] bg-rose-50 px-4 py-2 text-right ring-1 ring-rose-200/60">
+                <div class="rounded-xl bg-rose-50 px-4 py-2.5 text-right ring-1 ring-rose-200/60">
                     <span class="text-[11px] font-bold uppercase tracking-wider text-rose-700">Total Pembayaran</span>
-                    <p class="font-display text-2xl font-extrabold text-rose-600">{{ rupiah((float) $transaction->amount) }}</p>
+                    <p class="font-display text-xl font-bold text-rose-600">{{ rupiah((float) $transaction->amount) }}</p>
                 </div>
             </div>
 
@@ -44,9 +43,19 @@
             <section class="bd-card mt-6 p-6">
                 <div class="flex items-center justify-between border-b border-ink-100 pb-4">
                     <h2 class="font-display text-base font-bold text-ink-900">Rincian Tagihan</h2>
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-700 ring-1 ring-amber-300/60">
-                        <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                        {{ $transaction->status === 'success' ? 'Lunas' : ($alreadySubmitted ? 'Menunggu Validasi' : 'Belum Dibayar') }}
+                    @php
+                        $statusBadge = match ($transaction->status) {
+                            'success' => ['Lunas', 'bg-emerald-50 text-emerald-700 ring-emerald-300/60', 'bg-emerald-500'],
+                            'expired' => ['Kedaluwarsa', 'bg-rose-50 text-rose-700 ring-rose-300/60', 'bg-rose-500'],
+                            'failed' => ['Ditolak', 'bg-rose-50 text-rose-700 ring-rose-300/60', 'bg-rose-500'],
+                            default => $alreadySubmitted
+                                ? ['Menunggu Validasi', 'bg-sky-50 text-sky-700 ring-sky-300/60', 'bg-sky-500']
+                                : ['Belum Dibayar', 'bg-amber-50 text-amber-700 ring-amber-300/60', 'bg-amber-500'],
+                        };
+                    @endphp
+                    <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 {{ $statusBadge[1] }}">
+                        <span class="h-1.5 w-1.5 rounded-full {{ $statusBadge[2] }}"></span>
+                        {{ $statusBadge[0] }}
                     </span>
                 </div>
                 <dl class="mt-4 grid gap-4 text-sm sm:grid-cols-2 md:grid-cols-4">
@@ -64,7 +73,15 @@
                     </div>
                     <div>
                         <dt class="text-[11px] font-bold uppercase tracking-wider text-ink-400">Batas Waktu</dt>
-                        <dd class="mt-1 font-semibold text-ink-800">24 Jam</dd>
+                        <dd class="mt-1 font-semibold {{ $transaction->status === 'expired' ? 'text-rose-600' : 'text-ink-800' }}">
+                            @if ($transaction->status === 'expired')
+                                Sudah Habis
+                            @elseif ($transaction->expires_at)
+                                {{ $transaction->expires_at->translatedFormat('d M Y, H:i') }}
+                            @else
+                                24 Jam
+                            @endif
+                        </dd>
                     </div>
                 </dl>
             </section>
@@ -87,6 +104,24 @@
                         <p class="font-bold text-base">Pembayaran Lunas</p>
                         <p class="mt-1 text-xs text-emerald-700">Transaksi <span class="font-mono font-semibold">{{ $transaction->transaction_code }}</span> telah diverifikasi dan status booking Anda telah dikonfirmasi oleh vendor.</p>
                         <a href="{{ route('my-bookings.index') }}" class="mt-3 inline-flex items-center gap-1 text-xs font-bold text-emerald-800 underline hover:text-emerald-900">Kembali ke Daftar Booking &rarr;</a>
+                    </div>
+                </div>
+            @elseif ($transaction->status === 'expired')
+                <div class="mt-6 flex items-start gap-3 rounded-[5px] border border-rose-400/50 bg-rose-50 p-4 text-sm text-rose-800">
+                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
+                    <div>
+                        <p class="font-bold">Batas Waktu Pembayaran Habis</p>
+                        <p class="mt-0.5 text-xs text-rose-700">Transaksi ini sudah melewati batas 24 jam. Silakan hubungi tim BrightDor untuk membuka tagihan pembayaran baru.</p>
+                        <a href="{{ route('my-bookings.index') }}" class="mt-2 inline-flex items-center gap-1 text-xs font-bold text-rose-800 underline hover:text-rose-900">Kembali ke Booking Saya &rarr;</a>
+                    </div>
+                </div>
+            @elseif ($transaction->status === 'failed')
+                <div class="mt-6 flex items-start gap-3 rounded-[5px] border border-rose-400/50 bg-rose-50 p-4 text-sm text-rose-800">
+                    <svg class="mt-0.5 h-5 w-5 shrink-0 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                    <div>
+                        <p class="font-bold">Pembayaran Ditolak</p>
+                        <p class="mt-0.5 text-xs text-rose-700">Bukti pembayaran Anda tidak dapat diverifikasi. Silakan hubungi tim BrightDor atau kirim ulang bukti yang benar.</p>
+                        <a href="{{ route('my-bookings.index') }}" class="mt-2 inline-flex items-center gap-1 text-xs font-bold text-rose-800 underline hover:text-rose-900">Kembali ke Booking Saya &rarr;</a>
                     </div>
                 </div>
             @elseif ($alreadySubmitted)

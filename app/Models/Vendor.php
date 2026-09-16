@@ -127,17 +127,22 @@ class Vendor extends Model implements HasMedia
         return $this->status === 'approved';
     }
 
+    /**
+     * Saldo yang bisa ditarik vendor.
+     *
+     * Vendor berhak atas SUBTOTAL paket dikurangi komisi platform.
+     * Biaya admin (admin_fee) adalah pendapatan BrightDor, bukan vendor,
+     * sehingga tidak ikut dihitung. Hanya booking yang sudah selesai
+     * (completed) dan pembayarannya lunas yang dihitung.
+     */
     public function payoutsAvailable(): float
     {
-        $completedEarnings = (float) $this->bookings()
-            ->where('status', 'completed')
-            ->sum('total_amount');
+        $bookings = $this->bookings()->where('status', 'completed');
 
-        $commission = (float) $this->bookings()
-            ->where('status', 'completed')
-            ->sum('commission_amount');
+        $subtotal = (float) (clone $bookings)->sum('subtotal');
+        $commission = (float) (clone $bookings)->sum('commission_amount');
 
-        $netEarned = $completedEarnings - $commission;
+        $netEarned = $subtotal - $commission;
 
         $alreadyRequested = (float) $this->payouts()
             ->whereNotIn('status', ['rejected', 'cancelled', 'failed'])

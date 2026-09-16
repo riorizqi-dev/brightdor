@@ -22,14 +22,14 @@
         {{-- Badges Top --}}
         <div class="absolute left-3 top-3 flex flex-wrap items-center gap-1.5">
             @if ($service->is_featured || $service->bookings_count >= 10)
-                <span class="inline-flex items-center gap-1 rounded-md bg-rose-600/95 backdrop-blur-xs px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-xs">
-                    <svg class="h-3 w-3 text-amber-300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <span class="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-rose-700 shadow-md ring-1 ring-black/10">
+                    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                     Populer
                 </span>
             @endif
 
             @if ($hasDiscount)
-                <span class="inline-flex items-center gap-1 rounded-md bg-emerald-600/95 backdrop-blur-xs px-2 py-1 text-[11px] font-extrabold text-white shadow-xs">
+                <span class="inline-flex items-center gap-1 rounded-full bg-emerald-600/95 px-2 py-1 text-[10px] font-bold text-white shadow-md">
                     Hemat {{ $discountPercent }}%
                 </span>
             @endif
@@ -38,7 +38,7 @@
         {{-- Category Pill Bottom --}}
         @if ($category)
             <div class="absolute bottom-3 left-3">
-                <span class="inline-flex items-center gap-1.5 rounded-md bg-white/95 backdrop-blur-md px-2.5 py-1 text-xs font-bold text-ink-800 shadow-xs ring-1 ring-black/5">
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-ink-800 shadow-md ring-1 ring-black/5">
                     <x-frontend.category-icon :name="$category->name" :slug="$category->slug" class="h-3.5 w-3.5 text-rose-600"/>
                     {{ $category->name }}
                 </span>

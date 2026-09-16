@@ -53,6 +53,8 @@ class PaymentService
             'fee' => 0,
             'net_amount' => $booking->total_amount,
             'status' => 'pending',
+            // Batas waktu pembayaran 24 jam — sesuai yang ditampilkan di UI.
+            'expires_at' => now()->addHours(24),
         ]);
     }
 

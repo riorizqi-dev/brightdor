@@ -6,9 +6,8 @@
     <div class="bd-container py-12">
         <div class="mx-auto max-w-xl">
             <div class="text-center">
-                <p class="bd-section-kicker">Pemulihan Akun</p>
-                <h1 class="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">Lupa Password</h1>
-                <p class="mt-3 text-sm text-ink-500">Masukkan email kamu. Kami akan mengirimkan tautan untuk mengatur ulang password.</p>
+                <h1 class="font-display text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">Lupa Password</h1>
+                <p class="mt-2 text-sm text-ink-500">Masukkan email kamu. Kami akan mengirimkan tautan untuk mengatur ulang password.</p>
             </div>
 
             <section class="bd-card mt-8 p-6 sm:p-8">

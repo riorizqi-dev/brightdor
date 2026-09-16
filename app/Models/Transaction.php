@@ -24,6 +24,7 @@ class Transaction extends Model
         'payment_proof',
         'status',
         'paid_at',
+        'expires_at',
         'meta',
     ];
 
@@ -34,8 +35,35 @@ class Transaction extends Model
             'fee' => 'decimal:2',
             'net_amount' => 'decimal:2',
             'paid_at' => 'datetime',
+            'expires_at' => 'datetime',
             'meta' => 'array',
         ];
+    }
+
+    /**
+     * Transaksi pending yang sudah melewati batas waktu pembayaran.
+     * Dipakai untuk auto-expire saat transaksi diakses.
+     */
+    public function isExpiredPending(): bool
+    {
+        return $this->status === 'pending'
+            && $this->expires_at !== null
+            && $this->expires_at->isPast();
+    }
+
+    /**
+     * Tandai transaksi sebagai expired bila pending dan sudah lewat batas.
+     * Mengembalikan true bila status berubah menjadi expired.
+     */
+    public function expireIfOverdue(): bool
+    {
+        if (! $this->isExpiredPending()) {
+            return false;
+        }
+
+        $this->forceFill(['status' => 'expired'])->save();
+
+        return true;
     }
 
     protected static function booted(): void

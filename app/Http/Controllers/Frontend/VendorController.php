@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use App\Models\Service;
-use App\Models\Testimonial;
 use App\Models\Vendor;
 use App\Models\VendorCategory;
 use Illuminate\Http\Request;
@@ -124,11 +123,20 @@ class VendorController extends Controller
 
         $cover = $portfolio->first() ?? $gallery->first();
 
-        $reviews = Testimonial::query()
-            ->where('is_active', true)
-            ->orderByDesc('rating')
+        // Review asli milik vendor ini (bukan testimoni global).
+        $reviews = $vendor->reviews()
+            ->with('user')
+            ->where('is_verified', true)
+            ->latest()
             ->take(6)
             ->get();
+
+        // Distribusi rating asli untuk bar 1–5 bintang.
+        $ratingDistribution = $vendor->reviews()
+            ->where('is_verified', true)
+            ->selectRaw('rating, COUNT(*) as total')
+            ->groupBy('rating')
+            ->pluck('total', 'rating');
 
         $similarVendors = Vendor::query()
             ->where('status', 'approved')
@@ -138,7 +146,7 @@ class VendorController extends Controller
             ->take(3)
             ->get();
 
-        return view('frontend.vendors.show', compact('vendor', 'gallery', 'portfolio', 'cover', 'reviews', 'similarVendors'));
+        return view('frontend.vendors.show', compact('vendor', 'gallery', 'portfolio', 'cover', 'reviews', 'ratingDistribution', 'similarVendors'));
     }
 
     private function applyPriceRange($query, Request $request): void

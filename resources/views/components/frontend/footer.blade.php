@@ -19,24 +19,8 @@
                     </span>
                 </a>
                 <p class="mt-4 max-w-sm text-sm leading-relaxed text-ink-300">
-                    Marketplace vendor pernikahan premium di Indonesia. Temukan venue, katering, dekorasi, dan ribuan vendor terpercaya untuk hari bahagiamu.
+                    Marketplace vendor pernikahan di Indonesia. Temukan venue, katering, dekorasi, dan vendor terverifikasi lainnya, lalu booking dengan pembayaran rekber yang aman.
                 </p>
-                <div class="mt-6 flex items-center gap-2">
-                    @foreach (['instagram', 'tiktok', 'facebook'] as $social)
-                        <a href="#" aria-label="{{ $social }}"
-                           class="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-ink-300 transition-all duration-300 hover:border-rose-500 hover:text-white hover:bg-rose-600 hover:-translate-y-0.5 hover:shadow-md">
-                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                                @if ($social === 'instagram')
-                                    <path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9-.1-1.3-.1-1.6-.1-4.8 0-3.2 0-3.6.1-4.8C2.4 4 4 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2Zm0 3.6a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4Zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-10.4a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0Z"/>
-                                @elseif ($social === 'tiktok')
-                                    <path d="M19.6 6.7a5.4 5.4 0 0 1-3.4-1.2 5.4 5.4 0 0 1-2-3.4h-3.4v13.4a2.9 2.9 0 1 1-2.9-2.9c.3 0 .6 0 .9.1V9.2a6.4 6.4 0 0 0-.9-.1 6.3 6.3 0 1 0 6.3 6.3V9.6a8.7 8.7 0 0 0 5.4 1.9V8.1c-.1 0-.2 0-.2-.1V6.7Z"/>
-                                @else
-                                    <path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07Z"/>
-                                @endif
-                            </svg>
-                        </a>
-                    @endforeach
-                </div>
             </div>
 
             <div class="lg:col-span-2">
@@ -52,9 +36,9 @@
                 <h4 class="text-sm font-bold uppercase tracking-wider text-white">Jelajahi</h4>
                 <ul class="mt-5 space-y-3 text-sm text-ink-300">
                     <li><a href="{{ route('vendors.index') }}" class="transition-colors duration-300 hover:text-rose-400 hover:pl-0.5">Semua Vendor</a></li>
-                    <li><a href="{{ route('vendors.index', ['sort' => 'rating']) }}" class="transition-colors duration-300 hover:text-rose-400 hover:pl-0.5">Vendor Terbaik</a></li>
-                    <li><a href="{{ route('vendors.index', ['sort' => 'popular']) }}" class="transition-colors duration-300 hover:text-rose-400 hover:pl-0.5">Vendor Populer</a></li>
-                    <li><a href="#" class="transition-colors duration-300 hover:text-rose-400 hover:pl-0.5">Inspirasi Pernikahan</a></li>
+                    <li><a href="{{ route('vendors.index', ['sort' => 'rating']) }}" class="transition-colors duration-300 hover:text-rose-400 hover:pl-0.5">Rating Tertinggi</a></li>
+                    <li><a href="{{ route('packages.index') }}" class="transition-colors duration-300 hover:text-rose-400 hover:pl-0.5">Paket Populer</a></li>
+                    <li><a href="{{ route('vendors.register.create') }}" class="transition-colors duration-300 hover:text-rose-400 hover:pl-0.5">Jadi Mitra Vendor</a></li>
                 </ul>
             </div>
 
@@ -85,7 +69,7 @@
 
         <div class="mt-14 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-7 text-xs text-ink-400 sm:flex-row">
             <p>&copy; {{ date('Y') }} BrightDor. Seluruh hak cipta dilindungi.</p>
-            <p>Premium Wedding Marketplace Indonesia</p>
+            <p>Marketplace Vendor Pernikahan Indonesia</p>
         </div>
     </div>
 </footer>

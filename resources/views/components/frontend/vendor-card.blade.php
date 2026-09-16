@@ -40,21 +40,21 @@
 
         <div class="absolute left-3 top-3 flex items-center gap-2">
             @if ($vendor->is_featured)
-                <span class="inline-flex items-center gap-1 rounded-[4px] bg-rose-600 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm ring-1 ring-white/20">
+                <span class="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-rose-700 shadow-md ring-1 ring-black/10">
                     <svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                     Unggulan
                 </span>
             @endif
             @if ($vendor->is_verified)
-                <span class="inline-flex items-center gap-1 rounded-[4px] bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-rose-600 shadow-sm ring-1 ring-black/10">
-                    <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg>
+                <span class="inline-flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink-700 shadow-md ring-1 ring-black/10">
+                    <svg class="h-3 w-3 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="m5 13 4 4L19 7"/></svg>
                     Verified
                 </span>
             @endif
         </div>
 
         @if ($category)
-            <span class="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-[4px] bg-white px-2.5 py-1.5 text-[11px] font-semibold text-ink-600 shadow-sm ring-1 ring-black/5">
+            <span class="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-2.5 py-1.5 text-[11px] font-semibold text-ink-700 shadow-md ring-1 ring-black/5">
                 <x-frontend.category-icon :name="$category->name" :slug="$category->slug" class="h-3.5 w-3.5 text-rose-600"/>
                 {{ $category->name }}
             </span>
@@ -85,14 +85,14 @@
             <div class="mt-4 flex items-end justify-between">
                 <div>
                     <p class="text-[11px] uppercase tracking-wider text-ink-400 font-bold">Mulai dari</p>
-                    <p class="font-display text-xl sm:text-[1.35rem] font-extrabold text-ink-900 mt-0.5 tracking-tight">
+                    <p class="font-display text-xl font-bold text-ink-900 mt-0.5 tracking-tight">
                         {{ rupiah($startingPrice, true) }}
                     </p>
                 </div>
 
-                <span class="inline-flex items-center gap-1 rounded-[5px] border border-rose-500/40 bg-rose-50 px-3.5 py-1.5 text-xs font-bold text-rose-600 transition-all duration-300 group-hover:bg-rose-600 group-hover:text-white group-hover:border-rose-600 group-hover:shadow-md group-hover:translate-x-0.5">
+                <span class="inline-flex items-center gap-1 text-xs font-bold text-rose-600 transition-all duration-200 group-hover:gap-1.5">
                     Lihat Detail
-                    <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M21 12H3"/></svg>
+                    <svg class="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12l-7.5 7.5M21 12H3"/></svg>
                 </span>
             </div>
         </div>

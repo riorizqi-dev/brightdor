@@ -167,4 +167,32 @@ class ReviewTest extends TestCase
             ])
             ->assertSessionHasErrors('rating');
     }
+
+    public function test_vendor_page_shows_only_that_vendors_reviews(): void
+    {
+        $vendor = Vendor::query()->where('status', 'approved')->firstOrFail();
+
+        $reviewer = $this->makeCouple('reviewer-vendor-page@brightdor.test');
+        $booking = Booking::query()->create([
+            'user_id' => $reviewer->id,
+            'vendor_id' => $vendor->id,
+            'subtotal' => 1000000,
+            'total_amount' => 1000000,
+            'status' => 'completed',
+        ]);
+
+        Review::query()->create([
+            'vendor_id' => $vendor->id,
+            'booking_id' => $booking->id,
+            'user_id' => $reviewer->id,
+            'rating' => 5,
+            'content' => 'Vendor ini sangat profesional dan rapi.',
+            'is_verified' => true,
+        ]);
+
+        $this->get(route('vendors.show', $vendor->slug))
+            ->assertOk()
+            ->assertSee('Vendor ini sangat profesional dan rapi.')
+            ->assertSee('Couple User');
+    }
 }

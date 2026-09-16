@@ -115,15 +115,32 @@ class VendorBookingsTable
                         ->icon('heroicon-o-check-badge')
                         ->color('success')
                         ->requiresConfirmation()
+                        ->modalHeading('Selesaikan Booking')
+                        ->modalDescription(function (Model $record): string {
+                            $paid = $record->transactions()
+                                ->where('type', 'payment')
+                                ->where('status', 'success')
+                                ->exists();
+
+                            return $paid
+                                ? 'Tandai acara ini selesai. Saldo vendor akan bertambah dan bisa ditarik via payout.'
+                                : 'PERHATIAN: Pembayaran booking ini BELUM LUNAS. Menyelesaikan booking tanpa pembayaran lunas tidak menambah saldo payout.';
+                        })
                         ->visible(fn (Model $record): bool => $record->status === 'on_progress')
                         ->action(function (Model $record): void {
+                            $paid = $record->transactions()
+                                ->where('type', 'payment')
+                                ->where('status', 'success')
+                                ->exists();
+
                             $record->forceFill([
                                 'status' => 'completed',
                                 'completed_at' => now(),
                             ])->save();
+
                             Notification::make()
-                                ->title('Booking selesai')
-                                ->success()
+                                ->title($paid ? 'Booking selesai, saldo payout bertambah' : 'Booking selesai (tanpa pembayaran lunas)')
+                                ->color($paid ? 'success' : 'warning')
                                 ->send();
                         }),
                     Action::make('reject')

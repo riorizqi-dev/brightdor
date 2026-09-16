@@ -15,11 +15,10 @@
             @endif
 
             <div class="text-center">
-                <p class="bd-section-kicker">Bergabung dengan 3000+ vendor terpercaya</p>
-                <h1 class="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">
+                <h1 class="font-display text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
                     Daftar sebagai Vendor
                 </h1>
-                <p class="mt-3 text-sm text-ink-500">
+                <p class="mt-2 text-sm text-ink-500">
                     Halo, <strong class="text-ink-700">{{ $user->name }}</strong>! Lengkapi data di bawah ini.
                     Menjadi vendor hanya tersedia untuk akun dengan langganan berbayar aktif.
                 </p>

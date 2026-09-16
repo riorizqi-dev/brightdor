@@ -50,15 +50,15 @@ final class BrandPalette
     {
         return [
             self::ROSE_600,
-            self::GOLD_500,
+            '#8f837a',
             self::ROSE_800,
             self::ROSE_400,
-            self::GOLD_600,
+            '#574e46',
             self::ROSE_700,
-            self::GOLD_300,
+            '#d3ccc7',
             self::ROSE_500,
             self::ROSE_900,
-            self::GOLD_400,
+            '#b0a69e',
         ];
     }
 }

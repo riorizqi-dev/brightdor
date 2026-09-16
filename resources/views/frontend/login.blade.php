@@ -6,9 +6,8 @@
     <div class="bd-container py-12">
         <div class="mx-auto max-w-xl">
             <div class="text-center">
-                <p class="bd-section-kicker">Selamat datang kembali</p>
-                <h1 class="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl">Masuk ke BrightDor</h1>
-                <p class="mt-3 text-sm text-ink-500">Masuk ke akun BrightDor Anda untuk melanjutkan.</p>
+                <h1 class="font-display text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">Masuk ke BrightDor</h1>
+                <p class="mt-2 text-sm text-ink-500">Masuk ke akun kamu untuk melanjutkan.</p>
             </div>
 
             @if (session('success'))

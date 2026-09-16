@@ -11,32 +11,20 @@
             <span class="font-semibold text-ink-700">Paket Populer</span>
         </nav>
 
-        {{-- Page Header with Toggle Switcher --}}
-        <div class="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-rose-100">
+        {{-- Page Header --}}
+        <div class="mt-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-ink-100">
             <div>
-                <span class="bd-section-kicker">Katalog Paket Pilihan</span>
-                <h1 class="font-display text-3xl font-extrabold tracking-tight text-ink-900 sm:text-4xl mt-1">
+                <h1 class="font-display text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
                     Paket Pernikahan Populer
                 </h1>
-                <p class="mt-2 text-sm sm:text-base text-ink-600 max-w-2xl">
-                    Temukan paket pernikahan terlengkap dari venue, katering, foto, hingga dekorasi yang paling diminati pasangan pengantin di Indonesia.
+                <p class="mt-1.5 text-sm text-ink-500 max-w-2xl">
+                    Paket dari berbagai vendor yang paling banyak dipesan. Bandingkan harga dan isinya sebelum memilih.
                 </p>
             </div>
 
-            {{-- Mode Switcher (Jelajahi Vendor vs Paket Populer) --}}
-            <div class="inline-flex shrink-0 p-1.5 rounded-2xl bg-rose-50/80 border border-rose-200/80 shadow-2xs">
-                <a href="{{ route('vendors.index') }}"
-                   class="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-ink-600 hover:text-rose-600 transition-all">
-                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"/></svg>
-                    <span>Jelajahi Vendor</span>
-                </a>
-                <a href="{{ route('packages.index') }}"
-                   class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-bold text-rose-600 shadow-sm ring-1 ring-rose-200/60">
-                    <svg class="h-4 w-4 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H4.5a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"/></svg>
-                    <span>Paket Populer</span>
-                    <span class="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700">{{ $packages->total() }}</span>
-                </a>
-            </div>
+            <a href="{{ route('vendors.index') }}" class="hidden sm:inline-flex shrink-0 items-center gap-1.5 rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-semibold text-ink-700 transition-colors hover:border-rose-400 hover:text-rose-600">
+                Jelajahi Vendor
+            </a>
         </div>
 
         <div class="mt-8 grid gap-8 lg:grid-cols-12">

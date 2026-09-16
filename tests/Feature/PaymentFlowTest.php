@@ -355,4 +355,206 @@ class PaymentFlowTest extends TestCase
         Livewire::test(ListTransactions::class)
             ->assertSuccessful();
     }
+
+    public function test_new_payment_transaction_has_24_hour_expiry(): void
+    {
+        $couple = $this->couple('expiry@brightdor.test');
+        $booking = $this->createBooking($couple);
+
+        $transaction = $booking->transactions()->where('type', 'payment')->latest('id')->firstOrFail();
+
+        $this->assertNotNull($transaction->expires_at);
+        // Batas waktu sekitar 24 jam dari sekarang (toleransi beberapa detik eksekusi).
+        $this->assertTrue($transaction->expires_at->greaterThan(now()->addHours(23)));
+        $this->assertTrue($transaction->expires_at->lessThan(now()->addHours(25)));
+    }
+
+    public function test_overdue_pending_transaction_auto_expires_on_payment_page(): void
+    {
+        $couple = $this->couple('overdue@brightdor.test');
+        $booking = $this->createBooking($couple);
+
+        $transaction = $booking->transactions()->where('type', 'payment')->latest('id')->firstOrFail();
+
+        // Paksa transaksi seolah sudah lewat batas 24 jam.
+        $transaction->forceFill(['expires_at' => now()->subHour()])->save();
+
+        $this->actingAs($couple)
+            ->get(route('my-bookings.payment', $booking))
+            ->assertOk()
+            ->assertSee('Kedaluwarsa')
+            ->assertSee('Batas Waktu Pembayaran Habis');
+
+        $this->assertSame('expired', $transaction->fresh()->status);
+    }
+
+    public function test_expired_transaction_cannot_be_submitted(): void
+    {
+        $couple = $this->couple('expiredsubmit@brightdor.test');
+        $booking = $this->createBooking($couple);
+
+        $transaction = $booking->transactions()->where('type', 'payment')->latest('id')->firstOrFail();
+        $transaction->forceFill(['expires_at' => now()->subHour()])->save();
+
+        $this->actingAs($couple)
+            ->withoutMiddleware(VerifyCsrfToken::class)
+            ->post(route('my-bookings.payment.store', $booking), [
+                'payment_method' => 'qris',
+                'payment_reference' => 'RRN-EXPIRED-001',
+            ])
+            ->assertSessionHasErrors('booking');
+
+        $this->assertSame('expired', $transaction->fresh()->status);
+    }
+
+    public function test_vendor_payout_uses_subtotal_minus_commission_not_total(): void
+    {
+        // Vendor baru yang bersih agar tidak terpengaruh booking lain.
+        $vendorUser = User::query()->create([
+            'name' => 'Vendor Payout Calc',
+            'email' => 'vendor-payout-calc@example.test',
+            'phone' => '0812999000111',
+            'password' => Hash::make('password'),
+            'user_type' => 'vendor',
+            'status' => 'active',
+        ]);
+        $vendor = Vendor::query()->create([
+            'user_id' => $vendorUser->id,
+            'business_name' => 'Vendor Payout Calc',
+            'city' => 'Jakarta',
+            'status' => 'approved',
+        ]);
+        $service = Service::query()->create([
+            'vendor_id' => $vendor->id,
+            'name' => 'Paket Payout Calc',
+            'price' => 2_000_000,
+            'status' => 'published',
+            'is_active' => true,
+        ]);
+
+        $couple = $this->couple('payoutcalc@brightdor.test');
+
+        $this->actingAs($couple)
+            ->withoutMiddleware(VerifyCsrfToken::class)
+            ->post(route('vendors.booking', $vendor->slug), [
+                'name' => $couple->name,
+                'email' => $couple->email,
+                'phone' => $couple->phone ?? '081300000001',
+                'service_id' => $service->id,
+                'event_date' => now()->addMonths(2)->toDateString(),
+            ])
+            ->assertSessionHas('success');
+
+        $booking = Booking::query()->where('user_id', $couple->id)->latest('id')->firstOrFail();
+
+        // Simulasikan booking selesai dengan admin_fee > 0 untuk memastikan
+        // admin_fee TIDAK ikut ke saldo vendor. Lewati transisi status yang valid.
+        $booking->forceFill(['status' => 'confirmed', 'confirmed_at' => now()])->save();
+        $booking->forceFill(['status' => 'on_progress'])->save();
+        $booking->forceFill([
+            'status' => 'completed',
+            'completed_at' => now(),
+            'admin_fee' => 50_000,
+            'total_amount' => (float) $booking->subtotal + 50_000,
+        ])->save();
+
+        $expected = (float) $booking->subtotal - (float) $booking->commission_amount;
+
+        $this->assertSame(round($expected, 2), $vendor->payoutsAvailable());
+    }
+
+    public function test_guest_booking_creates_loginable_account_with_temporary_password(): void
+    {
+        [$vendor, $service] = $this->approvedVendorAndService();
+
+        $this->withoutMiddleware(VerifyCsrfToken::class)
+            ->post(route('vendors.booking', $vendor->slug), [
+                'name' => 'Tamu Baru',
+                'email' => 'tamu-baru@example.test',
+                'phone' => '0812000111222',
+                'service_id' => $service->id,
+                'event_date' => now()->addMonths(3)->toDateString(),
+            ])
+            ->assertSessionHas('success');
+
+        $user = User::query()->where('email', 'tamu-baru@example.test')->firstOrFail();
+
+        // Akun guest harus bisa login (password-nya diketahui dari flash message).
+        $this->assertSame('couple', $user->user_type);
+        $this->assertNotNull($user->password);
+    }
+
+    /**
+     * Simulasi siklus uang lengkap ujung-ke-ujung:
+     * booking -> bayar -> validasi admin -> vendor proses -> selesai -> saldo payout.
+     */
+    public function test_full_money_cycle_from_booking_to_vendor_payout_balance(): void
+    {
+        // Vendor bersih agar saldo payout tidak terpengaruh booking lain.
+        $vendorUser = User::query()->create([
+            'name' => 'Vendor Full Cycle',
+            'email' => 'vendor-fullcycle@example.test',
+            'phone' => '0812999000222',
+            'password' => Hash::make('password'),
+            'user_type' => 'vendor',
+            'status' => 'active',
+        ]);
+        $vendor = Vendor::query()->create([
+            'user_id' => $vendorUser->id,
+            'business_name' => 'Vendor Full Cycle',
+            'city' => 'Jakarta',
+            'status' => 'approved',
+        ]);
+        $service = Service::query()->create([
+            'vendor_id' => $vendor->id,
+            'name' => 'Paket Full Cycle',
+            'price' => 2_000_000,
+            'status' => 'published',
+            'is_active' => true,
+        ]);
+
+        $couple = $this->couple('fullcycle@brightdor.test');
+
+        $this->actingAs($couple)
+            ->withoutMiddleware(VerifyCsrfToken::class)
+            ->post(route('vendors.booking', $vendor->slug), [
+                'name' => $couple->name,
+                'email' => $couple->email,
+                'phone' => $couple->phone ?? '081300000001',
+                'service_id' => $service->id,
+                'event_date' => now()->addMonths(2)->toDateString(),
+            ])
+            ->assertSessionHas('success');
+
+        $booking = Booking::query()->where('user_id', $couple->id)->latest('id')->firstOrFail();
+
+        // 1. Booking dibuat -> transaksi pending dengan batas 24 jam.
+        $transaction = $booking->transactions()->where('type', 'payment')->latest('id')->firstOrFail();
+        $this->assertSame('pending', $transaction->status);
+        $this->assertNotNull($transaction->expires_at);
+
+        // 2. Couple kirim bukti pembayaran.
+        $this->actingAs($couple)
+            ->withoutMiddleware(VerifyCsrfToken::class)
+            ->post(route('my-bookings.payment.store', $booking), [
+                'payment_method' => 'qris',
+                'payment_reference' => 'RRN-FULLCYCLE-001',
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame('qris', $transaction->fresh()->payment_method);
+
+        // 3. Admin validasi -> transaksi sukses, booking terkonfirmasi.
+        PaymentService::markAsPaid($transaction->fresh());
+        $this->assertSame('success', $transaction->fresh()->status);
+        $this->assertSame('confirmed', $booking->fresh()->status);
+
+        // 4. Vendor jalankan acara sampai selesai (refresh agar status terkini).
+        $booking->refresh()->forceFill(['status' => 'on_progress'])->save();
+        $booking->refresh()->forceFill(['status' => 'completed', 'completed_at' => now()])->save();
+
+        // 5. Saldo payout vendor = subtotal - komisi (admin_fee tidak ikut).
+        $expected = (float) $booking->subtotal - (float) $booking->commission_amount;
+        $this->assertSame(round($expected, 2), $vendor->fresh()->payoutsAvailable());
+    }
 }

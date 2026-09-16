@@ -6,12 +6,14 @@
     @endphp
 
     <div class="bd-page">
-        {{-- Greeting --}}
-        <div class="bd-greeting">
+        {{-- Greeting: slim --}}
+        <div class="flex flex-wrap items-end justify-between gap-3 pb-5">
             <div>
-                <div class="bd-greeting-kicker">{{ __('brightdor.vendor_dashboard.kicker') }}</div>
-                <h1>{{ __('brightdor.vendor_dashboard.welcome', ['name' => auth()->user()->name]) }}</h1>
-                <p>
+                <p class="bd-greeting-kicker">{{ __('brightdor.vendor_dashboard.kicker') }}</p>
+                <h1 class="mt-1 font-display text-2xl font-semibold tracking-tight text-[#2a2520] sm:text-[1.7rem]">
+                    {{ __('brightdor.vendor_dashboard.welcome', ['name' => auth()->user()->name]) }}
+                </h1>
+                <p class="mt-1 text-sm text-[#8f837a]">
                     @if ($vendor)
                         {{ __('brightdor.vendor_dashboard.intro_with_vendor', ['business' => $vendor->business_name]) }}
                     @else
@@ -19,81 +21,56 @@
                     @endif
                 </p>
             </div>
-            <div class="bd-greeting-meta">
-                <span class="bd-greeting-dot"></span>
-                <span>
-                    @if ($vendor && $vendor->is_verified)
-                        {{ __('brightdor.vendor_dashboard.verified') }}
-                    @else
-                        {{ __('brightdor.vendor_dashboard.pending_review') }}
-                    @endif
-                    · {{ now()->translatedFormat('d M Y') }}
-                </span>
+            <div class="inline-flex items-center gap-2 rounded-full border border-[#e6e2df] bg-white px-3.5 py-1.5 text-xs font-medium text-[#8f837a]">
+                @if ($vendor && $vendor->is_verified)
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                    {{ __('brightdor.vendor_dashboard.verified') }}
+                @else
+                    <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                    {{ __('brightdor.vendor_dashboard.pending_review') }}
+                @endif
+                <span class="text-[#d3ccc7]">·</span>
+                {{ now()->translatedFormat('d M Y') }}
             </div>
         </div>
 
         @if ($vendor)
-            {{-- Stats --}}
-            <div class="bd-stats">
-                <div class="bd-stat">
-                    <div class="bd-stat-top">
-                        <div class="bd-stat-label">{{ __('brightdor.vendor_dashboard.bookings') }}</div>
-                        <div class="bd-stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>
-                        </div>
-                    </div>
-                    <div class="bd-stat-value">{{ $stats['bookings'] }}</div>
-                    <div class="bd-stat-hint">
+            {{-- Stats: compact grid --}}
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5">
+                <div class="rounded-xl border border-[#e6e2df] bg-white p-4 transition-all duration-200 hover:border-rose-300 hover:shadow-md">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#8f837a]">{{ __('brightdor.vendor_dashboard.bookings') }}</span>
+                    <div class="mt-2 font-display text-[1.35rem] font-semibold leading-none tracking-tight text-[#2a2520]">{{ $stats['bookings'] }}</div>
+                    <div class="mt-1.5 text-[11px] text-[#8f837a]">
                         @if ($stats['rating_avg'])
-                            {{ __('brightdor.vendor_dashboard.rating') }}: <strong>{{ $stats['rating_avg'] }}</strong> ({{ $stats['rating_count'] }})
+                            {{ __('brightdor.vendor_dashboard.rating') }}: <strong class="text-[#574e46]">{{ $stats['rating_avg'] }}</strong> ({{ $stats['rating_count'] }})
                         @else
                             {{ __('brightdor.vendor_dashboard.rating') }}: —
                         @endif
                     </div>
                 </div>
 
-                <div class="bd-stat">
-                    <div class="bd-stat-top">
-                        <div class="bd-stat-label">{{ __('brightdor.common.pending') }}</div>
-                        <div class="bd-stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                        </div>
-                    </div>
-                    <div class="bd-stat-value">{{ $stats['pending'] }}</div>
-                    <div class="bd-stat-hint">{{ __('brightdor.vendor_dashboard.pending_review') }}</div>
+                <div class="rounded-xl border border-[#e6e2df] bg-white p-4 transition-all duration-200 hover:border-rose-300 hover:shadow-md">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#8f837a]">{{ __('brightdor.common.pending') }}</span>
+                    <div class="mt-2 font-display text-[1.35rem] font-semibold leading-none tracking-tight text-[#2a2520]">{{ $stats['pending'] }}</div>
+                    <div class="mt-1.5 text-[11px] text-[#8f837a]">{{ __('brightdor.vendor_dashboard.pending_review') }}</div>
                 </div>
 
-                <div class="bd-stat">
-                    <div class="bd-stat-top">
-                        <div class="bd-stat-label">{{ __('brightdor.vendor_dashboard.confirmed') }}</div>
-                        <div class="bd-stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                        </div>
-                    </div>
-                    <div class="bd-stat-value">{{ $stats['confirmed'] }}</div>
-                    <div class="bd-stat-hint">{{ __('brightdor.vendor_dashboard.confirmed') }}</div>
+                <div class="rounded-xl border border-[#e6e2df] bg-white p-4 transition-all duration-200 hover:border-rose-300 hover:shadow-md">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#8f837a]">{{ __('brightdor.vendor_dashboard.confirmed') }}</span>
+                    <div class="mt-2 font-display text-[1.35rem] font-semibold leading-none tracking-tight text-[#2a2520]">{{ $stats['confirmed'] }}</div>
+                    <div class="mt-1.5 text-[11px] text-[#8f837a]">{{ __('brightdor.vendor_dashboard.confirmed') }}</div>
                 </div>
 
-                <div class="bd-stat">
-                    <div class="bd-stat-top">
-                        <div class="bd-stat-label">{{ __('brightdor.vendor_dashboard.completed') }}</div>
-                        <div class="bd-stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                        </div>
-                    </div>
-                    <div class="bd-stat-value">{{ $stats['completed'] }}</div>
-                    <div class="bd-stat-hint">{{ __('brightdor.vendor_dashboard.completed') }}</div>
+                <div class="rounded-xl border border-[#e6e2df] bg-white p-4 transition-all duration-200 hover:border-rose-300 hover:shadow-md">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#8f837a]">{{ __('brightdor.vendor_dashboard.completed') }}</span>
+                    <div class="mt-2 font-display text-[1.35rem] font-semibold leading-none tracking-tight text-[#2a2520]">{{ $stats['completed'] }}</div>
+                    <div class="mt-1.5 text-[11px] text-[#8f837a]">{{ __('brightdor.vendor_dashboard.completed') }}</div>
                 </div>
 
-                <div class="bd-stat">
-                    <div class="bd-stat-top">
-                        <div class="bd-stat-label">{{ __('brightdor.vendor_dashboard.services') }}</div>
-                        <div class="bd-stat-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" /></svg>
-                        </div>
-                    </div>
-                    <div class="bd-stat-value">{{ $stats['services'] }}</div>
-                    <div class="bd-stat-hint">
+                <div class="rounded-xl border border-[#e6e2df] bg-white p-4 transition-all duration-200 hover:border-rose-300 hover:shadow-md">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-[#8f837a]">{{ __('brightdor.vendor_dashboard.services') }}</span>
+                    <div class="mt-2 font-display text-[1.35rem] font-semibold leading-none tracking-tight text-[#2a2520]">{{ $stats['services'] }}</div>
+                    <div class="mt-1.5 text-[11px] text-[#8f837a]">
                         @if ($vendor->is_verified)
                             {{ __('brightdor.vendor_dashboard.verified') }}
                         @else
@@ -233,7 +210,7 @@
                             </span>
                             <span>
                                 <strong>{{ __('brightdor.vendor_dashboard.view_public_profile') }}</strong>
-                                <small>/vendors/vendor/{{ $vendor->slug }}</small>
+                                <small>/vendor/{{ $vendor->slug }}</small>
                             </span>
                         </a>
                     </div>

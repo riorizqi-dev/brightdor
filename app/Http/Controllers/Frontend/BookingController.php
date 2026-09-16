@@ -52,7 +52,7 @@ class BookingController extends Controller
             $validated['phone'] = $user->phone ?? $validated['phone'];
         }
 
-        $booking = DB::transaction(function () use ($vendor, $service, $validated, $user) {
+        $result = DB::transaction(function () use ($vendor, $service, $validated, $user) {
             $existingUser = User::query()->where('email', $validated['email'])->lockForUpdate()->first();
 
             if ($existingUser && ($existingUser->status !== 'active' || ! $existingUser->isCouple())) {
@@ -69,14 +69,24 @@ class BookingController extends Controller
                 ]);
             }
 
-            $resolvedUser = $existingUser ?? User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'user_type' => 'couple',
-                'status' => 'active',
-                'password' => Hash::make(Str::random(32)),
-            ]);
+            $temporaryPassword = null;
+            $resolvedUser = $existingUser;
+
+            if (! $resolvedUser) {
+                // Guest booking: buat akun couple dengan password sementara yang
+                // ditampilkan SEKALI di halaman sukses agar user bisa login dan
+                // melacak bookingnya. Password bisa diganti lewat "Lupa Password".
+                $temporaryPassword = 'BD-' . strtoupper(Str::random(6));
+
+                $resolvedUser = User::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'],
+                    'user_type' => 'couple',
+                    'status' => 'active',
+                    'password' => Hash::make($temporaryPassword),
+                ]);
+            }
 
             $resolvedUser->forceFill([
                 'name' => $validated['name'],
@@ -104,12 +114,21 @@ class BookingController extends Controller
 
             PaymentService::createPaymentTransaction($booking);
 
-            return $booking;
+            return [$booking, $temporaryPassword];
         });
 
-        return back()->with(
-            'success',
-            'Permintaan booking terkirim dengan kode ' . $booking->booking_code . '. Tim BrightDor akan segera menghubungi kamu untuk konfirmasi.',
-        );
+        [$booking, $temporaryPassword] = $result;
+
+        $message = 'Permintaan booking terkirim dengan kode ' . $booking->booking_code . '. ';
+
+        if ($temporaryPassword) {
+            $message .= 'Akun kamu sudah dibuat — login dengan email ' . $booking->user->email
+                . ' dan password sementara: ' . $temporaryPassword
+                . ' untuk melacak & membayar booking. Segera ganti password setelah masuk.';
+        } else {
+            $message .= 'Masuk ke akun kamu untuk melacak dan membayar booking.';
+        }
+
+        return back()->with('success', $message);
     }
 }

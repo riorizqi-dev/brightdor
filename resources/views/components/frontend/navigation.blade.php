@@ -15,35 +15,35 @@
 
 <header id="main-navbar" class="navbar-scrollable fixed inset-x-0 top-0 z-[100] transition-all duration-300 ease-out bg-white/95 backdrop-blur-md border-b border-ink-200/60 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
     {{-- Main header bar (Logo + Navigation + Auth CTA) --}}
-    <div class="bd-container bd-navbar-main flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
+    <div class="bd-container bd-navbar-main flex items-center justify-between gap-4 px-4 sm:px-6 py-2.5">
         {{-- Logo --}}
-        <a href="{{ url('/') }}" class="flex items-center gap-3 shrink-0 group">
-            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-tr from-rose-700 to-rose-500 text-white shadow-md shadow-rose-600/20 ring-1 ring-rose-600/20 transition group-hover:shadow-lg group-hover:-translate-y-0.5 duration-300">
-                <x-frontend.ring-icon class="h-5.5 w-5.5"/>
+        <a href="{{ url('/') }}" class="flex items-center gap-2.5 shrink-0 group">
+            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-rose-700 to-rose-500 text-white shadow-sm shadow-rose-600/20 ring-1 ring-rose-600/20 transition group-hover:shadow-md duration-300">
+                <x-frontend.ring-icon class="h-4.5 w-4.5"/>
             </span>
             <span class="flex flex-col leading-none">
-                <span class="font-display text-2xl font-extrabold tracking-tight text-ink-900">Bright<span class="text-rose-600">Dor</span></span>
-                <span class="mt-0.5 text-[10px] uppercase tracking-[0.22em] text-rose-600 font-bold">Premier Wedding</span>
+                <span class="font-display text-xl font-extrabold tracking-tight text-ink-900">Bright<span class="text-rose-600">Dor</span></span>
+                <span class="mt-0.5 text-[9px] uppercase tracking-[0.2em] text-rose-600 font-bold">Premier Wedding</span>
             </span>
         </a>
 
         {{-- Primary Curated Navigation (Spacious, Whitespace-Nowrap, Never Wraps) --}}
-        <nav class="hidden xl:flex items-center gap-2 shrink-0" aria-label="Navigasi Utama">
+        <nav class="hidden xl:flex items-center gap-1 shrink-0" aria-label="Navigasi Utama">
             <a href="{{ route('vendors.index') }}"
-               class="whitespace-nowrap px-4 py-2.5 text-sm font-semibold transition-all duration-200 rounded-full {{ request()->routeIs('vendors.index') && ! $activeCategory ? 'bg-rose-50 text-rose-700 font-bold shadow-2xs' : 'text-ink-700 hover:text-rose-600 hover:bg-rose-50/70' }}">
+               class="whitespace-nowrap px-3.5 py-2 text-sm font-semibold transition-all duration-200 rounded-full {{ request()->routeIs('vendors.index') && ! $activeCategory ? 'bg-rose-50 text-rose-700 font-bold' : 'text-ink-700 hover:text-rose-600 hover:bg-rose-50/70' }}">
                 Jelajahi Vendor
             </a>
             <a href="{{ route('packages.index') }}"
-               class="whitespace-nowrap px-4 py-2.5 text-sm font-semibold transition-all duration-200 rounded-full {{ request()->routeIs('packages.index') ? 'bg-rose-50 text-rose-700 font-bold shadow-2xs' : 'text-ink-700 hover:text-rose-600 hover:bg-rose-50/70' }}">
+               class="whitespace-nowrap px-3.5 py-2 text-sm font-semibold transition-all duration-200 rounded-full {{ request()->routeIs('packages.index') ? 'bg-rose-50 text-rose-700 font-bold' : 'text-ink-700 hover:text-rose-600 hover:bg-rose-50/70' }}">
                 Paket Populer
             </a>
             <a href="{{ route('invitations.show', $invitationSlug) }}"
-               class="whitespace-nowrap inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-ink-700 transition-all duration-200 rounded-full hover:text-rose-600 hover:bg-rose-50/70">
+               class="whitespace-nowrap inline-flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-ink-700 transition-all duration-200 rounded-full hover:text-rose-600 hover:bg-rose-50/70">
                 <span>Undangan Digital</span>
                 <span class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-700 tracking-wide uppercase">Preview</span>
             </a>
             <a href="{{ url('/#keunggulan') }}"
-               class="whitespace-nowrap px-4 py-2.5 text-sm font-semibold text-ink-700 transition-all duration-200 rounded-full hover:text-rose-600 hover:bg-rose-50/70">
+               class="whitespace-nowrap px-3.5 py-2 text-sm font-semibold text-ink-700 transition-all duration-200 rounded-full hover:text-rose-600 hover:bg-rose-50/70">
                 Kenapa BrightDor?
             </a>
         </nav>
@@ -203,21 +203,21 @@
     </form>
 
     {{-- Category navigation (desktop only) --}}
-    <nav class="navbar-catnav hidden border-t border-ink-100/90 bg-white/95 lg:block">
+    <nav class="navbar-catnav hidden border-t border-ink-100/80 bg-white/95 lg:block">
         <div class="bd-container px-6">
-            <div class="bd-catnav flex items-center justify-center gap-1.5 py-2 overflow-visible">
+            <div class="bd-catnav flex items-center justify-center gap-1 py-1.5 overflow-visible">
                 <a href="{{ route('home') }}"
-                   class="bd-catnav-item flex-shrink-0 whitespace-nowrap px-4 py-2 text-sm font-semibold text-ink-700 transition-all duration-300 {{ request()->routeIs('home') ? 'active' : 'hover:text-rose-600 hover:bg-rose-50 rounded-full' }}">
+                   class="bd-catnav-item flex-shrink-0 whitespace-nowrap px-3.5 py-1.5 text-[13px] font-semibold text-ink-700 transition-all duration-200 {{ request()->routeIs('home') ? 'active' : 'hover:text-rose-600 hover:bg-rose-50 rounded-full' }}">
                     Home
                 </a>
                 <a href="{{ route('vendors.index') }}"
-                   class="bd-catnav-item flex-shrink-0 whitespace-nowrap px-4 py-2 text-sm font-semibold text-ink-700 transition-all duration-300 {{ request()->routeIs('vendors.index') && ! $activeCategory ? 'active' : 'hover:text-rose-600 hover:bg-rose-50 rounded-full' }}">
+                   class="bd-catnav-item flex-shrink-0 whitespace-nowrap px-3.5 py-1.5 text-[13px] font-semibold text-ink-700 transition-all duration-200 {{ request()->routeIs('vendors.index') && ! $activeCategory ? 'active' : 'hover:text-rose-600 hover:bg-rose-50 rounded-full' }}">
                     Semua Vendor
                 </a>
                 @foreach ($inlineCategories as $cat)
                     <a href="{{ route('vendors.category', $cat->slug) }}"
-                       class="bd-catnav-item flex-shrink-0 inline-flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm font-semibold text-ink-700 transition-all duration-300 {{ $activeCategory === $cat->slug ? 'active' : 'hover:text-rose-600 hover:bg-rose-50 rounded-full' }}">
-                        <x-frontend.category-icon :name="$cat->name" :slug="$cat->slug" class="h-4.5 w-4.5 shrink-0 {{ $activeCategory === $cat->slug ? 'text-white' : 'text-rose-500' }}"/>
+                       class="bd-catnav-item flex-shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap px-3.5 py-1.5 text-[13px] font-semibold text-ink-700 transition-all duration-200 {{ $activeCategory === $cat->slug ? 'active' : 'hover:text-rose-600 hover:bg-rose-50 rounded-full' }}">
+                        <x-frontend.category-icon :name="$cat->name" :slug="$cat->slug" class="h-4 w-4 shrink-0 {{ $activeCategory === $cat->slug ? 'text-white' : 'text-rose-500' }}"/>
                         <span>{{ $cat->name }}</span>
                     </a>
                 @endforeach
@@ -226,7 +226,7 @@
                 @if ($overflowCategories->isNotEmpty())
                     <div class="bd-catnav-dropdown relative flex-shrink-0" data-dropdown>
                         <button type="button" data-dropdown-toggle aria-expanded="false"
-                                class="bd-catnav-item flex items-center gap-2 whitespace-nowrap px-4 py-2 text-sm font-semibold text-ink-700 transition-all duration-300 hover:text-rose-600 hover:bg-rose-50 rounded-full cursor-pointer">
+                                class="bd-catnav-item flex items-center gap-1.5 whitespace-nowrap px-3.5 py-1.5 text-[13px] font-semibold text-ink-700 transition-all duration-200 hover:text-rose-600 hover:bg-rose-50 rounded-full cursor-pointer">
                             <span>Lainnya</span>
                             <svg class="h-3.5 w-3.5 transition-transform duration-200" data-dropdown-chevron viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
                         </button>

@@ -229,13 +229,15 @@
                         <div class="flex-1 space-y-1.5">
                             @for ($bar = 5; $bar >= 1; $bar--)
                                 @php
-                                    $pct = $vendor->rating_count > 0 ? max(8, round((6 - $bar) * 18)) : 0;
+                                    $count = (int) ($ratingDistribution[$bar] ?? 0);
+                                    $pct = $vendor->rating_count > 0 ? round(($count / $vendor->rating_count) * 100) : 0;
                                 @endphp
                                 <div class="flex items-center gap-2 text-xs text-ink-400">
                                     <span class="w-3 font-semibold">{{ $bar }}</span>
                                     <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-ink-200">
                                         <div class="h-full rounded-full bg-rose-500 transition-all duration-500" style="width: {{ $pct }}%"></div>
                                     </div>
+                                    <span class="w-6 text-right text-ink-400">{{ $count }}</span>
                                 </div>
                             @endfor
                         </div>
@@ -247,11 +249,11 @@
                                 <div class="rounded-[5px] border border-ink-200 p-5 transition-all duration-300 hover:border-rose-400/40 hover:shadow-sm">
                                     <div class="flex items-center gap-3">
                                         <span class="flex h-10 w-10 items-center justify-center rounded-full bg-rose-600 font-display text-sm font-bold text-white ring-1 ring-rose-600/20">
-                                            {{ mb_strtoupper(mb_substr($review->name, 0, 1)) }}
+                                            {{ mb_strtoupper(mb_substr($review->user?->name ?? 'P', 0, 1)) }}
                                         </span>
                                         <div>
-                                            <p class="text-sm font-bold text-ink-900">{{ $review->name }}</p>
-                                            <p class="text-xs text-ink-400">{{ $review->role }}</p>
+                                            <p class="text-sm font-bold text-ink-900">{{ $review->user?->name ?? 'Pasangan' }}</p>
+                                            <p class="text-xs text-ink-400">{{ $review->created_at?->translatedFormat('M Y') }}</p>
                                         </div>
                                         <div class="ml-auto"><x-frontend.rating-stars :rating="$review->rating" size="sm"/></div>
                                     </div>
@@ -260,7 +262,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="mt-5 text-sm text-ink-500">Belum ada review untuk vendor ini. Jadilah yang pertama memberi ulasan!</p>
+                        <p class="mt-5 text-sm text-ink-500">Belum ada ulasan untuk vendor ini.</p>
                     @endif
                 </section>
             </div>
@@ -268,29 +270,29 @@
             {{-- Right sidebar --}}
             <aside class="space-y-6 lg:col-span-3 lg:sticky lg:top-32 lg:self-start">
                 <div class="bd-card p-6">
-                    <h3 class="font-display text-xl font-bold text-ink-900">Mulai dari</h3>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-ink-400">Mulai dari</h3>
                     @php
                         $starting = $vendor->services->min(fn ($s) => (float) $s->final_price);
                     @endphp
-                    <p class="mt-1 font-display text-3xl font-extrabold text-rose-600">{{ rupiah($starting) }}</p>
+                    <p class="mt-1.5 font-display text-2xl font-bold text-ink-900">{{ rupiah($starting) }}</p>
                     @php
                         $rawUnit = $vendor->services->first()?->price_unit ?? 'event';
                         $cleanUnit = str_starts_with(strtolower(trim($rawUnit)), 'per ') ? $rawUnit : 'per ' . $rawUnit;
                     @endphp
                     <p class="mt-1 text-sm text-ink-500 font-medium">{{ $cleanUnit }}</p>
 
-                    <div class="mt-6 space-y-3">
+                    <div class="mt-6 space-y-2.5">
                         <a href="{{ $vendor->whatsapp ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $vendor->whatsapp) : '#' }}"
                            target="_blank" rel="noopener"
-                           class="bd-btn-primary w-full justify-center gap-2 py-3.5 px-6 text-base font-bold shadow-md">
+                           class="bd-btn-primary w-full justify-center gap-2">
                             <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.83 14.12c-.25.7-1.45 1.33-2.02 1.42-.52.08-1.17.11-1.88-.12-.44-.14-1-.32-1.71-.63-3-1.3-4.96-4.32-5.11-4.52-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.19 1.05-2.49.27-.3.6-.37.8-.37h.57c.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.08.15.13.33.03.53-.1.2-.15.32-.3.5-.15.17-.32.39-.46.52-.15.15-.31.31-.13.61.18.3.79 1.3 1.7 2.11 1.16 1.04 2.14 1.36 2.44 1.51.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.68-.15.27.1 1.75.83 2.05.98.3.15.5.22.57.35.08.12.08.72-.17 1.42Z"/></svg>
                             Hubungi Vendor
                         </a>
-                        <button type="button" data-booking-open="quote" class="bd-btn-secondary w-full justify-center gap-2 py-3 px-5 text-sm font-bold shadow-xs">
+                        <button type="button" data-booking-open="quote" class="bd-btn-secondary w-full justify-center gap-2">
                             <x-frontend.ring-icon class="h-4 w-4"/>
                             Ajukan Penawaran
                         </button>
-                        <button type="button" data-booking-open="date" class="bd-btn-ghost w-full justify-center gap-2 py-3 px-5 text-sm font-bold ring-1 ring-ink-200 hover:ring-rose-400/50 shadow-2xs">
+                        <button type="button" data-booking-open="date" class="bd-btn-ghost w-full justify-center gap-2 ring-1 ring-ink-200 hover:ring-rose-400/50">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 9h16.5M4.5 5.25h15a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75h-15a.75.75 0 0 1-.75-.75V6a.75.75 0 0 1 .75-.75ZM12 13.5h.008v.008H12V13.5Zm0 3h.008v.008H12V16.5Zm-3-3h.008v.008H9V13.5Zm0 3h.008v.008H9V16.5Zm6-3h.008v.008H15V13.5Z"/></svg>
                             Booking Tanggal
                         </button>
@@ -311,26 +313,24 @@
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink-50 text-rose-600 ring-1 ring-ink-200">
-                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
                             </span>
-                            <span class="text-sm text-ink-600">Respon cepat &lt; 1 jam</span>
+                            <span class="text-sm text-ink-600">Pembayaran aman via rekber BrightDor</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="overflow-hidden rounded-[5px] border border-ink-200/70 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.02),_0_12px_32px_rgba(0,0,0,0.04)]">
-                    <div class="h-44 bg-gradient-to-br from-rose-700 via-rose-500 to-rose-300 relative">
-                        <div class="absolute -right-6 -top-6 h-24 w-24 rounded-full border border-white/20"></div>
-                        <div class="absolute -left-4 -bottom-4 h-20 w-20 rounded-full border border-white/15"></div>
-                        <span class="absolute inset-0 flex items-center justify-center gap-1.5 text-[11px] uppercase tracking-[0.25em] text-white/80 font-bold">
-                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm4.5 0c0 7.14-7.5 11.25-7.5 11.25S4.5 17.64 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                <div class="bd-card overflow-hidden">
+                    <div class="flex h-36 items-center justify-center bg-ink-50 border-b border-ink-100">
+                        <span class="inline-flex items-center gap-2 text-sm font-semibold text-ink-500">
+                            <svg class="h-5 w-5 text-rose-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm4.5 0c0 7.14-7.5 11.25-7.5 11.25S4.5 17.64 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
                             Lokasi Vendor
                         </span>
                     </div>
                     <div class="p-5 text-sm text-ink-500">
                         <p class="font-bold text-ink-900">{{ $vendor->business_name }}</p>
-                        <p class="mt-1">{{ $vendor->address }}, {{ $vendor->city }}, {{ $vendor->province }}</p>
-                        <a href="{{ 'https://www.google.com/maps/search/?api=1&query=' . urlencode(implode(', ', array_filter([$vendor->address, $vendor->city, $vendor->province]))) }}" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-1 text-sm font-bold text-rose-600 hover:text-rose-700 transition-colors">
+                        <p class="mt-1">{{ $vendor->address }}@if ($vendor->address), @endif{{ $vendor->city }}@if ($vendor->province), {{ $vendor->province }}@endif</p>
+                        <a href="{{ 'https://www.google.com/maps/search/?api=1&query=' . urlencode(implode(', ', array_filter([$vendor->address, $vendor->city, $vendor->province]))) }}" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-rose-600 hover:text-rose-700 transition-colors">
                             Buka di Google Maps
                             <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                         </a>

@@ -26,8 +26,8 @@
         <div class="mx-auto max-w-4xl">
             <div class="flex items-end justify-between">
                 <div>
-                    <p class="bd-section-kicker">Akun Saya</p>
-                    <h1 class="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink-900">Booking Saya</h1>
+                    <h1 class="font-display text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">Booking Saya</h1>
+                    <p class="mt-1 text-sm text-ink-500">Semua pemesanan kamu di satu tempat.</p>
                 </div>
                 <a href="{{ route('vendors.index') }}" class="bd-btn-secondary text-sm">Booking Vendor Lain</a>
             </div>
@@ -109,9 +109,14 @@
                             <div class="mt-5 flex flex-wrap items-center gap-3">
                                 <a href="{{ route('vendors.show', $booking->vendor->slug) }}" class="bd-btn-ghost px-4 py-2.5 text-sm font-bold ring-1 ring-ink-200">Lihat Vendor</a>
 
-                                @if ($booking->status === 'pending' || ($booking->status === 'confirmed' && $paymentTxn && $paymentTxn->status === 'pending'))
+                                @if ($booking->status === 'pending' || ($booking->status === 'confirmed' && $paymentTxn && in_array($paymentTxn->status, ['pending', 'expired', 'failed'], true)))
                                     @if ($paymentTxn && $paymentTxn->status === 'success')
                                         <span class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-100 px-4 py-2.5 text-sm font-bold text-emerald-800">Lunas</span>
+                                    @elseif ($paymentTxn && $paymentTxn->status === 'expired')
+                                        <span class="inline-flex items-center gap-1.5 rounded-lg bg-rose-100 px-4 py-2.5 text-sm font-bold text-rose-700">Pembayaran Kedaluwarsa</span>
+                                    @elseif ($paymentTxn && $paymentTxn->status === 'failed')
+                                        <span class="inline-flex items-center gap-1.5 rounded-lg bg-rose-100 px-4 py-2.5 text-sm font-bold text-rose-700">Pembayaran Ditolak</span>
+                                        <a href="{{ route('my-bookings.payment', $booking) }}" class="bd-btn-secondary px-4 py-2.5 text-sm font-bold">Lihat Detail</a>
                                     @elseif ($paymentTxn && $paymentTxn->status === 'pending' && $paymentTxn->payment_method)
                                         <span class="inline-flex items-center gap-1.5 rounded-lg bg-sky-100 px-4 py-2.5 text-sm font-bold text-sky-800">Menunggu Validasi Admin</span>
                                         <a href="{{ route('my-bookings.payment', $booking) }}" class="bd-btn-secondary px-4 py-2.5 text-sm font-bold">Lihat / Update Bukti</a>

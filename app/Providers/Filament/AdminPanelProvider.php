@@ -39,13 +39,13 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(fn () => view('filament.admin.logo'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.ico'))
-            // BrightDor brand: pink / maroon / gold (mirrors the customer site)
+            // BrightDor brand: pink / maroon with neutral grays (no gold)
             ->colors([
                 'primary' => Color::hex(BrandPalette::ROSE_600),
-                'secondary' => Color::hex(BrandPalette::GOLD_500),
+                'secondary' => Color::Stone,
                 'gray' => Color::Stone,
                 'success' => Color::hex('#3f7d5c'),
-                'warning' => Color::hex(BrandPalette::GOLD_600),
+                'warning' => Color::hex('#b45309'),
                 'danger' => Color::hex(BrandPalette::ROSE_800),
                 'info' => Color::hex(BrandPalette::ROSE_500),
             ])

@@ -22,9 +22,12 @@ class PaymentController extends Controller
             abort(404, 'Transaksi pembayaran untuk booking ini tidak ditemukan.');
         }
 
+        // Auto-expire: tandai transaksi pending yang sudah lewat batas 24 jam.
+        $transaction->expireIfOverdue();
+
         return view('frontend.bookings.pay', [
             'booking' => $booking->load(['vendor.category', 'service']),
-            'transaction' => $transaction,
+            'transaction' => $transaction->fresh(),
         ]);
     }
 
@@ -36,6 +39,15 @@ class PaymentController extends Controller
 
         if (! $transaction) {
             abort(404, 'Transaksi pembayaran untuk booking ini tidak ditemukan.');
+        }
+
+        // Auto-expire sebelum validasi status.
+        $transaction->expireIfOverdue();
+
+        if ($transaction->status === 'expired') {
+            return back()->withErrors([
+                'booking' => 'Batas waktu pembayaran (24 jam) sudah lewat. Silakan hubungi admin untuk membuka pembayaran baru.',
+            ]);
         }
 
         if ($transaction->status !== 'pending') {
